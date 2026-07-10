@@ -4,25 +4,35 @@
     <meta charset="UTF-8" />
     <title>API Communication — Zero to Hero</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="A definitive guide to API communication — from first principles to production-grade distributed system design." />
+    <meta
+      name="description"
+      content="A definitive guide to API communication — from first principles to production-grade distributed system design."
+    />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Theme -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.min.css"
+    />
 
     <style>
       /* ═══════════════════════════════════════════
          ROOT DESIGN TOKENS
          ═══════════════════════════════════════════ */
       :root {
-        --base-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --base-font-family:
+          "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         --base-font-size: 15px;
         --base-line-height: 1.7;
-        --code-font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        --code-font-family: "JetBrains Mono", "Fira Code", monospace;
         --code-font-size: 0.85em;
 
         --theme-color: #60a5fa;
@@ -51,20 +61,41 @@
          GLOBAL ANIMATIONS
          ═══════════════════════════════════════════ */
       @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       @keyframes fadeIn {
-        from { opacity: 0; }
-        to   { opacity: 1; }
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
       @keyframes slideInLeft {
-        from { opacity: 0; transform: translateX(-20px); }
-        to   { opacity: 1; transform: translateX(0); }
+        from {
+          opacity: 0;
+          transform: translateX(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
       }
       @keyframes glow {
-        0%, 100% { box-shadow: 0 0 5px rgba(96, 165, 250, 0.2); }
-        50%      { box-shadow: 0 0 20px rgba(96, 165, 250, 0.4); }
+        0%,
+        100% {
+          box-shadow: 0 0 5px rgba(96, 165, 250, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 20px rgba(96, 165, 250, 0.4);
+        }
       }
 
       /* ═══════════════════════════════════════════
@@ -117,7 +148,9 @@
         border-radius: 8px;
         overflow: hidden;
         border: 1px solid rgba(96, 165, 250, 0.15);
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        transition:
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
       }
       .sidebar .search .input-wrap:focus-within {
         border-color: #60a5fa;
@@ -220,7 +253,9 @@
         background: #161b22 !important;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
         position: relative;
-        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        transition:
+          box-shadow 0.3s ease,
+          border-color 0.3s ease;
       }
       .markdown-section pre:hover {
         border-color: rgba(96, 165, 250, 0.25);
@@ -257,7 +292,11 @@
         margin: 1.5rem 0;
       }
       .markdown-section table thead {
-        background: linear-gradient(135deg, rgba(96, 165, 250, 0.12), rgba(96, 165, 250, 0.06));
+        background: linear-gradient(
+          135deg,
+          rgba(96, 165, 250, 0.12),
+          rgba(96, 165, 250, 0.06)
+        );
       }
       .markdown-section table th {
         font-weight: 600;
@@ -322,7 +361,12 @@
       .markdown-section hr {
         border: none;
         height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.2), transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(96, 165, 250, 0.2),
+          transparent
+        );
         margin: 2.5rem 0;
       }
 
@@ -337,7 +381,9 @@
         border: 1px solid rgba(96, 165, 250, 0.1);
         text-align: center;
         animation: fadeInUp 0.6s ease;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        transition:
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
       }
       .mermaid:hover {
         border-color: rgba(96, 165, 250, 0.25);
@@ -436,10 +482,21 @@
          RESPONSIVE
          ═══════════════════════════════════════════ */
       @media (max-width: 768px) {
-        .markdown-section h1 { font-size: 1.6em; }
-        .markdown-section h2 { font-size: 1.3em; }
-        .markdown-section table { font-size: 13px; }
-        #back-to-top { bottom: 20px; right: 20px; width: 38px; height: 38px; }
+        .markdown-section h1 {
+          font-size: 1.6em;
+        }
+        .markdown-section h2 {
+          font-size: 1.3em;
+        }
+        .markdown-section table {
+          font-size: 13px;
+        }
+        #back-to-top {
+          bottom: 20px;
+          right: 20px;
+          width: 38px;
+          height: 38px;
+        }
       }
     </style>
   </head>
@@ -451,84 +508,90 @@
 
     <script>
       window.$docsify = {
-        name: '🌐 API Communication',
-        nameLink: '/',
-        repo: '',
+        name: "🌐 API Communication",
+        nameLink: "/",
+        repo: "",
         loadSidebar: true,
         subMaxLevel: 3,
         search: {
-          placeholder: '🔍  Search docs...',
-          noData: 'No results found',
+          placeholder: "🔍  Search docs...",
+          noData: "No results found",
           depth: 4,
         },
         auto2top: true,
         coverpage: false,
-        themeColor: '#60a5fa',
+        themeColor: "#60a5fa",
 
         // Page navigation (prev/next buttons)
         pagination: {
-          previousText: '← Previous',
-          nextText: 'Next →',
+          previousText: "← Previous",
+          nextText: "Next →",
           crossChapter: true,
           crossChapterText: true,
         },
 
         // Progress bar
         progress: {
-          position: 'top',
-          color: '#60a5fa',
-          height: '3px',
+          position: "top",
+          color: "#60a5fa",
+          height: "3px",
         },
 
         // Tab support
         tabs: {
           persist: true,
           sync: true,
-          theme: 'material',
+          theme: "material",
         },
 
         // Mermaid rendering
         markdown: {
           renderer: {
-            code: function(code, lang) {
-              if (lang === 'mermaid') {
-                return '<div class="mermaid">' + code + '</div>';
+            code: function (code, lang) {
+              if (lang === "mermaid") {
+                return '<div class="mermaid">' + code + "</div>";
               }
               return this.origin.code.apply(this, arguments);
-            }
-          }
+            },
+          },
         },
 
         plugins: [
-          function(hook) {
+          function (hook) {
             // Animate content on page load
-            hook.doneEach(function() {
+            hook.doneEach(function () {
               // Re-render mermaid
-              document.querySelectorAll('.mermaid').forEach(function(el) {
-                el.removeAttribute('data-processed');
+              document.querySelectorAll(".mermaid").forEach(function (el) {
+                el.removeAttribute("data-processed");
               });
               if (window.mermaid) {
                 mermaid.run();
               }
 
               // Animate elements into view
-              var sections = document.querySelectorAll('.markdown-section > h2, .markdown-section > h3, .markdown-section > table, .markdown-section > pre, .markdown-section > blockquote');
-              var observer = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                  if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.5s ease forwards';
-                    observer.unobserve(entry.target);
-                  }
-                });
-              }, { threshold: 0.1 });
+              var sections = document.querySelectorAll(
+                ".markdown-section > h2, .markdown-section > h3, .markdown-section > table, .markdown-section > pre, .markdown-section > blockquote",
+              );
+              var observer = new IntersectionObserver(
+                function (entries) {
+                  entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                      entry.target.style.animation =
+                        "fadeInUp 0.5s ease forwards";
+                      observer.unobserve(entry.target);
+                    }
+                  });
+                },
+                { threshold: 0.1 },
+              );
 
-              sections.forEach(function(el) {
-                el.style.opacity = '0';
+              sections.forEach(function (el) {
+                el.style.opacity = "0";
                 observer.observe(el);
               });
             });
-          }
-        ]
+          },
+        ],
       };
     </script>
 
@@ -546,39 +609,49 @@
     <script>
       mermaid.initialize({
         startOnLoad: false,
-        theme: 'dark',
+        theme: "dark",
         themeVariables: {
           darkMode: true,
-          primaryColor: '#1f3a5f',
-          primaryTextColor: '#c9d1d9',
-          primaryBorderColor: '#60a5fa',
-          lineColor: '#484f58',
-          secondaryColor: '#161b22',
-          tertiaryColor: '#0d1117',
-          fontFamily: 'Inter, sans-serif',
-          fontSize: '14px',
-        }
+          primaryColor: "#1f3a5f",
+          primaryTextColor: "#c9d1d9",
+          primaryBorderColor: "#60a5fa",
+          lineColor: "#484f58",
+          secondaryColor: "#161b22",
+          tertiaryColor: "#0d1117",
+          fontFamily: "Inter, sans-serif",
+          fontSize: "14px",
+        },
       });
     </script>
 
     <!-- Back-to-top logic -->
     <script>
-      (function() {
-        var btn = document.getElementById('back-to-top');
-        var content = document.querySelector('.content');
+      (function () {
+        var btn = document.getElementById("back-to-top");
+        var content = document.querySelector(".content");
 
-        window.addEventListener('scroll', function() {
-          var scrollEl = document.querySelector('section.content') || document.scrollingElement || document.documentElement;
-          if (scrollEl.scrollTop > 400) {
-            btn.classList.add('visible');
-          } else {
-            btn.classList.remove('visible');
-          }
-        }, true);
+        window.addEventListener(
+          "scroll",
+          function () {
+            var scrollEl =
+              document.querySelector("section.content") ||
+              document.scrollingElement ||
+              document.documentElement;
+            if (scrollEl.scrollTop > 400) {
+              btn.classList.add("visible");
+            } else {
+              btn.classList.remove("visible");
+            }
+          },
+          true,
+        );
 
-        btn.addEventListener('click', function() {
-          var scrollEl = document.querySelector('section.content') || document.scrollingElement || document.documentElement;
-          scrollEl.scrollTo({ top: 0, behavior: 'smooth' });
+        btn.addEventListener("click", function () {
+          var scrollEl =
+            document.querySelector("section.content") ||
+            document.scrollingElement ||
+            document.documentElement;
+          scrollEl.scrollTo({ top: 0, behavior: "smooth" });
         });
       })();
     </script>
