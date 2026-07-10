@@ -149,7 +149,7 @@ graph TB
     end
     
     subgraph Gateway ["Gateway Layer"]
-        GW[API Gateway<br/>Auth | Rate Limit | Route | TLS]
+        GW[API Gateway<br/>Auth · Rate Limit · Route · TLS]
     end
     
     subgraph Frontend_APIs ["Frontend APIs"]
