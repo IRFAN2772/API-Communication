@@ -12,4 +12,4 @@
   - [Phase 6 — API Architecture](docs/06-API-ARCHITECTURE.md)
 - **Mastery**
   - [Senior Design Guide](docs/07-SENIOR-DESIGN-GUIDE.md)
-  - Phase 7 — Expert Design *(coming soon)*
+  - Phase 7 — Expert Design _(coming soon)_
