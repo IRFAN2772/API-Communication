@@ -1,68 +1,534 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>API Communication Guide</title>
+    <title>API Communication — Zero to Hero</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.min.css"
-    />
+    <meta name="description" content="A definitive guide to API communication — from first principles to production-grade distributed system design." />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <!-- Theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.min.css" />
+
     <style>
+      /* ═══════════════════════════════════════════
+         ROOT DESIGN TOKENS
+         ═══════════════════════════════════════════ */
       :root {
+        --base-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         --base-font-size: 15px;
-        --theme-color: #42b983;
-        --sidebar-width: 280px;
+        --base-line-height: 1.7;
+        --code-font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        --code-font-size: 0.85em;
+
+        --theme-color: #60a5fa;
+        --sidebar-width: 300px;
+        --sidebar-background: #0f1419;
+        --sidebar-border-color: rgba(96, 165, 250, 0.1);
+        --sidebar-nav-link-color--active: #60a5fa;
+
+        --content-max-width: 900px;
+        --cover-background-color: #0d1117;
+
+        --heading-color: #e6edf3;
+        --base-color: #c9d1d9;
+        --base-background-color: #0d1117;
+
+        --blockquote-border-color: #60a5fa;
+        --blockquote-background: rgba(96, 165, 250, 0.06);
+
+        --notice-tip-border-color: #60a5fa;
+
+        --search-background: #161b22;
+        --search-result-keyword-color: #60a5fa;
       }
-      .markdown-section code {
-        border-radius: 4px;
+
+      /* ═══════════════════════════════════════════
+         GLOBAL ANIMATIONS
+         ═══════════════════════════════════════════ */
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+      @keyframes slideInLeft {
+        from { opacity: 0; transform: translateX(-20px); }
+        to   { opacity: 1; transform: translateX(0); }
+      }
+      @keyframes glow {
+        0%, 100% { box-shadow: 0 0 5px rgba(96, 165, 250, 0.2); }
+        50%      { box-shadow: 0 0 20px rgba(96, 165, 250, 0.4); }
+      }
+
+      /* ═══════════════════════════════════════════
+         BODY & LAYOUT
+         ═══════════════════════════════════════════ */
+      body {
+        background: #0d1117;
+        color: #c9d1d9;
+      }
+
+      /* ═══════════════════════════════════════════
+         SIDEBAR
+         ═══════════════════════════════════════════ */
+      .sidebar {
+        background: linear-gradient(180deg, #0f1419 0%, #0d1117 100%);
+        border-right: 1px solid rgba(96, 165, 250, 0.08);
+      }
+      .sidebar-nav {
+        padding-top: 1rem;
       }
       .sidebar-nav li a {
+        font-size: 13.5px;
+        font-weight: 500;
+        padding: 6px 16px;
+        border-radius: 6px;
+        margin: 1px 8px;
+        transition: all 0.25s ease;
+        color: #8b949e;
+      }
+      .sidebar-nav li a:hover {
+        color: #e6edf3;
+        background: rgba(96, 165, 250, 0.08);
+        transform: translateX(3px);
+      }
+      .sidebar-nav li.active > a {
+        color: #60a5fa !important;
+        background: rgba(96, 165, 250, 0.12);
+        font-weight: 600;
+      }
+      .sidebar .app-name {
+        font-size: 20px;
+        font-weight: 700;
+        padding: 20px 16px 10px;
+        letter-spacing: -0.02em;
+      }
+      .sidebar .search {
+        margin: 8px 12px 16px;
+      }
+      .sidebar .search .input-wrap {
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid rgba(96, 165, 250, 0.15);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      .sidebar .search .input-wrap:focus-within {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+      }
+      .sidebar .search input {
+        background: #161b22;
+        color: #c9d1d9;
+        font-family: var(--base-font-family);
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+      .sidebar .search input::placeholder {
+        color: #484f58;
+      }
+
+      /* Section dividers in sidebar */
+      .sidebar-nav > ul > li > strong,
+      .sidebar-nav > ul > li > p > strong {
+        display: block;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #484f58;
+        padding: 16px 16px 4px;
+        margin-top: 4px;
+        border-top: 1px solid rgba(96, 165, 250, 0.06);
+      }
+      .sidebar-nav > ul > li:first-child > strong,
+      .sidebar-nav > ul > li:first-child > p > strong {
+        border-top: none;
+        padding-top: 8px;
+      }
+
+      /* ═══════════════════════════════════════════
+         CONTENT AREA
+         ═══════════════════════════════════════════ */
+      .markdown-section {
+        animation: fadeIn 0.4s ease;
+      }
+
+      /* Headings */
+      .markdown-section h1 {
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        font-size: 2em;
+        border-bottom: 2px solid rgba(96, 165, 250, 0.15);
+        padding-bottom: 12px;
+        margin-top: 2rem;
+        animation: fadeInUp 0.5s ease;
+      }
+      .markdown-section h2 {
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        font-size: 1.5em;
+        margin-top: 2.5rem;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(96, 165, 250, 0.08);
+        animation: fadeInUp 0.5s ease 0.1s both;
+      }
+      .markdown-section h3 {
+        font-weight: 600;
+        font-size: 1.2em;
+        color: #e6edf3;
+        margin-top: 2rem;
+      }
+      .markdown-section h4 {
+        font-weight: 600;
+        font-size: 1em;
+        color: #c9d1d9;
+      }
+
+      /* Paragraphs */
+      .markdown-section p {
+        line-height: 1.8;
+      }
+
+      /* Links */
+      .markdown-section a {
+        color: #60a5fa;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s ease;
+      }
+      .markdown-section a:hover {
+        border-bottom-color: #60a5fa;
+      }
+
+      /* ═══════════════════════════════════════════
+         CODE BLOCKS
+         ═══════════════════════════════════════════ */
+      .markdown-section code {
+        border-radius: 5px;
+        font-family: var(--code-font-family);
+        font-size: var(--code-font-size);
+      }
+      .markdown-section pre {
+        border-radius: 10px;
+        border: 1px solid rgba(96, 165, 250, 0.1);
+        background: #161b22 !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        position: relative;
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+      }
+      .markdown-section pre:hover {
+        border-color: rgba(96, 165, 250, 0.25);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      }
+      .markdown-section pre > code {
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      /* Inline code */
+      .markdown-section p code,
+      .markdown-section li code,
+      .markdown-section td code {
+        background: rgba(96, 165, 250, 0.1);
+        color: #79c0ff;
+        padding: 2px 7px;
+        border-radius: 4px;
+        font-size: 0.88em;
+        border: 1px solid rgba(96, 165, 250, 0.08);
+      }
+
+      /* ═══════════════════════════════════════════
+         TABLES
+         ═══════════════════════════════════════════ */
+      .markdown-section table {
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid rgba(96, 165, 250, 0.12);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        margin: 1.5rem 0;
+      }
+      .markdown-section table thead {
+        background: linear-gradient(135deg, rgba(96, 165, 250, 0.12), rgba(96, 165, 250, 0.06));
+      }
+      .markdown-section table th {
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #60a5fa;
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(96, 165, 250, 0.15);
+        text-align: left;
+      }
+      .markdown-section table td {
+        padding: 10px 16px;
+        border-bottom: 1px solid rgba(96, 165, 250, 0.06);
         font-size: 14px;
+        transition: background 0.2s ease;
+      }
+      .markdown-section table tr:last-child td {
+        border-bottom: none;
+      }
+      .markdown-section table tr:hover td {
+        background: rgba(96, 165, 250, 0.04);
+      }
+
+      /* ═══════════════════════════════════════════
+         BLOCKQUOTES (used for callouts/tips)
+         ═══════════════════════════════════════════ */
+      .markdown-section blockquote {
+        border-left: 4px solid #60a5fa;
+        background: rgba(96, 165, 250, 0.06);
+        border-radius: 0 8px 8px 0;
+        padding: 14px 20px;
+        margin: 1.5rem 0;
+        color: #c9d1d9;
+      }
+      .markdown-section blockquote p {
+        margin: 0.3em 0;
+      }
+      .markdown-section blockquote strong {
+        color: #60a5fa;
+      }
+
+      /* ═══════════════════════════════════════════
+         LISTS
+         ═══════════════════════════════════════════ */
+      .markdown-section ul li,
+      .markdown-section ol li {
+        margin: 4px 0;
+        line-height: 1.7;
+      }
+      .markdown-section ul li::marker {
+        color: #60a5fa;
+      }
+      .markdown-section ol li::marker {
+        color: #60a5fa;
+        font-weight: 600;
+      }
+
+      /* ═══════════════════════════════════════════
+         HORIZONTAL RULE
+         ═══════════════════════════════════════════ */
+      .markdown-section hr {
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.2), transparent);
+        margin: 2.5rem 0;
+      }
+
+      /* ═══════════════════════════════════════════
+         MERMAID DIAGRAMS
+         ═══════════════════════════════════════════ */
+      .mermaid {
+        background: rgba(22, 27, 34, 0.6);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 1.5rem 0;
+        border: 1px solid rgba(96, 165, 250, 0.1);
+        text-align: center;
+        animation: fadeInUp 0.6s ease;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      .mermaid:hover {
+        border-color: rgba(96, 165, 250, 0.25);
+        box-shadow: 0 4px 20px rgba(96, 165, 250, 0.08);
+      }
+      .mermaid svg {
+        max-width: 100%;
+      }
+
+      /* ═══════════════════════════════════════════
+         SCROLLBAR
+         ═══════════════════════════════════════════ */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(96, 165, 250, 0.2);
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(96, 165, 250, 0.4);
+      }
+
+      /* ═══════════════════════════════════════════
+         COPY CODE BUTTON
+         ═══════════════════════════════════════════ */
+      .docsify-copy-code-button {
+        font-size: 12px;
+        border-radius: 6px;
+        background: rgba(96, 165, 250, 0.15) !important;
+        color: #60a5fa !important;
+        border: 1px solid rgba(96, 165, 250, 0.2) !important;
+        transition: all 0.2s ease !important;
+      }
+      .docsify-copy-code-button:hover {
+        background: rgba(96, 165, 250, 0.25) !important;
+        transform: scale(1.05);
+      }
+
+      /* ═══════════════════════════════════════════
+         PROGRESS BAR (top of page on navigate)
+         ═══════════════════════════════════════════ */
+      .progress {
+        background: linear-gradient(90deg, #60a5fa, #a78bfa) !important;
+      }
+
+      /* ═══════════════════════════════════════════
+         LOADING STATE
+         ═══════════════════════════════════════════ */
+      #app {
+        font-family: var(--base-font-family);
+        color: #484f58;
+        text-align: center;
+        padding-top: 40vh;
+        font-size: 16px;
+      }
+
+      /* ═══════════════════════════════════════════
+         BACK-TO-TOP BUTTON
+         ═══════════════════════════════════════════ */
+      #back-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #60a5fa, #a78bfa);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+        z-index: 999;
+        box-shadow: 0 4px 15px rgba(96, 165, 250, 0.3);
+      }
+      #back-to-top.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      #back-to-top:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 25px rgba(96, 165, 250, 0.5);
+      }
+
+      /* ═══════════════════════════════════════════
+         RESPONSIVE
+         ═══════════════════════════════════════════ */
+      @media (max-width: 768px) {
+        .markdown-section h1 { font-size: 1.6em; }
+        .markdown-section h2 { font-size: 1.3em; }
+        .markdown-section table { font-size: 13px; }
+        #back-to-top { bottom: 20px; right: 20px; width: 38px; height: 38px; }
       }
     </style>
   </head>
   <body>
     <div id="app">Loading...</div>
+
+    <!-- Back to top button -->
+    <button id="back-to-top" title="Back to top">↑</button>
+
     <script>
       window.$docsify = {
-        name: "🌐 API Communication",
-        nameLink: "/",
-        repo: "",
+        name: '🌐 API Communication',
+        nameLink: '/',
+        repo: '',
         loadSidebar: true,
         subMaxLevel: 3,
         search: {
-          placeholder: "Search...",
-          noData: "No results",
-          depth: 3,
+          placeholder: '🔍  Search docs...',
+          noData: 'No results found',
+          depth: 4,
         },
         auto2top: true,
         coverpage: false,
-        themeColor: "#42b983",
+        themeColor: '#60a5fa',
 
+        // Page navigation (prev/next buttons)
+        pagination: {
+          previousText: '← Previous',
+          nextText: 'Next →',
+          crossChapter: true,
+          crossChapterText: true,
+        },
+
+        // Progress bar
+        progress: {
+          position: 'top',
+          color: '#60a5fa',
+          height: '3px',
+        },
+
+        // Tab support
+        tabs: {
+          persist: true,
+          sync: true,
+          theme: 'material',
+        },
+
+        // Mermaid rendering
         markdown: {
           renderer: {
-            code: function (code, lang) {
-              if (lang === "mermaid") {
-                return '<div class="mermaid">' + code + "</div>";
+            code: function(code, lang) {
+              if (lang === 'mermaid') {
+                return '<div class="mermaid">' + code + '</div>';
               }
               return this.origin.code.apply(this, arguments);
-            },
-          },
+            }
+          }
         },
 
         plugins: [
-          function (hook) {
-            hook.doneEach(function () {
-              document.querySelectorAll(".mermaid").forEach(function (el) {
-                el.removeAttribute("data-processed");
+          function(hook) {
+            // Animate content on page load
+            hook.doneEach(function() {
+              // Re-render mermaid
+              document.querySelectorAll('.mermaid').forEach(function(el) {
+                el.removeAttribute('data-processed');
               });
               if (window.mermaid) {
                 mermaid.run();
               }
+
+              // Animate elements into view
+              var sections = document.querySelectorAll('.markdown-section > h2, .markdown-section > h3, .markdown-section > table, .markdown-section > pre, .markdown-section > blockquote');
+              var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                  if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.5s ease forwards';
+                    observer.unobserve(entry.target);
+                  }
+                });
+              }, { threshold: 0.1 });
+
+              sections.forEach(function(el) {
+                el.style.opacity = '0';
+                observer.observe(el);
+              });
             });
-          },
-        ],
+          }
+        ]
       };
     </script>
 
@@ -72,14 +538,49 @@
     <!-- Plugins -->
     <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-pagination@2/dist/docsify-pagination.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-progress@latest/dist/progress.min.js"></script>
 
     <!-- Mermaid -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <script>
       mermaid.initialize({
         startOnLoad: false,
-        theme: "dark",
+        theme: 'dark',
+        themeVariables: {
+          darkMode: true,
+          primaryColor: '#1f3a5f',
+          primaryTextColor: '#c9d1d9',
+          primaryBorderColor: '#60a5fa',
+          lineColor: '#484f58',
+          secondaryColor: '#161b22',
+          tertiaryColor: '#0d1117',
+          fontFamily: 'Inter, sans-serif',
+          fontSize: '14px',
+        }
       });
+    </script>
+
+    <!-- Back-to-top logic -->
+    <script>
+      (function() {
+        var btn = document.getElementById('back-to-top');
+        var content = document.querySelector('.content');
+
+        window.addEventListener('scroll', function() {
+          var scrollEl = document.querySelector('section.content') || document.scrollingElement || document.documentElement;
+          if (scrollEl.scrollTop > 400) {
+            btn.classList.add('visible');
+          } else {
+            btn.classList.remove('visible');
+          }
+        }, true);
+
+        btn.addEventListener('click', function() {
+          var scrollEl = document.querySelector('section.content') || document.scrollingElement || document.documentElement;
+          scrollEl.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      })();
     </script>
   </body>
 </html>
