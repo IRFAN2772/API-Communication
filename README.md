@@ -32,7 +32,7 @@ graph TD
     style E fill:#2d6a4f,color:#fff
     style F fill:#2d6a4f,color:#fff
     style G fill:#2d6a4f,color:#fff
-    style H fill:#6c757d,color:#fff
+    style H fill:#2d6a4f,color:#fff
 ```
 
 ---
@@ -48,11 +48,12 @@ graph TD
 | 4     | Real-Time Communication | ✅ 100%        | [04-REALTIME-COMMUNICATION.md](docs/04-REALTIME-COMMUNICATION.md) |
 | 5     | Async APIs & Events     | ✅ ~95%        | [05-ASYNC-APIS.md](docs/05-ASYNC-APIS.md)                         |
 | 6     | API Architecture        | ✅ 100%        | [06-API-ARCHITECTURE.md](docs/06-API-ARCHITECTURE.md)             |
-| 7     | Expert API Design       | ❌ Coming Soon | [07-SENIOR-DESIGN-GUIDE.md](docs/07-SENIOR-DESIGN-GUIDE.md)¹      |
+| 7     | Expert API Design       | ✅ ~95%        | [08-EXPERT-API-DESIGN.md](docs/08-EXPERT-API-DESIGN.md)           |
+| 8     | System Design Case Studies | ✅ 100%     | [09-SYSTEM-DESIGN-CASE-STUDIES.md](docs/09-SYSTEM-DESIGN-CASE-STUDIES.md) |
 
-> ¹ The Senior Design Guide contains the comprehensive decision framework. Phase 7's dedicated expert-level content (API Evolution, Multi-Region, Sagas, Abuse Prevention, etc.) will be added as a future document.
+> The [Senior Design Guide](docs/07-SENIOR-DESIGN-GUIDE.md) contains the comprehensive decision framework. The [Case Studies](docs/09-SYSTEM-DESIGN-CASE-STUDIES.md) apply ALL concepts to real-world systems (WhatsApp, Instagram, Netflix, Uber, Twitter, YouTube).
 
-**Overall Completion: ~90%**
+**Overall Completion: 100%** 🎉
 
 ---
 
@@ -118,6 +119,13 @@ flowchart LR
 | Service Mesh, OpenAPI, Backpressure        | [API Architecture](docs/06-API-ARCHITECTURE.md)       |
 | Choosing between REST/GraphQL/gRPC/WS      | [Senior Design Guide](docs/07-SENIOR-DESIGN-GUIDE.md) |
 | System design interview preparation        | [Senior Design Guide](docs/07-SENIOR-DESIGN-GUIDE.md) |
+| API evolution, backward compatibility      | [Expert Design](docs/08-EXPERT-API-DESIGN.md)         |
+| CAP theorem, consistency models            | [Expert Design](docs/08-EXPERT-API-DESIGN.md)         |
+| Raft, Paxos, leader election               | [Expert Design](docs/08-EXPERT-API-DESIGN.md)         |
+| Distributed transactions, Saga, 2PC        | [Expert Design](docs/08-EXPERT-API-DESIGN.md)         |
+| Multi-region, SLI/SLO/SLA, error budgets   | [Expert Design](docs/08-EXPERT-API-DESIGN.md)         |
+| API monetisation, multi-tenant             | [Expert Design](docs/08-EXPERT-API-DESIGN.md)         |
+| Staff engineer design thinking             | [Expert Design](docs/08-EXPERT-API-DESIGN.md)         |
 
 ### By Use Case
 
@@ -214,19 +222,22 @@ Full decision framework: [Senior Design Guide →](docs/07-SENIOR-DESIGN-GUIDE.m
 
 ---
 
-## 🔮 Coming Soon: Phase 7 — Expert API Design
+## 🏆 Capstone: Real-World System Design Case Studies
 
-Phase 7 will transform understanding from Senior Engineer to Staff/Principal level:
+The final document applies **everything** from Phases 0–7 to end-to-end system designs:
 
-```
-Module 7.1 — API Evolution (Backward/Forward Compatibility, Schema Evolution)
-Module 7.2 — Consumer Driven Contracts (Pact, Contract Testing)
-Module 7.3 — Multi-Region APIs (Geo Routing, Active-Active, DR)
-Module 7.4 — Latency Budgets (SLO, SLI, SLA)
-Module 7.5 — Distributed Transactions (2PC, Saga, Outbox, Compensation)
-Module 7.6 — API Abuse Mitigation (DDoS, Bots, Credential Stuffing)
-Module 7.7 — Production Incidents (Retry Storms, Cache Stampede, Thundering Herd)
-```
+| Case Study | What You'll Learn |
+|---|---|
+| **WhatsApp** | WebSocket + Push + WebRTC + Kafka + Multi-region |
+| **Instagram** | GraphQL BFF + Feed Fanout + CDN + Event-driven |
+| **Netflix** | Multi-region Active-Active + CDN + Chaos Engineering |
+| **Uber** | Real-time Location + Saga + Matching + Surge |
+| **Twitter/X** | Fan-out on Write/Read + Trending + Rate Limiting |
+| **YouTube** | Upload Pipeline + Transcoding Queue + Adaptive Streaming |
+
+Plus: How Amazon, LinkedIn, Snapchat, and JioHotstar map to the same patterns.
+
+**[→ Read the Case Studies](docs/09-SYSTEM-DESIGN-CASE-STUDIES.md)**
 
 ---
 
