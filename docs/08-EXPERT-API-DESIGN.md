@@ -6,24 +6,24 @@
 
 ## Quick Reference Card
 
-| Module | Topic | Key Concepts |
-|--------|-------|-------------|
-| 7.1 | API Evolution & Backward Compatibility | Breaking vs non-breaking changes, Postel's Law, deprecation strategy, schema evolution |
-| 7.2 | Consumer-Driven Contracts (CDC) & Pact | CDC flow, Pact framework, provider verification, CI/CD contract gates |
-| 7.3 | Multi-Region APIs & Global Architecture | Geo DNS, active-active vs active-passive, replication lag, RTO/RPO |
-| 7.4 | Latency Budgets, SLI, SLO, SLA & Error Budgets | P50/P95/P99, tail latency, burn rate, reliability hierarchy |
-| 7.5 | Distributed Transactions (2PC vs Saga vs Outbox) | 2PC, Saga (choreography vs orchestration), Outbox/Inbox patterns, idempotency |
-| 7.6 | API Abuse Prevention & Production Incidents | DDoS, retry storms, cache stampedes, thundering herd, credential stuffing |
-| 7.7 | Consensus & Coordination (Paxos, Raft, ZAB) | Leader election, distributed consensus, split-brain prevention |
-| 7.8 | API Observability & Distributed Tracing | OpenTelemetry, trace propagation, correlation IDs, structured logging |
-| 7.9 | Chaos Engineering & Resilience Testing | Fault injection, GameDay exercises, steady-state hypothesis |
-| 7.10 | Platform Thinking & API Governance | API standards, developer portals, internal platforms, governance at scale |
+| Module | Topic                                            | Key Concepts                                                                           |
+| ------ | ------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| 7.1    | API Evolution & Backward Compatibility           | Breaking vs non-breaking changes, Postel's Law, deprecation strategy, schema evolution |
+| 7.2    | Consumer-Driven Contracts (CDC) & Pact           | CDC flow, Pact framework, provider verification, CI/CD contract gates                  |
+| 7.3    | Multi-Region APIs & Global Architecture          | Geo DNS, active-active vs active-passive, replication lag, RTO/RPO                     |
+| 7.4    | Latency Budgets, SLI, SLO, SLA & Error Budgets   | P50/P95/P99, tail latency, burn rate, reliability hierarchy                            |
+| 7.5    | Distributed Transactions (2PC vs Saga vs Outbox) | 2PC, Saga (choreography vs orchestration), Outbox/Inbox patterns, idempotency          |
+| 7.6    | API Abuse Prevention & Production Incidents      | DDoS, retry storms, cache stampedes, thundering herd, credential stuffing              |
+| 7.7    | Consensus & Coordination (Paxos, Raft, ZAB)      | Leader election, distributed consensus, split-brain prevention                         |
+| 7.8    | API Observability & Distributed Tracing          | OpenTelemetry, trace propagation, correlation IDs, structured logging                  |
+| 7.9    | Chaos Engineering & Resilience Testing           | Fault injection, GameDay exercises, steady-state hypothesis                            |
+| 7.10   | Platform Thinking & API Governance               | API standards, developer portals, internal platforms, governance at scale              |
 
 ---
 
 ## Table of Contents
 
-### Part 1 — Modules 7.1–7.5 *(this document)*
+### Part 1 — Modules 7.1–7.5 _(this document)_
 
 - [7.1 — API Evolution & Backward Compatibility](#phase-71--api-evolution--backward-compatibility)
   - [1. The Biggest Myth in Software](#1-the-biggest-myth-in-software)
@@ -136,7 +136,7 @@
   - [Decision Framework](#decision-framework)
   - [Distributed Transactions Cheat Sheet](#distributed-transactions-cheat-sheet)
 
-### Part 2 — Modules 7.6–7.10 *(to be appended)*
+### Part 2 — Modules 7.6–7.10 _(to be appended)_
 
 - 7.6 — API Abuse Prevention & Production Incidents
 - 7.7 — Consensus & Coordination (Paxos, Raft, ZAB)
@@ -569,7 +569,7 @@ Example:
 
 ```json
 {
-  "username": "irfan",    // deprecated
+  "username": "irfan", // deprecated
   "displayName": "Irfan"
 }
 ```
@@ -1116,15 +1116,15 @@ Consumer says:
 ```json
 {
   "request": {
-      "method": "GET",
-      "path": "/users/123"
+    "method": "GET",
+    "path": "/users/123"
   },
   "response": {
-      "status": 200,
-      "body": {
-         "id": 123,
-         "name": "Irfan"
-      }
+    "status": 200,
+    "body": {
+      "id": 123,
+      "name": "Irfan"
+    }
   }
 }
 ```
@@ -2198,25 +2198,25 @@ Database <----Replication----> Database
 
 ### Active-Passive vs Active-Active
 
-| Aspect | Active-Passive | Active-Active |
-|--------|---------------|---------------|
-| Traffic | One serves traffic, one waits | Both serve traffic |
-| Pros | Simple | Fast, highly available |
-| Cons | Less utilisation | Data consistency harder |
+| Aspect   | Active-Passive                    | Active-Active                     |
+| -------- | --------------------------------- | --------------------------------- |
+| Traffic  | One serves traffic, one waits     | Both serve traffic                |
+| Pros     | Simple                            | Fast, highly available            |
+| Cons     | Less utilisation                  | Data consistency harder           |
 | Best For | Cost-sensitive, simpler workloads | Low-latency, global-scale systems |
 
 ### Multi-Region Cheat Sheet
 
-| Concept | Definition |
-|---------|-----------|
-| **Geo DNS** | Nearest region selection. |
-| **Global Load Balancer** | Latency-aware routing. |
-| **Replication** | Data copied between regions. |
-| **Replication Lag** | Delay before updates appear everywhere. |
-| **Active-Passive** | Primary + Backup. |
-| **Active-Active** | Multiple active regions. |
-| **RTO** | Maximum acceptable recovery time. |
-| **RPO** | Maximum acceptable data loss. |
+| Concept                  | Definition                              |
+| ------------------------ | --------------------------------------- |
+| **Geo DNS**              | Nearest region selection.               |
+| **Global Load Balancer** | Latency-aware routing.                  |
+| **Replication**          | Data copied between regions.            |
+| **Replication Lag**      | Delay before updates appear everywhere. |
+| **Active-Passive**       | Primary + Backup.                       |
+| **Active-Active**        | Multiple active regions.                |
+| **RTO**                  | Maximum acceptable recovery time.       |
+| **RPO**                  | Maximum acceptable data loss.           |
 
 ### Phase 7.3 Progress
 
@@ -2976,17 +2976,17 @@ user experience.
 
 ### Reliability Cheat Sheet
 
-| Concept | Definition | Example |
-|---------|-----------|---------|
-| **SLI** | Measurement | Latency, Availability, Error Rate |
-| **SLO** | Target | 99.9% availability |
-| **SLA** | Customer promise | Contractual uptime guarantee |
-| **P50** | Typical user | Median latency |
-| **P95** | Almost all users | 95th percentile latency |
-| **P99** | Slowest meaningful users | 99th percentile latency |
-| **Tail Latency** | Worst part of latency distribution | P95+ outliers |
-| **Error Budget** | Allowed failure amount | 0.1% of requests |
-| **Burn Rate** | How quickly error budget is consumed | 800/1000 in one day |
+| Concept          | Definition                           | Example                           |
+| ---------------- | ------------------------------------ | --------------------------------- |
+| **SLI**          | Measurement                          | Latency, Availability, Error Rate |
+| **SLO**          | Target                               | 99.9% availability                |
+| **SLA**          | Customer promise                     | Contractual uptime guarantee      |
+| **P50**          | Typical user                         | Median latency                    |
+| **P95**          | Almost all users                     | 95th percentile latency           |
+| **P99**          | Slowest meaningful users             | 99th percentile latency           |
+| **Tail Latency** | Worst part of latency distribution   | P95+ outliers                     |
+| **Error Budget** | Allowed failure amount               | 0.1% of requests                  |
+| **Burn Rate**    | How quickly error budget is consumed | 800/1000 in one day               |
 
 ### Phase 7.4 Progress
 
@@ -3753,14 +3753,14 @@ Compensations
 
 ### Distributed Transactions Cheat Sheet
 
-| Pattern | Description | Trade-off |
-|---------|------------|-----------|
-| **2PC** | Global transaction | Strong consistency, poor scalability |
-| **Saga** | Local transactions + compensations | Highly scalable, eventual consistency |
-| **Choreography** | Event-driven workflow | Loose coupling, hard to debug |
-| **Orchestration** | Central workflow controller | Easy to reason about, single coordinator |
-| **Outbox** | Reliable event publishing | Guaranteed delivery with DB transaction |
-| **Inbox** | Duplicate protection | Idempotent consumers |
+| Pattern           | Description                        | Trade-off                                |
+| ----------------- | ---------------------------------- | ---------------------------------------- |
+| **2PC**           | Global transaction                 | Strong consistency, poor scalability     |
+| **Saga**          | Local transactions + compensations | Highly scalable, eventual consistency    |
+| **Choreography**  | Event-driven workflow              | Loose coupling, hard to debug            |
+| **Orchestration** | Central workflow controller        | Easy to reason about, single coordinator |
+| **Outbox**        | Reliable event publishing          | Guaranteed delivery with DB transaction  |
+| **Inbox**         | Duplicate protection               | Idempotent consumers                     |
 
 ### Phase 7.5 Progress
 
@@ -4457,16 +4457,16 @@ People.
 
 ### Production Incident Cheat Sheet
 
-| Incident | Description |
-|----------|-------------|
-| **DDoS** | Too much traffic |
-| **Credential Stuffing** | Mass login attempts |
-| **Retry Storm** | Retries amplify outage |
-| **Cache Stampede** | Expired cache overwhelms DB |
-| **Thundering Herd** | Everyone retries simultaneously |
-| **Cascading Failure** | One failure spreads everywhere |
-| **Chaos Engineering** | Break things intentionally |
-| **Postmortem** | Learn from incidents |
+| Incident                | Description                     |
+| ----------------------- | ------------------------------- |
+| **DDoS**                | Too much traffic                |
+| **Credential Stuffing** | Mass login attempts             |
+| **Retry Storm**         | Retries amplify outage          |
+| **Cache Stampede**      | Expired cache overwhelms DB     |
+| **Thundering Herd**     | Everyone retries simultaneously |
+| **Cascading Failure**   | One failure spreads everywhere  |
+| **Chaos Engineering**   | Break things intentionally      |
+| **Postmortem**          | Learn from incidents            |
 
 ### Phase 7.6 Progress
 
@@ -4837,11 +4837,11 @@ All replicas agree.
 
 ### 13. Strong Consistency vs Eventual Consistency
 
-| Property | Strong Consistency | Eventual Consistency |
-|----------|-------------------|---------------------|
-| **Value** | Always latest value | Maybe stale, eventually correct |
-| **Pros** | Simple reasoning, correct data | Fast, highly available |
-| **Cons** | Higher latency, lower availability | Temporary inconsistency |
+| Property  | Strong Consistency                 | Eventual Consistency            |
+| --------- | ---------------------------------- | ------------------------------- |
+| **Value** | Always latest value                | Maybe stale, eventually correct |
+| **Pros**  | Simple reasoning, correct data     | Fast, highly available          |
+| **Cons**  | Higher latency, lower availability | Temporary inconsistency         |
 
 ### 14. Read-Your-Writes Consistency
 
@@ -4960,17 +4960,17 @@ Each may choose a different consistency model.
 
 ### CAP Cheat Sheet
 
-| Concept | Description |
-|---------|-------------|
-| **Consistency** | Latest data always visible |
-| **Availability** | Always return a response |
-| **Partition Tolerance** | Survive network failures |
-| **CP** | Correctness over uptime |
-| **AP** | Uptime over immediate correctness |
-| **Strong Consistency** | Always latest value |
-| **Eventual Consistency** | Maybe stale now, correct later |
-| **Read-Your-Writes** | You always see your own updates |
-| **Quorum** | Majority agreement |
+| Concept                  | Description                       |
+| ------------------------ | --------------------------------- |
+| **Consistency**          | Latest data always visible        |
+| **Availability**         | Always return a response          |
+| **Partition Tolerance**  | Survive network failures          |
+| **CP**                   | Correctness over uptime           |
+| **AP**                   | Uptime over immediate correctness |
+| **Strong Consistency**   | Always latest value               |
+| **Eventual Consistency** | Maybe stale now, correct later    |
+| **Read-Your-Writes**     | You always see your own updates   |
+| **Quorum**               | Majority agreement                |
 
 ### Phase 7.7 Progress
 
@@ -5476,13 +5476,13 @@ A process never learns a value was chosen unless it really was.
 
 ### 25. Paxos vs Raft
 
-| Topic | Paxos | Raft |
-|-------|-------|------|
-| **Age** | Older | Newer |
-| **Main reputation** | Mathematically elegant but hard to understand | Designed for understandability |
-| **Structure** | More abstract | Decomposed into leader election, log replication, safety |
-| **Practical systems** | Many variants exist | Used widely where clear leadership/log replication fits |
-| **Learning path** | Harder first | Easier first |
+| Topic                 | Paxos                                         | Raft                                                     |
+| --------------------- | --------------------------------------------- | -------------------------------------------------------- |
+| **Age**               | Older                                         | Newer                                                    |
+| **Main reputation**   | Mathematically elegant but hard to understand | Designed for understandability                           |
+| **Structure**         | More abstract                                 | Decomposed into leader election, log replication, safety |
+| **Practical systems** | Many variants exist                           | Used widely where clear leadership/log replication fits  |
+| **Learning path**     | Harder first                                  | Easier first                                             |
 
 ### 26. ZooKeeper and Zab
 
@@ -5654,17 +5654,17 @@ B becomes new Leader.
 
 ### 36. Cheat Sheet
 
-| Concept | Description |
-|---------|-------------|
-| **Consensus** | Nodes agree on one value or sequence |
-| **Leader Election** | Choose one coordinator |
-| **Quorum** | Majority required for decision |
-| **Raft** | Understandable consensus algorithm. Leader election + log replication + safety |
-| **Paxos** | Classic consensus algorithm. Powerful but harder to understand |
-| **Term / Epoch** | Leadership version number |
-| **Heartbeat** | Leader says: I am alive |
-| **Split Brain** | Two leaders at same time. Very dangerous |
-| **Replicated Log** | Same ordered commands on all nodes |
+| Concept             | Description                                                                    |
+| ------------------- | ------------------------------------------------------------------------------ |
+| **Consensus**       | Nodes agree on one value or sequence                                           |
+| **Leader Election** | Choose one coordinator                                                         |
+| **Quorum**          | Majority required for decision                                                 |
+| **Raft**            | Understandable consensus algorithm. Leader election + log replication + safety |
+| **Paxos**           | Classic consensus algorithm. Powerful but harder to understand                 |
+| **Term / Epoch**    | Leadership version number                                                      |
+| **Heartbeat**       | Leader says: I am alive                                                        |
+| **Split Brain**     | Two leaders at same time. Very dangerous                                       |
+| **Replicated Log**  | Same ordered commands on all nodes                                             |
 
 ### Phase 7.8 Progress
 
@@ -5950,8 +5950,8 @@ Example:
 
 ```json
 {
-   "tenantId": "skillsoft",
-   "userId": "123"
+  "tenantId": "skillsoft",
+  "userId": "123"
 }
 ```
 
@@ -6100,10 +6100,10 @@ HTTP 429 Too Many Requests
 
 Common interview question.
 
-| Concept | Controls | Example |
-|---------|----------|---------|
-| **Rate Limit** | Speed | 10 requests/sec |
-| **Quota** | Total usage | 100,000/month |
+| Concept        | Controls    | Example         |
+| -------------- | ----------- | --------------- |
+| **Rate Limit** | Speed       | 10 requests/sec |
+| **Quota**      | Total usage | 100,000/month   |
 
 Easy trick:
 
@@ -6293,15 +6293,15 @@ Databases
 
 ### Multi-Tenant Cheat Sheet
 
-| Concept | Description |
-|---------|-------------|
-| **Tenant** | Customer |
-| **Multi-Tenant** | Many customers share platform |
+| Concept              | Description                               |
+| -------------------- | ----------------------------------------- |
+| **Tenant**           | Customer                                  |
+| **Multi-Tenant**     | Many customers share platform             |
 | **Tenant Isolation** | Customers cannot access each other's data |
-| **Metering** | Measure usage |
-| **Quota** | Total allowed usage |
-| **Rate Limit** | How fast usage can happen |
-| **Billing** | Convert usage into revenue |
+| **Metering**         | Measure usage                             |
+| **Quota**            | Total allowed usage                       |
+| **Rate Limit**       | How fast usage can happen                 |
+| **Billing**          | Convert usage into revenue                |
 
 ### Phase 7.9 Progress
 

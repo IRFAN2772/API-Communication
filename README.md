@@ -39,17 +39,17 @@ graph TD
 
 ## 📊 Current Progress
 
-| Phase | Topic                   | Status         | Document                                                          |
-| ----- | ----------------------- | -------------- | ----------------------------------------------------------------- |
-| 0     | Fundamentals            | ✅ 100%        | [00-FUNDAMENTALS.md](docs/00-FUNDAMENTALS.md)                     |
-| 1     | REST APIs               | ✅ 100%        | [01-REST-APIS.md](docs/01-REST-APIS.md)                           |
-| 2     | GraphQL                 | ✅ 100%        | [02-GRAPHQL.md](docs/02-GRAPHQL.md)                               |
-| 3     | RPC & gRPC              | ✅ 100%        | [03-RPC-AND-GRPC.md](docs/03-RPC-AND-GRPC.md)                     |
-| 4     | Real-Time Communication | ✅ 100%        | [04-REALTIME-COMMUNICATION.md](docs/04-REALTIME-COMMUNICATION.md) |
-| 5     | Async APIs & Events     | ✅ ~95%        | [05-ASYNC-APIS.md](docs/05-ASYNC-APIS.md)                         |
-| 6     | API Architecture        | ✅ 100%        | [06-API-ARCHITECTURE.md](docs/06-API-ARCHITECTURE.md)             |
-| 7     | Expert API Design       | ✅ ~95%        | [08-EXPERT-API-DESIGN.md](docs/08-EXPERT-API-DESIGN.md)           |
-| 8     | System Design Case Studies | ✅ 100%     | [09-SYSTEM-DESIGN-CASE-STUDIES.md](docs/09-SYSTEM-DESIGN-CASE-STUDIES.md) |
+| Phase | Topic                      | Status  | Document                                                                  |
+| ----- | -------------------------- | ------- | ------------------------------------------------------------------------- |
+| 0     | Fundamentals               | ✅ 100% | [00-FUNDAMENTALS.md](docs/00-FUNDAMENTALS.md)                             |
+| 1     | REST APIs                  | ✅ 100% | [01-REST-APIS.md](docs/01-REST-APIS.md)                                   |
+| 2     | GraphQL                    | ✅ 100% | [02-GRAPHQL.md](docs/02-GRAPHQL.md)                                       |
+| 3     | RPC & gRPC                 | ✅ 100% | [03-RPC-AND-GRPC.md](docs/03-RPC-AND-GRPC.md)                             |
+| 4     | Real-Time Communication    | ✅ 100% | [04-REALTIME-COMMUNICATION.md](docs/04-REALTIME-COMMUNICATION.md)         |
+| 5     | Async APIs & Events        | ✅ ~95% | [05-ASYNC-APIS.md](docs/05-ASYNC-APIS.md)                                 |
+| 6     | API Architecture           | ✅ 100% | [06-API-ARCHITECTURE.md](docs/06-API-ARCHITECTURE.md)                     |
+| 7     | Expert API Design          | ✅ ~95% | [08-EXPERT-API-DESIGN.md](docs/08-EXPERT-API-DESIGN.md)                   |
+| 8     | System Design Case Studies | ✅ 100% | [09-SYSTEM-DESIGN-CASE-STUDIES.md](docs/09-SYSTEM-DESIGN-CASE-STUDIES.md) |
 
 > The [Senior Design Guide](docs/07-SENIOR-DESIGN-GUIDE.md) contains the comprehensive decision framework. The [Case Studies](docs/09-SYSTEM-DESIGN-CASE-STUDIES.md) apply ALL concepts to real-world systems (WhatsApp, Instagram, Netflix, Uber, Twitter, YouTube).
 
@@ -226,14 +226,14 @@ Full decision framework: [Senior Design Guide →](docs/07-SENIOR-DESIGN-GUIDE.m
 
 The final document applies **everything** from Phases 0–7 to end-to-end system designs:
 
-| Case Study | What You'll Learn |
-|---|---|
-| **WhatsApp** | WebSocket + Push + WebRTC + Kafka + Multi-region |
-| **Instagram** | GraphQL BFF + Feed Fanout + CDN + Event-driven |
-| **Netflix** | Multi-region Active-Active + CDN + Chaos Engineering |
-| **Uber** | Real-time Location + Saga + Matching + Surge |
-| **Twitter/X** | Fan-out on Write/Read + Trending + Rate Limiting |
-| **YouTube** | Upload Pipeline + Transcoding Queue + Adaptive Streaming |
+| Case Study    | What You'll Learn                                        |
+| ------------- | -------------------------------------------------------- |
+| **WhatsApp**  | WebSocket + Push + WebRTC + Kafka + Multi-region         |
+| **Instagram** | GraphQL BFF + Feed Fanout + CDN + Event-driven           |
+| **Netflix**   | Multi-region Active-Active + CDN + Chaos Engineering     |
+| **Uber**      | Real-time Location + Saga + Matching + Surge             |
+| **Twitter/X** | Fan-out on Write/Read + Trending + Rate Limiting         |
+| **YouTube**   | Upload Pipeline + Transcoding Queue + Adaptive Streaming |
 
 Plus: How Amazon, LinkedIn, Snapchat, and JioHotstar map to the same patterns.
 
