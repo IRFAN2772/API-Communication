@@ -2798,9 +2798,9 @@ graph TD
     end
 
     subgraph "East-West (Service Mesh)"
-        SvcA[Service A] <-->|"E↔W"| SvcB[Service B]
-        SvcB <-->|"E↔W"| SvcC[Service C]
-        SvcA <-->|"E↔W"| SvcC
+        SvcA[Service A] ---|"E-W"| SvcB[Service B]
+        SvcB ---|"E-W"| SvcC[Service C]
+        SvcA ---|"E-W"| SvcC
     end
 
     Services --> SvcA

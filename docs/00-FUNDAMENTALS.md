@@ -988,7 +988,7 @@ graph LR
         S3 -->|1 res| C3
     end
     subgraph Bidirectional
-        C4[Client] <-->|N msgs| S4[Server]
+        C4[Client] ---|N msgs| S4[Server]
     end
 ```
 

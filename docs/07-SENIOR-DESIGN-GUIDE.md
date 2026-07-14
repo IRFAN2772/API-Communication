@@ -2685,7 +2685,7 @@ graph TB
 
     subgraph Edge["Edge Layer"]
         GLB[Global Load Balancer]
-        GW["API Gateway<br>Auth | TLS | Rate Limit | WAF"]
+        GW["API Gateway<br>Auth · TLS · Rate Limit · WAF"]
     end
 
     subgraph APIs["API Layer"]
@@ -2693,7 +2693,7 @@ graph TB
         GQL[GraphQL BFF]
     end
 
-    subgraph Mesh["Service Mesh<br>mTLS | Discovery | Retries | Tracing"]
+    subgraph Mesh["Service Mesh<br>mTLS · Discovery · Retries · Tracing"]
         UserSvc[User Service]
         OrderSvc[Order Service]
         PaySvc[Payment Service]
@@ -2711,12 +2711,12 @@ graph TB
         Analytics[Analytics]
     end
 
-    subgraph Realtime["Real-time Layer<br>Presence Redis | Pub/Sub | Reconnect | Fanout"]
+    subgraph Realtime["Real-time Layer<br>Presence Redis · Pub/Sub · Reconnect · Fanout"]
         WSGateway[WebSocket Gateway]
         SSEGateway[SSE Gateway]
     end
 
-    subgraph Observability["Observability<br>Logs | Metrics | Traces | Alerts | Dashboards"]
+    subgraph Observability["Observability<br>Logs · Metrics · Traces · Alerts · Dashboards"]
     end
 
     Web & Mobile & Partners & IoT --> GLB

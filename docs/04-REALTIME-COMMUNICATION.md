@@ -677,7 +677,7 @@ graph LR
 
     subgraph WebSocket
         direction TB
-        WC[Client] <-->|"Full duplex"| WS[Server]
+        WC[Client] ---|"Full duplex"| WS[Server]
     end
 ```
 
@@ -2973,7 +2973,8 @@ sequenceDiagram
 
     Note over Alice, Bob: ICE Negotiation & Connection
 
-    Alice<-->Bob: P2P Media Stream (Audio/Video)
+    Alice->>Bob: P2P Media Stream (Audio/Video)
+    Bob->>Alice: P2P Media Stream (Audio/Video)
     Note over Alice, Bob: Falls back to TURN if P2P fails
 ```
 

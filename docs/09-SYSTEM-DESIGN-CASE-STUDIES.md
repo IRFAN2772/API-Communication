@@ -244,11 +244,12 @@ sequenceDiagram
     SIG->>A: Forward ICE candidates + SDP answer
 
     Note over A,B: ICE connectivity checks
-    A<-->B: P2P media stream (audio/video)
+    A->>B: P2P media stream (audio/video)
+    B->>A: P2P media stream (audio/video)
 
-    Note over A,B: If P2P fails → TURN relay
-    A-->STUN: Relay via TURN
-    STUN-->B: Relay via TURN
+    Note over A,B: If P2P fails, use TURN relay
+    A->>STUN: Relay via TURN
+    STUN->>B: Relay via TURN
 ```
 
 ---
@@ -642,7 +643,7 @@ graph TB
     TV & Mobile & Web -->|viewing events| KAFKA_A
     KAFKA_A --> ML_A --> RECDB_A
     REC_A --> RECDB_A
-    CASS_A <-->|async replication| CASS_B
+    CASS_A ---|async replication| CASS_B
 ```
 
 ### API Communication Choices

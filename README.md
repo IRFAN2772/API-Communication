@@ -2,6 +2,12 @@
 
 > **A definitive guide to API communication** — from first principles to production-grade distributed system design. Built for developers who want to truly understand how modern systems talk to each other.
 
+<p align="center">
+  <a href="https://irfan2772.github.io/API-Communication/"><strong>📘 Read on the Documentation Site →</strong></a>
+</p>
+
+> **Prefer a polished reading experience?** Visit the [documentation site](https://irfan2772.github.io/API-Communication/) for a clean, searchable, dark-themed interface with rendered diagrams and sidebar navigation. Or continue reading right here on GitHub — all the same content.
+
 ---
 
 ## 📖 What This Repository Is

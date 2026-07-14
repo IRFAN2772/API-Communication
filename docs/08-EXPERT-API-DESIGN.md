@@ -1898,9 +1898,9 @@ graph TD
     EUAPI --- EUDB[("Database")]
     INAPI --- INDB[("Database")]
 
-    USDB <-->|"Replication"| EUDB
-    EUDB <-->|"Replication"| INDB
-    USDB <-->|"Replication"| INDB
+    USDB ---|"Replication"| EUDB
+    EUDB ---|"Replication"| INDB
+    USDB ---|"Replication"| INDB
 
     style GLB fill:#FF9800,color:#fff
     style US fill:#2196F3,color:#fff
