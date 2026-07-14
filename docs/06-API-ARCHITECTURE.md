@@ -6,14 +6,14 @@
 
 > **Quick Reference Card**
 >
-> | Concept | Purpose | Key Tools |
-> |---------|---------|-----------|
-> | API Gateway | Single entry point, cross-cutting concerns | NGINX, Kong, AWS API GW, Envoy |
-> | BFF | Frontend-specific backend layer | Node.js, GraphQL, custom services |
-> | Load Balancer | Distribute traffic across servers | AWS ALB/NLB, NGINX, HAProxy |
-> | Service Mesh | Service-to-service communication | Istio, Envoy, Linkerd, Consul |
-> | OpenAPI/Swagger | API contract & documentation | Swagger UI, Codegen, Editor |
-> | Backpressure | Protect overloaded consumers | Kafka lag, reactive streams, bulkheads |
+> | Concept         | Purpose                                    | Key Tools                              |
+> | --------------- | ------------------------------------------ | -------------------------------------- |
+> | API Gateway     | Single entry point, cross-cutting concerns | NGINX, Kong, AWS API GW, Envoy         |
+> | BFF             | Frontend-specific backend layer            | Node.js, GraphQL, custom services      |
+> | Load Balancer   | Distribute traffic across servers          | AWS ALB/NLB, NGINX, HAProxy            |
+> | Service Mesh    | Service-to-service communication           | Istio, Envoy, Linkerd, Consul          |
+> | OpenAPI/Swagger | API contract & documentation               | Swagger UI, Codegen, Editor            |
+> | Backpressure    | Protect overloaded consumers               | Kafka lag, reactive streams, bulkheads |
 
 ---
 
@@ -1222,12 +1222,12 @@ BFF adapts results.
 
 This interview question appears frequently.
 
-| Aspect | API Gateway | BFF |
-|--------|-------------|-----|
-| **Purpose** | Cross-cutting concerns | Frontend-specific needs |
-| **Focus** | Security, Routing, Traffic | User Experience, Payload Shape, Screen Data |
-| **Examples** | Routing, Authentication, Rate Limiting, Caching, Logging | Aggregation, Transformation, UI optimised payloads |
-| **Memory Trick** | Platform concerns | Frontend concerns |
+| Aspect           | API Gateway                                              | BFF                                                |
+| ---------------- | -------------------------------------------------------- | -------------------------------------------------- |
+| **Purpose**      | Cross-cutting concerns                                   | Frontend-specific needs                            |
+| **Focus**        | Security, Routing, Traffic                               | User Experience, Payload Shape, Screen Data        |
+| **Examples**     | Routing, Authentication, Rate Limiting, Caching, Logging | Aggregation, Transformation, UI optimised payloads |
+| **Memory Trick** | Platform concerns                                        | Frontend concerns                                  |
 
 Visual Comparison:
 
@@ -1764,14 +1764,14 @@ Envoy
 
 #### L4 vs L7 Comparison
 
-| Feature | Layer 4 | Layer 7 |
-|---------|---------|---------|
-| **OSI Layer** | Transport | Application |
-| **Protocols** | TCP/UDP | HTTP/HTTPS |
-| **Awareness** | IP + Port | URLs, Headers, Cookies |
-| **Speed** | Fast | Slightly slower |
-| **Routing** | Simple forwarding | Content-based routing |
-| **Examples** | AWS NLB, HAProxy TCP | NGINX, AWS ALB, Envoy |
+| Feature       | Layer 4              | Layer 7                |
+| ------------- | -------------------- | ---------------------- |
+| **OSI Layer** | Transport            | Application            |
+| **Protocols** | TCP/UDP              | HTTP/HTTPS             |
+| **Awareness** | IP + Port            | URLs, Headers, Cookies |
+| **Speed**     | Fast                 | Slightly slower        |
+| **Routing**   | Simple forwarding    | Content-based routing  |
+| **Examples**  | AWS NLB, HAProxy TCP | NGINX, AWS ALB, Envoy  |
 
 ### 10. Load Balancing Algorithms
 
@@ -2774,12 +2774,12 @@ All networking concerns centralized.
 
 Very common interview question.
 
-| Aspect | API Gateway | Service Mesh |
-|--------|-------------|--------------|
-| **Manages** | External traffic | Internal traffic |
-| **Direction** | Client → Backend | Service → Service |
+| Aspect               | API Gateway                                   | Service Mesh                                             |
+| -------------------- | --------------------------------------------- | -------------------------------------------------------- |
+| **Manages**          | External traffic                              | Internal traffic                                         |
+| **Direction**        | Client → Backend                              | Service → Service                                        |
 | **Responsibilities** | Auth, Rate Limiting, Routing, API Aggregation | mTLS, Retries, Tracing, Load Balancing, Circuit Breakers |
-| **Traffic Type** | North-South | East-West |
+| **Traffic Type**     | North-South                                   | East-West                                                |
 
 Easy memory trick:
 
@@ -3074,7 +3074,7 @@ paths:
     get:
       summary: Get Users
       responses:
-        '200':
+        "200":
           description: Success
 ```
 
@@ -3781,13 +3781,13 @@ Service collapses.
 
 Extremely important interview question.
 
-| Aspect | Rate Limiting | Backpressure |
-|--------|---------------|--------------|
-| **Controlled by** | System Owner | System overload |
-| **Purpose** | Abuse prevention | Protect overloaded system |
-| **Trigger** | Policy (always enforced) | Emergency (triggered by load) |
-| **Example** | 100 requests/minute per user | Consumer signals producer to slow down |
-| **Memory Trick** | Policy | Emergency Response |
+| Aspect            | Rate Limiting                | Backpressure                           |
+| ----------------- | ---------------------------- | -------------------------------------- |
+| **Controlled by** | System Owner                 | System overload                        |
+| **Purpose**       | Abuse prevention             | Protect overloaded system              |
+| **Trigger**       | Policy (always enforced)     | Emergency (triggered by load)          |
+| **Example**       | 100 requests/minute per user | Consumer signals producer to slow down |
+| **Memory Trick**  | Policy                       | Emergency Response                     |
 
 ### 11. What Happens Under Overload?
 
@@ -4159,14 +4159,14 @@ When overload happens:
 
 ### Cheat Sheet
 
-| Concept | Definition |
-|---------|------------|
-| **Backpressure** | Slow producers when consumers overloaded |
-| **Flow Control** | Control rate of data transfer |
-| **Rate Limiting** | Restrict usage by policy |
-| **Load Shedding** | Drop work intentionally |
-| **Bulkhead** | Isolate failures |
-| **Consumer Lag** | How far consumer is behind |
+| Concept           | Definition                               |
+| ----------------- | ---------------------------------------- |
+| **Backpressure**  | Slow producers when consumers overloaded |
+| **Flow Control**  | Control rate of data transfer            |
+| **Rate Limiting** | Restrict usage by policy                 |
+| **Load Shedding** | Drop work intentionally                  |
+| **Bulkhead**      | Isolate failures                         |
+| **Consumer Lag**  | How far consumer is behind               |
 
 ---
 

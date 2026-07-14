@@ -6,18 +6,19 @@
 
 ## Quick Reference Card
 
-| Method | Direction | Best For | Protocol |
-|---|---|---|---|
-| **Polling** | Client → Server (repeated) | Simple status checks | HTTP |
-| **Long Polling** | Client waits → Server responds | Basic near-real-time | HTTP |
-| **SSE** | Server → Client (stream) | One-way live updates | HTTP |
-| **WebSocket** | Client ↔ Server (persistent) | Real-time two-way apps | WS/WSS |
-| **Webhook** | External → Your system | Event notification | HTTP POST |
-| **Queue/Events** | Async background | Decoupling services | Kafka/SQS/etc. |
-| **Push Notification** | Server → Device (via FCM/APNS) | Wake inactive apps | Platform-specific |
-| **WebRTC** | Peer ↔ Peer (direct) | Audio/Video/Screen share | UDP/SRTP |
+| Method                | Direction                      | Best For                 | Protocol          |
+| --------------------- | ------------------------------ | ------------------------ | ----------------- |
+| **Polling**           | Client → Server (repeated)     | Simple status checks     | HTTP              |
+| **Long Polling**      | Client waits → Server responds | Basic near-real-time     | HTTP              |
+| **SSE**               | Server → Client (stream)       | One-way live updates     | HTTP              |
+| **WebSocket**         | Client ↔ Server (persistent)   | Real-time two-way apps   | WS/WSS            |
+| **Webhook**           | External → Your system         | Event notification       | HTTP POST         |
+| **Queue/Events**      | Async background               | Decoupling services      | Kafka/SQS/etc.    |
+| **Push Notification** | Server → Device (via FCM/APNS) | Wake inactive apps       | Platform-specific |
+| **WebRTC**            | Peer ↔ Peer (direct)           | Audio/Video/Screen share | UDP/SRTP          |
 
 > **One-Line Memory Map:**
+>
 > - **WebSocket** = Real-time two-way communication for active clients
 > - **Push Notification** = Wake up inactive clients
 > - **WebRTC** = Direct peer-to-peer audio/video/screen sharing
@@ -27,6 +28,7 @@
 ## Table of Contents
 
 ### Part 1 — Real-Time Patterns: Polling, Long Polling, SSE, WebSocket
+
 - [1. The Big Problem](#1-the-big-problem)
 - [2. Polling](#2-polling)
 - [3. Long Polling](#3-long-polling)
@@ -36,10 +38,12 @@
 - [7. WebSocket Failure Modes](#7-websocket-failure-modes)
 
 ### Part 2 — Webhooks
+
 - [8. Webhooks](#8-webhooks)
 - [9. Webhook Problems](#9-webhook-problems)
 
 ### Part 3 — Message Queues, Events & Sync vs Async
+
 - [10. Message Queues and Events](#10-message-queues-and-events)
 - [11. Queue Analogy](#11-queue-analogy)
 - [12. Queue Architecture](#12-queue-architecture)
@@ -56,6 +60,7 @@
 - [23. You Have Completed the API Communication Methods Topic](#23-you-have-completed-the-api-communication-methods-topic)
 
 ### Part 4 — Push Notifications (Phase 4.1)
+
 - [4.1.1. The Core Problem](#411-the-core-problem)
 - [4.1.2. Why Push Notifications Exist](#412-why-push-notifications-exist)
 - [4.1.3. Life Before Push Notifications](#413-life-before-push-notifications)
@@ -77,6 +82,7 @@
 - [4.1.19. Push Notification vs WebSocket](#4119-push-notification-vs-websocket)
 
 ### Part 5 — WebRTC (Phase 4.2)
+
 - [4.2.1. The Problem WebRTC Solves](#421-the-problem-webrtc-solves)
 - [4.2.2. What is Peer-to-Peer (P2P)?](#422-what-is-peer-to-peer-p2p)
 - [4.2.3. What is WebRTC?](#423-what-is-webrtc)
@@ -1186,18 +1192,18 @@ Analytics should not slow down redirect.
 
 ## 19. Comparison Table
 
-| Method | Direction | Best for | Example |
-|---|---|---|---|
-| **Polling** | Client repeatedly asks | Simple status checks | Report status |
-| **Long Polling** | Client waits for update | Basic near-real-time | Notifications |
-| **SSE** | Server pushes to client | One-way live updates | Live dashboard |
-| **WebSocket** | Two-way persistent | Real-time apps | Chat |
-| **Webhook** | External system calls you | Event notification | Payment success |
-| **Queue** | Async background work | Decoupling | Send email |
-| **Event Stream** | Many consumers read events | Analytics/events | Course completed |
-| **REST** | Request/response | Public CRUD APIs | Products/users |
-| **GraphQL** | Client-shaped query | Frontend aggregation | Profile/feed |
-| **gRPC** | Typed service calls | Internal microservices | Payment validation |
+| Method           | Direction                  | Best for               | Example            |
+| ---------------- | -------------------------- | ---------------------- | ------------------ |
+| **Polling**      | Client repeatedly asks     | Simple status checks   | Report status      |
+| **Long Polling** | Client waits for update    | Basic near-real-time   | Notifications      |
+| **SSE**          | Server pushes to client    | One-way live updates   | Live dashboard     |
+| **WebSocket**    | Two-way persistent         | Real-time apps         | Chat               |
+| **Webhook**      | External system calls you  | Event notification     | Payment success    |
+| **Queue**        | Async background work      | Decoupling             | Send email         |
+| **Event Stream** | Many consumers read events | Analytics/events       | Course completed   |
+| **REST**         | Request/response           | Public CRUD APIs       | Products/users     |
+| **GraphQL**      | Client-shaped query        | Frontend aggregation   | Profile/feed       |
+| **gRPC**         | Typed service calls        | Internal microservices | Payment validation |
 
 ---
 
@@ -2257,14 +2263,14 @@ Delivery Update
 
 ### Comparison
 
-| Feature | WebSocket | Push Notification |
-|---|---|---|
-| App active | Yes | Not required |
-| Real-time | Excellent | Good |
-| Two-way | Yes | No |
-| Can wake phone | No | Yes |
-| Chat messages | Yes | Assist only |
-| Offline users | No | Yes |
+| Feature        | WebSocket | Push Notification |
+| -------------- | --------- | ----------------- |
+| App active     | Yes       | Not required      |
+| Real-time      | Excellent | Good              |
+| Two-way        | Yes       | No                |
+| Can wake phone | No        | Yes               |
+| Chat messages  | Yes       | Assist only       |
+| Offline users  | No        | Yes               |
 
 ### Golden Rule
 
@@ -2829,12 +2835,12 @@ because traffic travels through TURN.
 
 Easy interview table.
 
-| Feature | STUN | TURN |
-|---|---|---|
-| Purpose | Discover public IP | Relay traffic |
-| Cost | Cheap | Expensive |
-| Preference | Preferred | Fallback |
-| Connection type | Direct connection | Indirect connection |
+| Feature         | STUN               | TURN                |
+| --------------- | ------------------ | ------------------- |
+| Purpose         | Discover public IP | Relay traffic       |
+| Cost            | Cheap              | Expensive           |
+| Preference      | Preferred          | Fallback            |
+| Connection type | Direct connection  | Indirect connection |
 
 Rule:
 
@@ -3217,16 +3223,16 @@ Forward Error Correction
 
 Important summary.
 
-| Feature | WebSocket | WebRTC |
-|---|---|---|
-| Chat | ✅ | Possible |
-| Audio Calls | ❌ | ✅ |
-| Video Calls | ❌ | ✅ |
-| P2P | ❌ | ✅ |
-| Screen Share | ❌ | ✅ |
-| Media Optimization | ❌ | ✅ |
-| Notifications | ✅ | ❌ |
-| Typing Indicator | ✅ | Possible |
+| Feature            | WebSocket | WebRTC   |
+| ------------------ | --------- | -------- |
+| Chat               | ✅        | Possible |
+| Audio Calls        | ❌        | ✅       |
+| Video Calls        | ❌        | ✅       |
+| P2P                | ❌        | ✅       |
+| Screen Share       | ❌        | ✅       |
+| Media Optimization | ❌        | ✅       |
+| Notifications      | ✅        | ❌       |
+| Typing Indicator   | ✅        | Possible |
 
 ---
 

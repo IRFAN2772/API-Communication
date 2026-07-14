@@ -18,14 +18,14 @@ graph LR
     Backend --> DB[(Database)]
 ```
 
-| Term | Meaning |
-|------|---------|
-| Client | The system that asks for something |
-| Server | The system that receives requests and sends responses |
-| Request | A message from client to server |
-| Response | A message from server to client |
-| Protocol | A rulebook for communication (HTTP, TCP, WebSocket) |
-| API | A controlled doorway into a system |
+| Term     | Meaning                                               |
+| -------- | ----------------------------------------------------- |
+| Client   | The system that asks for something                    |
+| Server   | The system that receives requests and sends responses |
+| Request  | A message from client to server                       |
+| Response | A message from server to client                       |
+| Protocol | A rulebook for communication (HTTP, TCP, WebSocket)   |
+| API      | A controlled doorway into a system                    |
 
 ---
 
@@ -70,6 +70,7 @@ We will learn this in phases, because if we try to learn REST, RPC, GraphQL, Web
 **Phase 0 — Fundamentals**
 
 You will learn:
+
 - What is an API?
 - What is a client?
 - What is a server?
@@ -82,6 +83,7 @@ You will learn:
 **Phase 1 — REST APIs**
 
 You will learn:
+
 - Resources
 - URLs
 - HTTP methods
@@ -99,6 +101,7 @@ You will learn:
 **Phase 2 — RPC and gRPC**
 
 You will learn:
+
 - What is RPC?
 - Why RPC feels like calling a function
 - Why remote calls are dangerous
@@ -116,6 +119,7 @@ The official gRPC documentation describes gRPC as a model where a client can dir
 **Phase 3 — GraphQL**
 
 You will learn:
+
 - Why frontend teams wanted GraphQL
 - Schema
 - Query
@@ -133,6 +137,7 @@ The official GraphQL site describes GraphQL as an open-source query language for
 **Phase 4 — Real-time communication**
 
 You will learn:
+
 - Polling
 - Long polling
 - Server-Sent Events
@@ -144,6 +149,7 @@ You will learn:
 **Phase 5 — Asynchronous APIs**
 
 You will learn:
+
 - Message queues
 - Kafka
 - RabbitMQ
@@ -156,6 +162,7 @@ You will learn:
 **Phase 6 — API architecture in distributed systems**
 
 You will learn:
+
 - API Gateway
 - Backend-for-Frontend
 - Service mesh
@@ -175,6 +182,7 @@ The OpenAPI Specification defines a standard, language-agnostic interface for HT
 **Phase 7 — Expert-level API design**
 
 You will learn:
+
 - API evolution
 - Backward compatibility
 - Schema evolution
@@ -229,7 +237,7 @@ sequenceDiagram
     participant You as You (Client)
     participant Waiter as Waiter (API)
     participant Kitchen as Kitchen (Server)
-    
+
     You->>Waiter: Place order (Request)
     Waiter->>Kitchen: Forward order
     Kitchen->>Kitchen: Prepare food
@@ -244,6 +252,7 @@ sequenceDiagram
 Imagine you are building an e-commerce app.
 
 You need:
+
 - User login
 - Product search
 - Cart
@@ -255,6 +264,7 @@ You need:
 The frontend/mobile app should not directly access the database.
 
 **Bad design:**
+
 ```
 Mobile App ---> Database
 Web App -----> Database
@@ -264,6 +274,7 @@ Admin App ---> Database
 Why is this bad?
 
 Because:
+
 - Database credentials may leak.
 - Every app needs to understand database structure.
 - Changing the database breaks all clients.
@@ -302,6 +313,7 @@ Let's build the dictionary first.
 The system that asks for something.
 
 Examples:
+
 - Browser
 - React app
 - iOS app
@@ -315,6 +327,7 @@ Examples:
 The system that receives the request and sends a response.
 
 Examples:
+
 - Node.js backend
 - Java Spring service
 - Python FastAPI service
@@ -325,9 +338,11 @@ Examples:
 A message from client to server.
 
 Example:
+
 ```http
 GET /users/123
 ```
+
 Meaning: "Please give me user 123."
 
 ### Response
@@ -335,12 +350,14 @@ Meaning: "Please give me user 123."
 A message from server to client.
 
 Example:
+
 ```json
 {
   "id": 123,
   "name": "Irfan"
 }
 ```
+
 Meaning: "Here is the user data."
 
 ### Protocol
@@ -348,6 +365,7 @@ Meaning: "Here is the user data."
 A protocol is a rulebook for communication.
 
 Examples:
+
 - HTTP
 - HTTPS
 - TCP
@@ -365,6 +383,7 @@ If API is the "conversation", protocol is the "language grammar".
 API communication methods are different styles of talking between systems.
 
 **Main styles:**
+
 1. REST
 2. RPC
 3. gRPC
@@ -413,15 +432,15 @@ mindmap
 
 Let's compare them using everyday examples.
 
-| Method | Real-world analogy | Best for |
-|--------|-------------------|----------|
-| REST | Ordering from a menu | Public CRUD APIs |
-| RPC | Calling a person and asking them to do a task | Internal service calls |
-| gRPC | High-speed office intercom with strict format | Microservices |
-| GraphQL | Buffet where you pick exactly what you want | Frontend/mobile apps |
-| WebSocket | Phone call that stays connected | Chat, live games, trading |
-| Webhook | Doorbell notification | Payment success, GitHub events |
-| Queue | Letterbox/task queue | Background jobs, async processing |
+| Method    | Real-world analogy                            | Best for                          |
+| --------- | --------------------------------------------- | --------------------------------- |
+| REST      | Ordering from a menu                          | Public CRUD APIs                  |
+| RPC       | Calling a person and asking them to do a task | Internal service calls            |
+| gRPC      | High-speed office intercom with strict format | Microservices                     |
+| GraphQL   | Buffet where you pick exactly what you want   | Frontend/mobile apps              |
+| WebSocket | Phone call that stays connected               | Chat, live games, trading         |
+| Webhook   | Doorbell notification                         | Payment success, GitHub events    |
+| Queue     | Letterbox/task queue                          | Background jobs, async processing |
 
 ---
 
@@ -450,6 +469,7 @@ Before choosing REST, GraphQL, RPC, or WebSocket, a senior engineer asks require
 These are about what the API must do.
 
 Example:
+
 - Create user
 - Login user
 - Fetch user profile
@@ -464,6 +484,7 @@ Example:
 These are about how well the API must work.
 
 Example:
+
 - Low latency
 - High availability
 - High throughput
@@ -506,6 +527,7 @@ Let's take a small example:
 Already, we can see one API style may not be enough.
 
 **Possible choices:**
+
 ```
 REST     → Course CRUD, admin APIs
 GraphQL  → Mobile/web course detail pages
@@ -538,6 +560,7 @@ React / Mobile App
 ```
 
 Example APIs:
+
 ```http
 GET  /courses
 GET  /courses/123
@@ -573,6 +596,7 @@ REST is easy to understand, debug, test with Postman/cURL, document with OpenAPI
 ```
 
 **Pros:**
+
 - Easy to build
 - Easy to debug
 - Easy to deploy
@@ -580,6 +604,7 @@ REST is easy to understand, debug, test with Postman/cURL, document with OpenAPI
 - Good for small teams
 
 **Cons:**
+
 - App becomes large
 - One deployment affects everything
 - Scaling one feature means scaling whole app
@@ -607,6 +632,7 @@ Now services must talk to each other.
 **Design thinking:**
 
 REST is still possible:
+
 ```
 Course Service    ---> GET /users/123
 Progress Service  ---> GET /courses/123
@@ -614,6 +640,7 @@ Recommendation    ---> GET /progress/user/123
 ```
 
 But internal service calls may need:
+
 - Lower latency
 - Strong schema
 - Code generation
@@ -667,6 +694,7 @@ graph TD
 ### Stage 3 — Add GraphQL for frontend flexibility
 
 Suppose the course detail page needs:
+
 - Course title
 - Course author
 - Progress
@@ -676,6 +704,7 @@ Suppose the course detail page needs:
 - Similar courses
 
 With REST, frontend might call:
+
 ```http
 GET /courses/123
 GET /courses/123/author
@@ -688,6 +717,7 @@ GET /recommendations?courseId=123
 That is many calls.
 
 GraphQL lets frontend ask:
+
 ```graphql
 query {
   course(id: "123") {
@@ -750,6 +780,7 @@ graph TD
 Some work should not happen during the user request.
 
 Example: When user completes a course:
+
 1. Save progress immediately.
 2. Update achievement badge.
 3. Send notification.
@@ -788,6 +819,7 @@ Consumer   Consumer      Consumer        Consumer
 ```
 
 Architecture:
+
 ```
 +-------------+
 | API Service |
@@ -817,6 +849,7 @@ REST is an architectural style for web APIs.
 REST thinks in **resources**.
 
 Examples:
+
 - User
 - Course
 - Order
@@ -838,6 +871,7 @@ DELETE /courses/123   → delete course
 Roy Fielding's REST dissertation describes REST as an architectural style for distributed hypermedia systems and explains constraints such as client-server, statelessness, cache, uniform interface, layered system, and optional code-on-demand. [roy.gbiv.com]
 
 **When REST is best:**
+
 - Public APIs
 - CRUD systems
 - Simple client-server apps
@@ -847,6 +881,7 @@ Roy Fielding's REST dissertation describes REST as an architectural style for di
 - Browser-friendly APIs
 
 **REST strengths:**
+
 - Simple
 - Human-readable
 - Works everywhere
@@ -856,6 +891,7 @@ Roy Fielding's REST dissertation describes REST as an architectural style for di
 - Easy to document using OpenAPI
 
 **REST weaknesses:**
+
 - Can over-fetch data
 - Can under-fetch data
 - Multiple round trips for complex screens
@@ -872,6 +908,7 @@ RPC means Remote Procedure Call.
 Instead of thinking in resources, RPC thinks in **actions/functions**.
 
 Example:
+
 ```
 getUser()
 createOrder()
@@ -881,6 +918,7 @@ calculateRecommendation()
 ```
 
 REST style:
+
 ```http
 GET  /users/123
 POST /orders
@@ -888,6 +926,7 @@ POST /payments
 ```
 
 RPC style:
+
 ```http
 POST /GetUser
 POST /CreateOrder
@@ -895,6 +934,7 @@ POST /ChargePayment
 ```
 
 Or:
+
 ```protobuf
 service UserService {
   rpc GetUser(GetUserRequest) returns (UserResponse);
@@ -905,19 +945,20 @@ service UserService {
 
 A remote function call is **not** the same as a local function call.
 
-| Local call | Remote call |
-|------------|-------------|
-| Fast | Can timeout |
-| Same memory | Can fail |
-| Usually reliable | Can be slow |
-| No network | Can be retried accidentally |
-| | Can duplicate side effects |
-| | Can cross datacentres |
-| | Can fail halfway |
+| Local call       | Remote call                 |
+| ---------------- | --------------------------- |
+| Fast             | Can timeout                 |
+| Same memory      | Can fail                    |
+| Usually reliable | Can be slow                 |
+| No network       | Can be retried accidentally |
+|                  | Can duplicate side effects  |
+|                  | Can cross datacentres       |
+|                  | Can fail halfway            |
 
 Designing Data-Intensive Applications explicitly warns that there is no point trying to make a remote service look too much like a local object because it is fundamentally different, and notes that modern RPC frameworks are more explicit about remote calls being asynchronous actions that may fail. [Designing...plications | PDF]
 
 **When RPC is best:**
+
 - Internal microservice communication
 - Clear command/action APIs
 - Strong contracts
@@ -931,6 +972,7 @@ Designing Data-Intensive Applications explicitly warns that there is no point tr
 gRPC is a modern RPC framework.
 
 It commonly uses:
+
 - HTTP/2
 - Protocol Buffers
 - Strong service contracts
@@ -940,6 +982,7 @@ It commonly uses:
 Official gRPC documentation says gRPC can use Protocol Buffers as both the Interface Definition Language and the message interchange format. [grpc.io]
 
 Example .proto file:
+
 ```protobuf
 syntax = "proto3";
 
@@ -959,6 +1002,7 @@ message CourseResponse {
 ```
 
 **gRPC call types:**
+
 ```
 1. Unary
    One request, one response.
@@ -995,6 +1039,7 @@ graph LR
 Designing Data-Intensive Applications notes that gRPC supports streams where a call can consist of a series of requests and responses over time. [Designing...plications | PDF]
 
 **When gRPC is best:**
+
 - Internal service-to-service APIs
 - High-performance APIs
 - Polyglot microservices
@@ -1002,6 +1047,7 @@ Designing Data-Intensive Applications notes that gRPC supports streams where a c
 - Strongly typed contracts
 
 **gRPC weaknesses:**
+
 - Harder to debug manually than REST
 - Browser support requires extra handling
 - Not as human-readable as JSON
@@ -1015,6 +1061,7 @@ Designing Data-Intensive Applications notes that gRPC supports streams where a c
 GraphQL lets the client ask for exactly the data it needs.
 
 **Example REST problem:**
+
 ```
 Mobile screen needs:
 - user name
@@ -1027,6 +1074,7 @@ REST may need many endpoints.
 ```
 
 **GraphQL solution:**
+
 ```graphql
 query {
   me {
@@ -1044,6 +1092,7 @@ query {
 ```
 
 **GraphQL strengths:**
+
 - Avoids over-fetching
 - Avoids under-fetching
 - Great for frontend/mobile apps
@@ -1053,6 +1102,7 @@ query {
 - Allows frontend and backend teams to work independently
 
 **GraphQL weaknesses:**
+
 - Caching is harder than REST
 - Query complexity can hurt backend
 - N+1 resolver problem
@@ -1069,6 +1119,7 @@ query {
 WebSocket keeps a connection open.
 
 **REST:**
+
 ```
 Client asks.
 Server answers.
@@ -1076,6 +1127,7 @@ Connection may close.
 ```
 
 **WebSocket:**
+
 ```
 Client connects.
 Connection stays open.
@@ -1083,6 +1135,7 @@ Both sides can send messages anytime.
 ```
 
 Useful for:
+
 - WhatsApp-like chat
 - Live typing indicators
 - Online presence
@@ -1095,7 +1148,7 @@ sequenceDiagram
     participant A as User A
     participant S as Chat Server
     participant B as User B
-    
+
     A->>S: Connect (WebSocket)
     B->>S: Connect (WebSocket)
     A->>S: Send "Hello"
@@ -1105,11 +1158,13 @@ sequenceDiagram
 ```
 
 **WebSocket strengths:**
+
 - Real-time
 - Bidirectional
 - Low latency after connection established
 
 **WebSocket weaknesses:**
+
 - More complex scaling
 - Connection state must be managed
 - Load balancing needs sticky/session-aware design
@@ -1123,6 +1178,7 @@ sequenceDiagram
 A webhook is: "Call my API when something happens."
 
 Example:
+
 ```
 Payment succeeded → Payment provider calls your webhook
 GitHub push event → GitHub calls your webhook
@@ -1130,11 +1186,13 @@ Course completed  → LMS calls your webhook
 ```
 
 Request:
+
 ```http
 POST /webhooks/payment-success
 ```
 
 Payload:
+
 ```json
 {
   "event": "payment.succeeded",
@@ -1144,11 +1202,13 @@ Payload:
 ```
 
 **Webhook strengths:**
+
 - Event-driven
 - No polling needed
 - Good for integrations
 
 **Webhook weaknesses:**
+
 - Receiver may be down
 - Need retries
 - Need signature verification
@@ -1162,22 +1222,26 @@ Payload:
 Message queues are not exactly "API" in the HTTP sense, but they are a communication method.
 
 Instead of:
+
 ```
 Service A calls Service B directly
 ```
 
 You do:
+
 ```
 Service A publishes event
 Service B consumes later
 ```
 
 Example:
+
 ```
 Order Service → OrderCreated event → Email Service
 ```
 
 **Strengths:**
+
 - Decoupling
 - Better resilience
 - Handles spikes
@@ -1185,6 +1249,7 @@ Order Service → OrderCreated event → Email Service
 - Retry support
 
 **Weaknesses:**
+
 - Eventual consistency
 - Harder debugging
 - Duplicate events possible
@@ -1195,16 +1260,16 @@ Order Service → OrderCreated event → Email Service
 
 ## 11. Comparison table
 
-| Style | Communication model | Data format | Best for | Main weakness |
-|-------|-------------------|-------------|----------|---------------|
-| REST | Resource-based | Usually JSON | Public CRUD APIs | Over/under-fetching |
-| RPC | Function/action-based | JSON/binary/etc. | Internal operations | Can hide network complexity |
-| gRPC | Strongly typed RPC | Protobuf | Microservices | Harder browser/manual debugging |
-| GraphQL | Client-specified query | Usually JSON | Frontend/mobile aggregation | Caching/query complexity |
-| WebSocket | Persistent two-way | JSON/binary | Real-time apps | Connection scaling |
-| Webhook | Event callback | JSON | External integrations | Retry/security/idempotency |
-| Queue/Event | Async messaging | JSON/Avro/Protobuf | Background workflows | Eventual consistency |
-| SOAP | XML contract | XML | Legacy enterprise systems | Verbose/complex |
+| Style       | Communication model    | Data format        | Best for                    | Main weakness                   |
+| ----------- | ---------------------- | ------------------ | --------------------------- | ------------------------------- |
+| REST        | Resource-based         | Usually JSON       | Public CRUD APIs            | Over/under-fetching             |
+| RPC         | Function/action-based  | JSON/binary/etc.   | Internal operations         | Can hide network complexity     |
+| gRPC        | Strongly typed RPC     | Protobuf           | Microservices               | Harder browser/manual debugging |
+| GraphQL     | Client-specified query | Usually JSON       | Frontend/mobile aggregation | Caching/query complexity        |
+| WebSocket   | Persistent two-way     | JSON/binary        | Real-time apps              | Connection scaling              |
+| Webhook     | Event callback         | JSON               | External integrations       | Retry/security/idempotency      |
+| Queue/Event | Async messaging        | JSON/Avro/Protobuf | Background workflows        | Eventual consistency            |
+| SOAP        | XML contract           | XML                | Legacy enterprise systems   | Verbose/complex                 |
 
 ---
 
@@ -1213,6 +1278,7 @@ Order Service → OrderCreated event → Email Service
 Use this decision guide.
 
 ### Choose REST when
+
 - API is public
 - CRUD-focused
 - You want simple HTTP semantics
@@ -1223,6 +1289,7 @@ Use this decision guide.
 Example: `GET /users/123`, `GET /courses`, `POST /orders`
 
 ### Choose GraphQL when
+
 - Frontend needs flexible data
 - Mobile bandwidth matters
 - Multiple backend services are aggregated
@@ -1231,6 +1298,7 @@ Example: `GET /users/123`, `GET /courses`, `POST /orders`
 Example: Course detail page aggregating course, progress, author, recommendations.
 
 ### Choose gRPC when
+
 - Services are internal
 - Performance matters
 - Strong schema matters
@@ -1240,12 +1308,14 @@ Example: Course detail page aggregating course, progress, author, recommendation
 Example: Recommendation service calls user-profile service.
 
 ### Choose WebSocket when
+
 - Server must push data instantly
 - Real-time bi-directional communication is required
 
 Example: WhatsApp messages, reactions, typing indicators.
 
 ### Choose queue/events when
+
 - Work can happen later
 - You want resilience
 - You need decoupling
@@ -1254,6 +1324,7 @@ Example: WhatsApp messages, reactions, typing indicators.
 Example: Send email after order placement.
 
 ### Choose webhook when
+
 - External system needs to notify you
 - You do not want to poll repeatedly
 
@@ -1265,13 +1336,13 @@ flowchart TD
     Start --> Async[Work can happen LATER?]
     Start --> RT[Real-time push needed?]
     Start --> Ext[External system notifies you?]
-    
+
     Sync --> Public{Public API?}
     Public -->|Yes| REST[REST]
     Public -->|No, internal| gRPC[gRPC]
     Sync --> Flex{Frontend needs flexible data?}
     Flex -->|Yes| GraphQL[GraphQL]
-    
+
     Async --> Queue[Queue / Event Stream]
     RT --> Bidir{Bidirectional?}
     Bidir -->|Yes| WS[WebSocket]
@@ -1310,15 +1381,15 @@ Analytics can be async.
 
 ### API style selection
 
-| Use case | API method |
-|----------|-----------|
-| Login/profile | REST |
-| Feed screen | GraphQL or REST BFF |
-| Internal feed ranking | gRPC |
-| Chat | WebSocket |
-| Notifications | Queue + Push |
-| Payment/subscription | Webhook |
-| Analytics | Event stream |
+| Use case              | API method          |
+| --------------------- | ------------------- |
+| Login/profile         | REST                |
+| Feed screen           | GraphQL or REST BFF |
+| Internal feed ranking | gRPC                |
+| Chat                  | WebSocket           |
+| Notifications         | Queue + Push        |
+| Payment/subscription  | Webhook             |
+| Analytics             | Event stream        |
 
 ---
 
@@ -1329,6 +1400,7 @@ This is where beginner design becomes senior design.
 ### 14.1 Timeout
 
 **Problem:**
+
 ```
 Client calls API.
 Server takes too long.
@@ -1352,6 +1424,7 @@ Server says: If I already processed abc-123, return same result. Do not repeat s
 ### 14.2 Retry storm
 
 **Problem:**
+
 ```
 Service B is slow.
 Service A retries aggressively.
@@ -1361,6 +1434,7 @@ System collapses.
 ```
 
 **Solution:**
+
 - Exponential backoff
 - Jitter
 - Circuit breaker
@@ -1370,6 +1444,7 @@ System collapses.
 ### 14.3 Partial failure
 
 **Problem:**
+
 ```
 Order created.
 Payment succeeded.
@@ -1385,6 +1460,7 @@ Should order fail? Usually no.
 **Problem:** Mobile app sends same request twice due to network issue.
 
 **Solution:**
+
 - Idempotency key
 - Unique constraints
 - Deduplication table
@@ -1396,6 +1472,7 @@ Should order fail? Usually no.
 Example: MessageRead event arrives before MessageDelivered.
 
 **Solution:**
+
 - Sequence numbers
 - Timestamps
 - Version numbers
@@ -1406,11 +1483,13 @@ Example: MessageRead event arrives before MessageDelivered.
 **Problem:**
 
 Old mobile app expects:
+
 ```json
 { "name": "Irfan" }
 ```
 
 New API returns:
+
 ```json
 { "fullName": "Irfan Mohammad" }
 ```
@@ -1418,6 +1497,7 @@ New API returns:
 Old app breaks.
 
 **Solution:**
+
 - Add fields, do not remove suddenly
 - Keep old fields during transition
 - Version APIs
@@ -1432,6 +1512,7 @@ Designing Data-Intensive Applications notes that adding optional request paramet
 Client sends deeply nested query that may destroy backend performance.
 
 **Solution:**
+
 - Query depth limit
 - Query cost analysis
 - Rate limiting
@@ -1444,6 +1525,7 @@ Client sends deeply nested query that may destroy backend performance.
 **Problem:** Mobile network disconnects.
 
 **Solution:**
+
 - Reconnect logic
 - Heartbeats/ping-pong
 - Message acknowledgements
@@ -1455,6 +1537,7 @@ Client sends deeply nested query that may destroy backend performance.
 **Problem:** Attacker resends old webhook.
 
 **Solution:**
+
 - Signature verification
 - Timestamp validation
 - Event ID deduplication
@@ -1466,6 +1549,7 @@ Client sends deeply nested query that may destroy backend performance.
 ### REST + OpenAPI
 
 Best when:
+
 - Public API
 - External consumers
 - Documentation matters
@@ -1476,6 +1560,7 @@ OpenAPI is useful because it formally describes HTTP APIs and can be used by doc
 ### GraphQL
 
 Best when:
+
 - UI needs flexible fields
 - Mobile optimisation matters
 - One screen aggregates many services
@@ -1485,6 +1570,7 @@ Meta's public engineering post says Mobile GraphQL handles data fetching for app
 ### gRPC + Protobuf
 
 Best when:
+
 - Internal services
 - Strong typing
 - Low latency
@@ -1496,6 +1582,7 @@ gRPC documentation says clients and servers can communicate across environments 
 ### WebSocket
 
 Best when:
+
 - Real-time two-way communication
 
 Example: WhatsApp, live collaboration, trading, multiplayer games.
@@ -1503,6 +1590,7 @@ Example: WhatsApp, live collaboration, trading, multiplayer games.
 ### Kafka/Queue
 
 Best when:
+
 - Decoupled background processing
 - Event-driven architecture
 - Stream processing
@@ -1520,42 +1608,42 @@ graph TB
     subgraph Clients
         WM[Web / Mobile Apps]
     end
-    
+
     subgraph Public_APIs ["Public API Layer"]
         REST_API[REST Public APIs<br/>OpenAPI Docs]
         GQL[GraphQL BFF<br/>UI Aggregation]
     end
-    
+
     subgraph Gateway_Layer ["Gateway"]
         GW[API Gateway<br/>Auth, Rate Limit, Routing, Logging]
     end
-    
+
     subgraph Services ["Internal Services"]
         US[User Service<br/>REST/gRPC]
         CS[Course Service<br/>REST/gRPC]
         SS[Search Service<br/>REST/gRPC]
     end
-    
+
     subgraph Data ["Data Stores"]
         UDB[(User DB)]
         CDB[(Course DB)]
         SI[(Search Index)]
     end
-    
+
     subgraph Events ["Event Layer"]
         EB[Event Bus / Queue<br/>Kafka/SQS/RabbitMQ]
     end
-    
+
     subgraph Consumers ["Event Consumers"]
         AN[Analytics]
         NF[Notification]
         RC[Recommendation]
     end
-    
+
     subgraph Obs ["Observability"]
         OB[Logs, Metrics, Traces]
     end
-    
+
     WM --> REST_API & GQL
     REST_API & GQL --> GW
     GW --> US & CS & SS
@@ -1645,7 +1733,7 @@ sequenceDiagram
     participant CS as Course Service
     participant PS as Progress Service
     participant RS as Recommendation Service
-    
+
     App->>BFF: GraphQL Query
     par Internal Calls
         BFF->>CS: GetCourse (gRPC/REST)
@@ -1681,12 +1769,12 @@ sequenceDiagram
     participant A as Analytics
     participant R as Recommendations
     participant C as Certificate
-    
+
     App->>API: POST /progress/complete
     API->>DB: Save completion
     API->>Kafka: Publish CourseCompleted
     API-->>App: 200 OK
-    
+
     par Async consumers
         Kafka->>N: CourseCompleted
         Kafka->>A: CourseCompleted
@@ -1704,12 +1792,14 @@ sequenceDiagram
 ### TinyURL / Bitly-style URL shortener lesson
 
 A URL shortener has two main user-visible operations:
+
 1. Create short URL.
 2. Redirect short URL to long URL.
 
 The redirect path is usually much more frequent than the creation path.
 
 **Design lesson:**
+
 - Optimise reads first.
 - Use cache.
 - Keep redirect path tiny.
@@ -1718,6 +1808,7 @@ The redirect path is usually much more frequent than the creation path.
 A public Bitly system design article highlights this exact idea: URL shortening is read-heavy, redirects must be extremely fast, analytics should be decoupled asynchronously, and abuse prevention is important because shorteners are targets for phishing and malware. [educative.io]
 
 **API method mapping:**
+
 ```
 POST /shorten           → REST
 GET  /abc123            → REST redirect
@@ -1728,6 +1819,7 @@ Internal operations     → gRPC/queue
 ### WhatsApp-style chat lesson
 
 Chat needs:
+
 - Real-time delivery
 - Online presence
 - Last seen
@@ -1737,6 +1829,7 @@ Chat needs:
 REST alone is not enough.
 
 **Better:**
+
 ```
 REST      → Login, contacts, profile
 WebSocket → Real-time messages
@@ -1749,6 +1842,7 @@ gRPC      → Internal service calls
 ### Instagram/Facebook-style feed lesson
 
 Feed systems need:
+
 - Mobile-friendly data fetching
 - Many backend sources
 - Ranking
@@ -1762,6 +1856,7 @@ GraphQL/BFF can help frontend request the exact data needed. Meta states that Mo
 **Pitfall:** GraphQL does not magically make backend fast. Bad resolvers can create N+1 service/database calls.
 
 **Solution:**
+
 - Batching
 - Caching
 - Persisted queries
@@ -1771,6 +1866,7 @@ GraphQL/BFF can help frontend request the exact data needed. Meta states that Mo
 ### Facebook-scale internal communication lesson
 
 At large company scale:
+
 - Public APIs optimise developer experience.
 - Internal service APIs optimise performance and reliability.
 - Event pipelines handle analytics and non-critical side effects.
@@ -1785,6 +1881,7 @@ This aligns with the pattern described in Designing Data-Intensive Applications:
 Whenever you design an API, ask:
 
 ### Product questions
+
 1. Who is the consumer?
 2. Is it public or internal?
 3. Is it frontend, mobile, backend, or third-party?
@@ -1792,6 +1889,7 @@ Whenever you design an API, ask:
 5. Is real-time communication needed?
 
 ### Technical questions
+
 1. What latency is acceptable?
 2. What throughput is expected?
 3. Is strong typing required?
@@ -1804,6 +1902,7 @@ Whenever you design an API, ask:
 10. How do we prevent duplicate side effects?
 
 ### Operational questions
+
 1. How do we log requests?
 2. How do we trace across services?
 3. How do we rate limit?
@@ -1860,6 +1959,7 @@ how will it fail, and who owns both sides?"
 Next, we should go deep into REST from zero to hero, because REST is the foundation you'll see everywhere.
 
 The next lesson should cover:
+
 1. What is HTTP?
 2. What are resources?
 3. HTTP methods: GET, POST, PUT, PATCH, DELETE

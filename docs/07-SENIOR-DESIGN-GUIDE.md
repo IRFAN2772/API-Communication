@@ -31,18 +31,18 @@ flowchart TD
 
 ### Decision Matrix
 
-| Use case | Best choice | Why |
-|----------|-------------|-----|
-| Public CRUD API | REST | universal, cacheable, easy to debug |
-| Mobile app needing flexible data | GraphQL | avoids over/under-fetching |
-| Internal microservices | gRPC | fast, typed, efficient |
-| Chat / gaming / live collaboration | WebSocket | bidirectional low-latency |
-| Server-to-browser updates only | SSE | simpler than WebSocket |
-| Long-running export | REST + async job + polling/webhook | avoids request timeout |
-| Background task | Queue | decoupled retryable work |
-| Analytics/events pipeline | Event stream | replayable ordered event log |
-| External event notification | Webhook | push-based integration |
-| Legacy enterprise integration | SOAP | formal XML contract |
+| Use case                           | Best choice                        | Why                                 |
+| ---------------------------------- | ---------------------------------- | ----------------------------------- |
+| Public CRUD API                    | REST                               | universal, cacheable, easy to debug |
+| Mobile app needing flexible data   | GraphQL                            | avoids over/under-fetching          |
+| Internal microservices             | gRPC                               | fast, typed, efficient              |
+| Chat / gaming / live collaboration | WebSocket                          | bidirectional low-latency           |
+| Server-to-browser updates only     | SSE                                | simpler than WebSocket              |
+| Long-running export                | REST + async job + polling/webhook | avoids request timeout              |
+| Background task                    | Queue                              | decoupled retryable work            |
+| Analytics/events pipeline          | Event stream                       | replayable ordered event log        |
+| External event notification        | Webhook                            | push-based integration              |
+| Legacy enterprise integration      | SOAP                               | formal XML contract                 |
 
 ---
 
@@ -182,13 +182,13 @@ An API communication method is the way two software components talk to each othe
 
 Think of it like human communication:
 
-| Human analogy | API equivalent |
-|---------------|----------------|
-| Asking a question and waiting for an answer | REST / GraphQL / gRPC unary |
-| Calling someone on the phone | WebSocket / streaming |
-| Leaving a message and getting a reply later | Queue / async messaging |
-| Asking someone to notify you when something happens | Webhook |
-| News channel broadcasting updates | Server-Sent Events |
+| Human analogy                                       | API equivalent              |
+| --------------------------------------------------- | --------------------------- |
+| Asking a question and waiting for an answer         | REST / GraphQL / gRPC unary |
+| Calling someone on the phone                        | WebSocket / streaming       |
+| Leaving a message and getting a reply later         | Queue / async messaging     |
+| Asking someone to notify you when something happens | Webhook                     |
+| News channel broadcasting updates                   | Server-Sent Events          |
 
 In system design, choosing the communication method is not just a coding decision. It affects:
 
@@ -290,19 +290,19 @@ Designing Data-Intensive Applications notes that REST is strong for experimentat
 
 Ask:
 
-| Requirement | Why it matters |
-|-------------|----------------|
-| Latency | gRPC/WebSocket may be better for low-latency internal or real-time flows |
-| Throughput | binary protocols and batching may matter |
-| Availability | async queues help absorb failures |
-| Consistency | sync APIs give immediate outcome; async events may be eventually consistent |
-| Cacheability | REST over HTTP is very strong here |
-| Ordering | event streams need partitions and keys |
-| Delivery guarantee | at-most-once, at-least-once, exactly-once-like semantics |
-| Payload size | GraphQL/gRPC can reduce over-fetching or encoding overhead |
-| Security | auth, rate limits, schema validation, replay protection |
-| Observability | tracing across sync + async calls becomes critical |
-| Evolvability | schemas, versioning, compatibility rules |
+| Requirement        | Why it matters                                                              |
+| ------------------ | --------------------------------------------------------------------------- |
+| Latency            | gRPC/WebSocket may be better for low-latency internal or real-time flows    |
+| Throughput         | binary protocols and batching may matter                                    |
+| Availability       | async queues help absorb failures                                           |
+| Consistency        | sync APIs give immediate outcome; async events may be eventually consistent |
+| Cacheability       | REST over HTTP is very strong here                                          |
+| Ordering           | event streams need partitions and keys                                      |
+| Delivery guarantee | at-most-once, at-least-once, exactly-once-like semantics                    |
+| Payload size       | GraphQL/gRPC can reduce over-fetching or encoding overhead                  |
+| Security           | auth, rate limits, schema validation, replay protection                     |
+| Observability      | tracing across sync + async calls becomes critical                          |
+| Evolvability       | schemas, versioning, compatibility rules                                    |
 
 The internal System Design Performance Considerations page highlights workload characteristics, latency, peak throughput, concurrency, caching, async queues, backpressure, bandwidth usage, retries, tracing, alerting, and graceful degradation as key performance design concerns. [System Des...iderations | Confluence (skillsoftdev)]
 
@@ -436,13 +436,13 @@ REST maps business resources to URLs:
 
 And actions to HTTP methods:
 
-| HTTP method | Meaning |
-|-------------|---------|
-| GET | read |
-| POST | create / command |
-| PUT | replace |
-| PATCH | partial update |
-| DELETE | delete |
+| HTTP method | Meaning          |
+| ----------- | ---------------- |
+| GET         | read             |
+| POST        | create / command |
+| PUT         | replace          |
+| PATCH       | partial update   |
+| DELETE      | delete           |
 
 REST is usually the best default when:
 
@@ -498,21 +498,21 @@ Why? Because REST works best when URL = resource and method = operation.
 
 ### 5.4 REST Status Codes
 
-| Code | Meaning |
-|------|---------|
-| 200 | success |
-| 201 | created |
-| 202 | accepted for async processing |
-| 204 | success, no body |
-| 400 | bad input |
-| 401 | unauthenticated |
-| 403 | forbidden |
-| 404 | not found |
-| 409 | conflict |
-| 422 | semantic validation error |
-| 429 | rate limited |
-| 500 | server error |
-| 503 | temporarily unavailable |
+| Code | Meaning                       |
+| ---- | ----------------------------- |
+| 200  | success                       |
+| 201  | created                       |
+| 202  | accepted for async processing |
+| 204  | success, no body              |
+| 400  | bad input                     |
+| 401  | unauthenticated               |
+| 403  | forbidden                     |
+| 404  | not found                     |
+| 409  | conflict                      |
+| 422  | semantic validation error     |
+| 429  | rate limited                  |
+| 500  | server error                  |
+| 503  | temporarily unavailable       |
 
 ### 5.5 REST Strengths
 
@@ -647,12 +647,12 @@ Bad resolver pattern:
 ```javascript
 const resolvers = {
   Query: {
-    users: () => db.users.findMany()
+    users: () => db.users.findMany(),
   },
   User: {
-    orders: (user) => db.orders.findMany({ userId: user.id })
-  }
-}
+    orders: (user) => db.orders.findMany({ userId: user.id }),
+  },
+};
 ```
 
 If 100 users are returned, this may call orders 100 times.
@@ -664,12 +664,10 @@ const DataLoader = require("dataloader");
 
 const orderLoader = new DataLoader(async (userIds) => {
   const orders = await db.orders.findMany({
-    userId: { in: userIds }
+    userId: { in: userIds },
   });
 
-  return userIds.map(
-    id => orders.filter(order => order.userId === id)
-  );
+  return userIds.map((id) => orders.filter((order) => order.userId === id));
 });
 ```
 
@@ -1046,7 +1044,7 @@ app.post("/webhooks/payment", async (req, res) => {
   const event = req.body;
 
   const alreadyProcessed = await db.webhookEvents.findOne({
-    eventId: event.eventId
+    eventId: event.eventId,
   });
 
   if (alreadyProcessed) {
@@ -1059,7 +1057,7 @@ app.post("/webhooks/payment", async (req, res) => {
     if (event.type === "payment.succeeded") {
       await tx.orders.update({
         paymentId: event.paymentId,
-        status: "PAID"
+        status: "PAID",
       });
     }
   });
@@ -1124,14 +1122,14 @@ Payment, Inventory, Email services consume independently
 
 ### 11.2 Queue vs Stream
 
-| Concept | Queue | Stream |
-|---------|-------|--------|
-| Example | RabbitMQ, SQS | Kafka, Pulsar |
-| Message consumption | usually removed after consumed | retained for time/size |
-| Replay | limited | strong replay model |
-| Ordering | queue-dependent | partition-based |
-| Best for | tasks/jobs | event history/logs |
-| Consumer model | workers compete | consumer groups track offsets |
+| Concept             | Queue                          | Stream                        |
+| ------------------- | ------------------------------ | ----------------------------- |
+| Example             | RabbitMQ, SQS                  | Kafka, Pulsar                 |
+| Message consumption | usually removed after consumed | retained for time/size        |
+| Replay              | limited                        | strong replay model           |
+| Ordering            | queue-dependent                | partition-based               |
+| Best for            | tasks/jobs                     | event history/logs            |
+| Consumer model      | workers compete                | consumer groups track offsets |
 
 ### 11.3 Queue Use Cases
 
@@ -1161,7 +1159,7 @@ await eventBus.publish("order.created", {
   eventId: "evt_123",
   orderId: "ord_456",
   userId: "user_789",
-  createdAt: new Date().toISOString()
+  createdAt: new Date().toISOString(),
 });
 ```
 
@@ -1236,18 +1234,18 @@ In modern interviews, mention SOAP briefly as legacy/enterprise, but focus deepl
 
 ### 13.1 Quick Selection Table
 
-| Use case | Best choice | Why |
-|----------|-------------|-----|
-| Public CRUD API | REST | universal, cacheable, easy to debug |
-| Mobile app needing flexible data | GraphQL | avoids over/under-fetching |
-| Internal microservices | gRPC | fast, typed, efficient |
-| Chat / gaming / live collaboration | WebSocket | bidirectional low-latency |
-| Server-to-browser updates only | SSE | simpler than WebSocket |
-| Long-running export | REST + async job + polling/webhook | avoids request timeout |
-| Background task | Queue | decoupled retryable work |
-| Analytics/events pipeline | Event stream | replayable ordered event log |
-| External event notification | Webhook | push-based integration |
-| Legacy enterprise integration | SOAP | formal XML contract |
+| Use case                           | Best choice                        | Why                                 |
+| ---------------------------------- | ---------------------------------- | ----------------------------------- |
+| Public CRUD API                    | REST                               | universal, cacheable, easy to debug |
+| Mobile app needing flexible data   | GraphQL                            | avoids over/under-fetching          |
+| Internal microservices             | gRPC                               | fast, typed, efficient              |
+| Chat / gaming / live collaboration | WebSocket                          | bidirectional low-latency           |
+| Server-to-browser updates only     | SSE                                | simpler than WebSocket              |
+| Long-running export                | REST + async job + polling/webhook | avoids request timeout              |
+| Background task                    | Queue                              | decoupled retryable work            |
+| Analytics/events pipeline          | Event stream                       | replayable ordered event log        |
+| External event notification        | Webhook                            | push-based integration              |
+| Legacy enterprise integration      | SOAP                               | formal XML contract                 |
 
 ### 13.2 Senior-Level Rule
 
@@ -1874,14 +1872,14 @@ Recommendation model updated much later.
 
 The skill is knowing what must be synchronous and what can be async.
 
-| Operation | Sync or async? |
-|-----------|----------------|
-| Validate payment before order confirmation | Sync or carefully orchestrated |
-| Send confirmation email | Async |
-| Update analytics | Async |
-| Deduct inventory | Depends on business correctness |
-| Notify warehouse | Async but reliable |
-| Fraud check | Sometimes sync, sometimes async with hold state |
+| Operation                                  | Sync or async?                                  |
+| ------------------------------------------ | ----------------------------------------------- |
+| Validate payment before order confirmation | Sync or carefully orchestrated                  |
+| Send confirmation email                    | Async                                           |
+| Update analytics                           | Async                                           |
+| Deduct inventory                           | Depends on business correctness                 |
+| Notify warehouse                           | Async but reliable                              |
+| Fraud check                                | Sometimes sync, sometimes async with hold state |
 
 ### 19.3 Ordering Guarantees
 
@@ -1951,7 +1949,7 @@ const controller = new AbortController();
 setTimeout(() => controller.abort(), 1000);
 
 await fetch("https://api.example.com/users/123", {
-  signal: controller.signal
+  signal: controller.signal,
 });
 ```
 
@@ -2300,58 +2298,58 @@ Consumers should tolerate unknown fields.
 
 ### 24.1 REST/HTTP Failure Modes
 
-| Failure | Handling |
-|---------|----------|
-| Duplicate POST due to retry | Idempotency key |
-| Partial timeout | request status endpoint |
-| Large payload | pagination/compression/upload URL |
-| Hot endpoint overload | rate limit/cache |
-| Downstream failure | circuit breaker/fallback |
-| Client retry storm | backoff + jitter |
+| Failure                     | Handling                          |
+| --------------------------- | --------------------------------- |
+| Duplicate POST due to retry | Idempotency key                   |
+| Partial timeout             | request status endpoint           |
+| Large payload               | pagination/compression/upload URL |
+| Hot endpoint overload       | rate limit/cache                  |
+| Downstream failure          | circuit breaker/fallback          |
+| Client retry storm          | backoff + jitter                  |
 
 ### 24.2 GraphQL Failure Modes
 
-| Failure | Handling |
-|---------|----------|
-| Expensive nested query | query depth limit |
-| N+1 DB calls | DataLoader/batching |
-| Field-level data leak | resolver authorisation |
-| Single endpoint hides metrics | operation name tracking |
-| Huge response | pagination/connection pattern |
-| Cache misses | persisted queries/normalised cache |
+| Failure                       | Handling                           |
+| ----------------------------- | ---------------------------------- |
+| Expensive nested query        | query depth limit                  |
+| N+1 DB calls                  | DataLoader/batching                |
+| Field-level data leak         | resolver authorisation             |
+| Single endpoint hides metrics | operation name tracking            |
+| Huge response                 | pagination/connection pattern      |
+| Cache misses                  | persisted queries/normalised cache |
 
 ### 24.3 gRPC Failure Modes
 
-| Failure | Handling |
-|---------|----------|
-| client/server proto mismatch | compatibility rules |
-| long-lived HTTP/2 imbalance | L7 load balancing |
-| deadline exceeded | deadlines/cancellation |
-| proxy incompatibility | validated infra path |
-| hard debugging | reflection/logging/grpcurl |
-| retry unsafe methods | idempotency and retry config |
+| Failure                      | Handling                     |
+| ---------------------------- | ---------------------------- |
+| client/server proto mismatch | compatibility rules          |
+| long-lived HTTP/2 imbalance  | L7 load balancing            |
+| deadline exceeded            | deadlines/cancellation       |
+| proxy incompatibility        | validated infra path         |
+| hard debugging               | reflection/logging/grpcurl   |
+| retry unsafe methods         | idempotency and retry config |
 
 ### 24.4 WebSocket Failure Modes
 
-| Failure | Handling |
-|---------|----------|
-| node dies | reconnect + resubscribe |
-| missed messages | sequence numbers/replay |
-| connection leak | heartbeat/idle timeout |
-| hot room fanout | room sharding |
-| slow client | backpressure/drop policy |
-| duplicate message | message IDs |
+| Failure           | Handling                 |
+| ----------------- | ------------------------ |
+| node dies         | reconnect + resubscribe  |
+| missed messages   | sequence numbers/replay  |
+| connection leak   | heartbeat/idle timeout   |
+| hot room fanout   | room sharding            |
+| slow client       | backpressure/drop policy |
+| duplicate message | message IDs              |
 
 ### 24.5 Async Messaging Failure Modes
 
-| Failure | Handling |
-|---------|----------|
-| duplicate event | idempotent consumer |
-| poison message | DLQ |
-| consumer lag | autoscale/partitioning |
+| Failure            | Handling                    |
+| ------------------ | --------------------------- |
+| duplicate event    | idempotent consumer         |
+| poison message     | DLQ                         |
+| consumer lag       | autoscale/partitioning      |
 | out-of-order event | partition key/version check |
-| event schema break | schema registry/versioning |
-| broker outage | local outbox/retry |
+| event schema break | schema registry/versioning  |
+| broker outage      | local outbox/retry          |
 
 ---
 
@@ -2423,7 +2421,7 @@ await db.transaction(async (tx) => {
   const order = await tx.orders.insert({
     userId,
     total,
-    status: "CREATED"
+    status: "CREATED",
   });
 
   await tx.outboxEvents.insert({
@@ -2431,7 +2429,7 @@ await db.transaction(async (tx) => {
     aggregateType: "Order",
     aggregateId: order.id,
     eventType: "order.created",
-    payload: { orderId: order.id, userId }
+    payload: { orderId: order.id, userId },
   });
 });
 ```
@@ -2441,14 +2439,14 @@ Publisher:
 ```javascript
 const events = await db.outboxEvents.findMany({
   status: "PENDING",
-  limit: 100
+  limit: 100,
 });
 
 for (const event of events) {
   await broker.publish(event.eventType, event.payload);
   await db.outboxEvents.update(event.id, {
     status: "PUBLISHED",
-    publishedAt: new Date()
+    publishedAt: new Date(),
   });
 }
 ```
@@ -2497,13 +2495,13 @@ Best for bidirectional real-time.
 
 ### 26.5 Decision
 
-| Need | Pick |
-|------|------|
-| occasional status check | polling |
-| simple near-real-time | long polling |
-| server updates only | SSE |
-| full bidirectional real-time | WebSocket |
-| backend streaming | gRPC streaming |
+| Need                         | Pick           |
+| ---------------------------- | -------------- |
+| occasional status check      | polling        |
+| simple near-real-time        | long polling   |
+| server updates only          | SSE            |
+| full bidirectional real-time | WebSocket      |
+| backend streaming            | gRPC streaming |
 
 ---
 
@@ -2568,18 +2566,20 @@ message CourseProgress {
 await queue.publish("certificate.generate", {
   userId,
   courseId,
-  completedAt: new Date().toISOString()
+  completedAt: new Date().toISOString(),
 });
 ```
 
 ### 27.5 WebSocket/SSE for Live Progress
 
 ```javascript
-socket.send(JSON.stringify({
-  type: "progress.updated",
-  courseId,
-  percentage: 80
-}));
+socket.send(
+  JSON.stringify({
+    type: "progress.updated",
+    courseId,
+    percentage: 80,
+  }),
+);
 ```
 
 This is how real systems evolve. You do not choose one method for everything. You choose based on interaction type.
@@ -2658,15 +2658,15 @@ But you would not compare Cassandra directly to gRPC or REST. You would compare 
 
 ### 28.5 Choosing Between Them
 
-| Problem | Better choice |
-|---------|---------------|
-| Cache GET /products | Redis |
-| Rate limit API key | Redis |
-| Send email job | RabbitMQ/SQS |
-| Stream click events | Kafka |
-| Store high-volume chat messages | Cassandra/DynamoDB/ScyllaDB |
-| Maintain WebSocket presence | Redis |
-| Replay order events for analytics | Kafka |
+| Problem                           | Better choice               |
+| --------------------------------- | --------------------------- |
+| Cache GET /products               | Redis                       |
+| Rate limit API key                | Redis                       |
+| Send email job                    | RabbitMQ/SQS                |
+| Stream click events               | Kafka                       |
+| Store high-volume chat messages   | Cassandra/DynamoDB/ScyllaDB |
+| Maintain WebSocket presence       | Redis                       |
+| Replay order events for analytics | Kafka                       |
 
 ---
 
