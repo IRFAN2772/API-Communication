@@ -8,7 +8,7 @@
 >
 > | Concept         | Purpose                                    | Key Tools                              |
 > | --------------- | ------------------------------------------ | -------------------------------------- |
-> | API Gateway     | Single entry point, cross-cutting concerns | NGINX, Kong, AWS API GW, Envoy         |
+> | API Gateway     | Single entry point, cross-cutting concerns | NGINX, Kong, AWS API GW, Azure APIM, Envoy |
 > | BFF             | Frontend-specific backend layer            | Node.js, GraphQL, custom services      |
 > | Load Balancer   | Distribute traffic across servers          | AWS ALB/NLB, NGINX, HAProxy            |
 > | Service Mesh    | Service-to-service communication           | Istio, Envoy, Linkerd, Consul          |

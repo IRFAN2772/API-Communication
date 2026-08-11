@@ -1248,6 +1248,61 @@ This is called:
 Content Negotiation
 ```
 
+#### Content Negotiation — Deeper Look
+
+Content negotiation is how client and server agree on the format of data exchanged.
+
+The client says what it wants:
+
+```http
+Accept: application/json
+```
+
+The client says what it is sending:
+
+```http
+Content-Type: application/json
+```
+
+The server can support multiple formats:
+
+```
+application/json
+application/xml
+text/html
+application/yaml
+```
+
+If the server cannot produce what the client wants:
+
+```http
+406 Not Acceptable
+```
+
+Real-world example:
+
+Older SOAP clients may send:
+
+```http
+Accept: application/xml
+```
+
+Modern mobile apps send:
+
+```http
+Accept: application/json
+```
+
+Same API, different response formats.
+
+This is also how API versioning can work via headers:
+
+```http
+Accept: application/vnd.company.v2+json
+```
+
+Senior engineers use content negotiation for backward-compatible format evolution without changing URLs.
+
 We'll revisit later.
 
 ##### Authorization
@@ -4813,6 +4868,87 @@ Can we return 304?
 
 That's senior-level thinking.
 
+### Database Indexing and API Performance
+
+Caching is one side of performance. The other side is: how fast can the database answer?
+
+Imagine:
+
+```http
+GET /users?email=irfan@example.com
+```
+
+Without index:
+
+```
+Database scans ALL rows.
+10 million users.
+Checks each one.
+Slow.
+```
+
+With index on `email`:
+
+```
+Database jumps directly to matching row.
+Microseconds.
+```
+
+This is called a database index.
+
+Think of it like:
+
+```
+Book without index → read every page to find a topic
+Book with index    → look up page number instantly
+```
+
+#### Common indexing patterns for APIs
+
+| API Pattern | Index Needed |
+|---|---|
+| `GET /users/{id}` | Primary key (automatic) |
+| `GET /users?email=x` | Index on `email` |
+| `GET /orders?userId=x&status=active` | Composite index on `(userId, status)` |
+| `GET /products?sort=-createdAt` | Index on `createdAt` |
+| `GET /courses?search=system+design` | Full-text index or search engine (Elasticsearch) |
+| `GET /posts?cursor=abc123` | Index on cursor column (e.g., `createdAt + id`) |
+
+#### Why this matters for API design
+
+Every query parameter you expose in your API implies a database query pattern.
+
+```
+Filter field → needs index
+Sort field   → needs index
+Search field → needs full-text index or search engine
+Pagination   → needs index on ordering column
+```
+
+Senior engineer rule:
+
+```
+Don't add a query parameter to your API
+unless the database can answer it efficiently.
+```
+
+Without proper indexing:
+- Pagination becomes slow at scale (OFFSET problem)
+- Filtering creates full table scans
+- Sorting forces expensive in-memory sorts
+- Search becomes unusable
+
+This is why many large-scale APIs use:
+
+```
+Primary DB     → exact lookups (by ID, by indexed field)
+Elasticsearch  → search, full-text, facets
+Redis          → pre-computed results, caches
+CDN            → static/cacheable responses
+```
+
+Each API endpoint should have a clear data access path — and that path should be indexed.
+
 ### REST Phase 1 Progress
 
 You now understand:
@@ -5275,6 +5411,142 @@ Think of JWT as:
 
 ```
 Digital ID Card
+```
+
+### The Full Authentication Spectrum
+
+Before diving into JWT vs OAuth comparisons, it's important to understand all common authentication methods. Each solves a different problem.
+
+#### Basic Authentication
+
+The simplest method. Client sends username and password with every request.
+
+```http
+Authorization: Basic aXJmYW46cGFzc3dvcmQ=
+```
+
+The value is Base64-encoded `username:password`.
+
+Example:
+
+```
+username: irfan
+password: secret123
+Base64:   aXJmYW46c2VjcmV0MTIz
+```
+
+How it works:
+
+```
+Client
+  |
+  | username:password (Base64)
+  v
+Server
+  |
+  | Decode + verify
+  v
+Allow / Deny
+```
+
+When Basic Auth is acceptable:
+- Internal tools behind VPN
+- Server-to-server communication with TLS
+- Quick prototyping
+- CLI tools calling private APIs
+
+Why Basic Auth is dangerous for production:
+- Credentials sent with **every** request
+- If intercepted (no TLS), password is exposed
+- No expiry — password works until changed
+- No scoping — full access or nothing
+- Cannot revoke a single session
+
+Senior rule:
+
+```
+Never use Basic Auth over plain HTTP.
+Always require HTTPS.
+Prefer token-based auth for production.
+```
+
+#### Session-Based Authentication (Cookies)
+
+This is the traditional web authentication model.
+
+Flow:
+
+```
+1. User sends username + password (POST /login)
+2. Server verifies credentials
+3. Server creates a session (stored in memory/DB/Redis)
+4. Server returns Set-Cookie header with session ID
+5. Browser automatically sends cookie with every request
+6. Server looks up session ID → finds user
+```
+
+```mermaid
+sequenceDiagram
+    participant Browser
+    participant Server
+    participant SessionStore as Session Store (Redis/DB)
+    
+    Browser->>Server: POST /login (username + password)
+    Server->>SessionStore: Create session (sessionId → userId)
+    Server-->>Browser: Set-Cookie: sessionId=abc123
+    Browser->>Server: GET /profile (Cookie: sessionId=abc123)
+    Server->>SessionStore: Lookup abc123 → userId=42
+    Server-->>Browser: 200 OK (user profile)
+```
+
+The cookie:
+
+```http
+Set-Cookie: sessionId=abc123; HttpOnly; Secure; SameSite=Strict
+```
+
+Important cookie attributes:
+
+| Attribute | Purpose |
+|---|---|
+| `HttpOnly` | JavaScript cannot access — prevents XSS theft |
+| `Secure` | Only sent over HTTPS |
+| `SameSite=Strict` | Not sent on cross-site requests — prevents CSRF |
+| `Max-Age` / `Expires` | Session expiry |
+| `Path` / `Domain` | Scope of the cookie |
+
+Session Auth strengths:
+- Easy to implement in traditional web apps
+- Server can invalidate any session instantly (revocation)
+- Browser handles cookie automatically — no client-side token management
+
+Session Auth weaknesses:
+- Server must store session state (memory/Redis/DB)
+- Scaling requires shared session store or sticky sessions
+- Not ideal for mobile apps or third-party API consumers
+- Cross-domain issues with cookies (CORS)
+- Vulnerable to CSRF if `SameSite` not set properly
+
+#### Session Auth vs Token Auth (JWT)
+
+This is one of the most important design decisions.
+
+| Aspect | Session (Cookie) | Token (JWT) |
+|---|---|---|
+| State | Server stores session | Stateless — token contains claims |
+| Storage | Server-side (Redis/DB) | Client-side (localStorage/cookie) |
+| Scalability | Needs shared session store | Any server can verify |
+| Revocation | Easy — delete session | Hard — token valid until expiry |
+| Mobile apps | Awkward — cookies don't fit mobile | Natural — send token in header |
+| Cross-domain | Complex (CORS + cookies) | Simple — just a header |
+| Best for | Traditional web apps | APIs, mobile, microservices, SPAs |
+
+Senior engineer rule:
+
+```
+Web app with server-rendered pages → Session/Cookie
+API consumed by mobile/SPA/third-party → JWT/OAuth
+Internal service-to-service → mTLS or JWT
 ```
 
 ### Authentication vs Authorization

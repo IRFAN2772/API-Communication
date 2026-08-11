@@ -1137,6 +1137,89 @@ Those should be async.
 
 ---
 
+## 17.1 Batch Processing
+
+There is one more important async integration pattern that sits between real-time APIs and message queues.
+
+Batch processing means:
+
+```
+Collect many items.
+Process them together.
+Usually on a schedule or when a threshold is reached.
+```
+
+Think of it like:
+
+```
+Not one letter at a time.
+Collect letters all day.
+Mail truck picks up once.
+```
+
+### When batch processing is used
+
+| Use Case | Example |
+|---|---|
+| Data export | "Export all users as CSV" → async job returns file later |
+| ETL pipelines | Nightly: extract from DB → transform → load into data warehouse |
+| Bulk notifications | Send 10M marketing emails → batch, not one-by-one API calls |
+| Report generation | Daily sales report → scheduled batch job |
+| Reconciliation | Compare payment records across systems nightly |
+| Bulk import | Upload 100K products via CSV → process in batch |
+
+### Batch vs real-time API patterns
+
+| Aspect | Real-time API | Batch Processing |
+|---|---|---|
+| Timing | Immediate | Scheduled or triggered |
+| Volume | One item per request | Thousands/millions per job |
+| Latency expectation | Milliseconds | Minutes to hours |
+| Error handling | Instant response | Retry failed items, report at end |
+| API pattern | `POST /orders` | `POST /exports` → `202 Accepted` → poll for result |
+
+### Batch API design pattern
+
+Batch work should never block the API request.
+
+Bad:
+
+```http
+POST /exports
+→ waits 10 minutes
+→ returns CSV
+```
+
+Good:
+
+```http
+POST /exports
+→ 202 Accepted
+→ { "jobId": "job_123" }
+
+GET /exports/job_123
+→ { "status": "processing", "progress": 65 }
+
+GET /exports/job_123
+→ { "status": "complete", "downloadUrl": "..." }
+```
+
+This is the same pattern used by many cloud APIs (Azure, AWS) for long-running operations.
+
+### Where batch fits in the communication landscape
+
+```
+Real-time request → REST / GraphQL / gRPC
+Real-time push     → WebSocket / SSE
+Async task         → Queue (single item)
+Async pipeline     → Kafka (event stream)
+Bulk work          → Batch Processing (many items, scheduled)
+```
+
+Batch processing is the last piece of the async puzzle — it handles the cases where neither real-time APIs nor event-by-event queues are efficient.
+
+---
+
 ## 18. Real-World Patterns
 
 ### Instagram
