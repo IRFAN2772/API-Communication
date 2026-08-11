@@ -28,30 +28,30 @@ You already learned HTTP/1.1 → HTTP/2 → HTTP/3 previously, so now we'll buil
 
 ### HTTP Methods
 
-| Method | Action | Idempotent | Safe |
-|--------|----------------|------------|------|
-| GET | Read | ✅ | ✅ |
-| POST | Create | ❌ | ❌ |
-| PUT | Replace | ✅ | ❌ |
-| PATCH | Partial Update | Depends | ❌ |
-| DELETE | Delete | ✅ | ❌ |
+| Method | Action         | Idempotent | Safe |
+| ------ | -------------- | ---------- | ---- |
+| GET    | Read           | ✅         | ✅   |
+| POST   | Create         | ❌         | ❌   |
+| PUT    | Replace        | ✅         | ❌   |
+| PATCH  | Partial Update | Depends    | ❌   |
+| DELETE | Delete         | ✅         | ❌   |
 
 ### Status Codes
 
-| Code | Meaning | Category |
-|------|--------------------------|----------------|
-| 200 | Success | ✅ Success |
-| 201 | Created | ✅ Success |
-| 204 | Deleted Successfully | ✅ Success |
-| 304 | Not Modified | ↪ Redirect |
-| 400 | Invalid Request | ❌ Client Error |
-| 401 | Not Logged In | ❌ Client Error |
-| 403 | No Permission | ❌ Client Error |
-| 404 | Not Found | ❌ Client Error |
-| 409 | Conflict | ❌ Client Error |
-| 429 | Rate Limited | ❌ Client Error |
-| 500 | Internal Error | 💥 Server Error |
-| 503 | Service Unavailable | 💥 Server Error |
+| Code | Meaning              | Category        |
+| ---- | -------------------- | --------------- |
+| 200  | Success              | ✅ Success      |
+| 201  | Created              | ✅ Success      |
+| 204  | Deleted Successfully | ✅ Success      |
+| 304  | Not Modified         | ↪ Redirect      |
+| 400  | Invalid Request      | ❌ Client Error |
+| 401  | Not Logged In        | ❌ Client Error |
+| 403  | No Permission        | ❌ Client Error |
+| 404  | Not Found            | ❌ Client Error |
+| 409  | Conflict             | ❌ Client Error |
+| 429  | Rate Limited         | ❌ Client Error |
+| 500  | Internal Error       | 💥 Server Error |
+| 503  | Service Unavailable  | 💥 Server Error |
 
 ---
 
@@ -558,8 +558,8 @@ Server:
 
 ```json
 {
-"id":100,
-"caption":"Hello World"
+  "id": 100,
+  "caption": "Hello World"
 }
 ```
 
@@ -590,7 +590,7 @@ Body:
 
 ```json
 {
-"name":"Irfan"
+  "name": "Irfan"
 }
 ```
 
@@ -604,8 +604,8 @@ Server:
 
 ```json
 {
-"id":123,
-"name":"Irfan"
+  "id": 123,
+  "name": "Irfan"
 }
 ```
 
@@ -623,8 +623,8 @@ Imagine user:
 
 ```json
 {
-"name":"Irfan",
-"age":25
+  "name": "Irfan",
+  "age": 25
 }
 ```
 
@@ -632,8 +632,8 @@ PUT:
 
 ```json
 {
-"name":"Mohammad",
-"age":30
+  "name": "Mohammad",
+  "age": 30
 }
 ```
 
@@ -643,8 +643,8 @@ Result:
 
 ```json
 {
-"name":"Mohammad",
-"age":30
+  "name": "Mohammad",
+  "age": 30
 }
 ```
 
@@ -662,8 +662,8 @@ Current:
 
 ```json
 {
-"name":"Irfan",
-"age":25
+  "name": "Irfan",
+  "age": 25
 }
 ```
 
@@ -671,7 +671,7 @@ PATCH:
 
 ```json
 {
-"age":26
+  "age": 26
 }
 ```
 
@@ -679,8 +679,8 @@ Result:
 
 ```json
 {
-"name":"Irfan",
-"age":26
+  "name": "Irfan",
+  "age": 26
 }
 ```
 
@@ -715,13 +715,13 @@ Delete user 123.
 
 ### HTTP Method Cheat Sheet
 
-| Method | Action |
-|--------|----------------|
-| GET | Read |
-| POST | Create |
-| PUT | Replace |
-| PATCH | Partial Update |
-| DELETE | Delete |
+| Method | Action         |
+| ------ | -------------- |
+| GET    | Read           |
+| POST   | Create         |
+| PUT    | Replace        |
+| PATCH  | Partial Update |
+| DELETE | Delete         |
 
 Memorise this forever.
 
@@ -1379,8 +1379,8 @@ Body:
 
 ```json
 {
-"name":"Irfan",
-"email":"abc@gmail.com"
+  "name": "Irfan",
+  "email": "abc@gmail.com"
 }
 ```
 
@@ -1418,8 +1418,8 @@ JSON:
 
 ```json
 {
-"name":"Irfan",
-"age":25
+  "name": "Irfan",
+  "age": 25
 }
 ```
 
@@ -1435,7 +1435,7 @@ Object:
 
 ```json
 {
-"name":"Irfan"
+  "name": "Irfan"
 }
 ```
 
@@ -1443,30 +1443,23 @@ Multiple values:
 
 ```json
 {
-"name":"Irfan",
-"age":25
+  "name": "Irfan",
+  "age": 25
 }
 ```
 
 Array:
 
 ```json
-[
-"Java",
-"NodeJS",
-"React"
-]
+["Java", "NodeJS", "React"]
 ```
 
 Nested:
 
 ```json
 {
-"name":"Irfan",
-"skills":[
-"NodeJS",
-"React"
-]
+  "name": "Irfan",
+  "skills": ["NodeJS", "React"]
 }
 ```
 
@@ -1474,14 +1467,14 @@ Real API Response
 
 ```json
 {
-"id":123,
-"name":"Irfan",
-"courses":[
-{
-"id":1,
-"name":"System Design"
-}
-]
+  "id": 123,
+  "name": "Irfan",
+  "courses": [
+    {
+      "id": 1,
+      "name": "System Design"
+    }
+  ]
 }
 ```
 
@@ -1631,7 +1624,7 @@ Example:
 
 ```json
 {
-"email":"not-an-email"
+  "email": "not-an-email"
 }
 ```
 
@@ -1805,19 +1798,19 @@ Deployment issue
 
 ### Status Code Interview Table
 
-| Code | Meaning |
-|------|--------------------------|
-| 200 | Success |
-| 201 | Created |
-| 204 | Deleted Successfully |
-| 400 | Invalid Request |
-| 401 | Not Logged In |
-| 403 | No Permission |
-| 404 | Not Found |
-| 409 | Conflict |
-| 429 | Rate Limited |
-| 500 | Internal Error |
-| 503 | Service Unavailable |
+| Code | Meaning              |
+| ---- | -------------------- |
+| 200  | Success              |
+| 201  | Created              |
+| 204  | Deleted Successfully |
+| 400  | Invalid Request      |
+| 401  | Not Logged In        |
+| 403  | No Permission        |
+| 404  | Not Found            |
+| 409  | Conflict             |
+| 429  | Rate Limited         |
+| 500  | Internal Error       |
+| 503  | Service Unavailable  |
 
 Memorise.
 
@@ -1833,8 +1826,8 @@ Body:
 
 ```json
 {
-"name":"Irfan",
-"email":"irfan@gmail.com"
+  "name": "Irfan",
+  "email": "irfan@gmail.com"
 }
 ```
 
@@ -1848,9 +1841,9 @@ Body:
 
 ```json
 {
-"id":123,
-"name":"Irfan",
-"email":"irfan@gmail.com"
+  "id": 123,
+  "name": "Irfan",
+  "email": "irfan@gmail.com"
 }
 ```
 
@@ -1872,7 +1865,7 @@ Body:
 
 ```json
 {
-"error":"User not found"
+  "error": "User not found"
 }
 ```
 
@@ -2380,10 +2373,10 @@ Real response:
 
 ```json
 [
-{
-"id":1,
-"title":"Advanced Java"
-}
+  {
+    "id": 1,
+    "title": "Advanced Java"
+  }
 ]
 ```
 
@@ -2519,9 +2512,9 @@ Response:
 
 ```json
 [
-{
-"title":"System Design Fundamentals"
-}
+  {
+    "title": "System Design Fundamentals"
+  }
 ]
 ```
 
@@ -2664,10 +2657,10 @@ Response:
 
 ```json
 {
-"page":1,
-"pageSize":20,
-"total":500,
-"data":[]
+  "page": 1,
+  "pageSize": 20,
+  "total": 500,
+  "data": []
 }
 ```
 
@@ -3322,7 +3315,7 @@ Final state:
 
 ```json
 {
-"name":"Irfan"
+  "name": "Irfan"
 }
 ```
 
@@ -3336,7 +3329,7 @@ Example:
 
 ```json
 {
-"name":"Mohammad"
+  "name": "Mohammad"
 }
 ```
 
@@ -3348,7 +3341,7 @@ But:
 
 ```json
 {
-"increaseBalanceBy":100
+  "increaseBalanceBy": 100
 }
 ```
 
@@ -3379,13 +3372,13 @@ Different state.
 
 ### Interview Table
 
-| Method | Idempotent? |
-|--------|---------------------|
-| GET | ✅ Idempotent |
-| PUT | ✅ Idempotent |
-| DELETE | ✅ Idempotent |
-| POST | ❌ Usually Not |
-| PATCH | Depends |
+| Method | Idempotent?    |
+| ------ | -------------- |
+| GET    | ✅ Idempotent  |
+| PUT    | ✅ Idempotent  |
+| DELETE | ✅ Idempotent  |
+| POST   | ❌ Usually Not |
+| PATCH  | Depends        |
 
 Very important.
 
@@ -3600,8 +3593,8 @@ Body:
 
 ```json
 {
-"amount":50000,
-"currency":"INR"
+  "amount": 50000,
+  "currency": "INR"
 }
 ```
 
@@ -3957,8 +3950,8 @@ Post data is:
 
 ```json
 {
-"id":123,
-"caption":"Hello World"
+  "id": 123,
+  "caption": "Hello World"
 }
 ```
 
@@ -4458,7 +4451,7 @@ Current response:
 
 ```json
 {
-"name":"Irfan"
+  "name": "Irfan"
 }
 ```
 
@@ -4467,7 +4460,7 @@ Now:
 
 ```json
 {
-"name":"Irfanuddin"
+  "name": "Irfanuddin"
 }
 ```
 
@@ -4905,14 +4898,14 @@ Book with index    → look up page number instantly
 
 #### Common indexing patterns for APIs
 
-| API Pattern | Index Needed |
-|---|---|
-| `GET /users/{id}` | Primary key (automatic) |
-| `GET /users?email=x` | Index on `email` |
-| `GET /orders?userId=x&status=active` | Composite index on `(userId, status)` |
-| `GET /products?sort=-createdAt` | Index on `createdAt` |
-| `GET /courses?search=system+design` | Full-text index or search engine (Elasticsearch) |
-| `GET /posts?cursor=abc123` | Index on cursor column (e.g., `createdAt + id`) |
+| API Pattern                          | Index Needed                                     |
+| ------------------------------------ | ------------------------------------------------ |
+| `GET /users/{id}`                    | Primary key (automatic)                          |
+| `GET /users?email=x`                 | Index on `email`                                 |
+| `GET /orders?userId=x&status=active` | Composite index on `(userId, status)`            |
+| `GET /products?sort=-createdAt`      | Index on `createdAt`                             |
+| `GET /courses?search=system+design`  | Full-text index or search engine (Elasticsearch) |
+| `GET /posts?cursor=abc123`           | Index on cursor column (e.g., `createdAt + id`)  |
 
 #### Why this matters for API design
 
@@ -4933,6 +4926,7 @@ unless the database can answer it efficiently.
 ```
 
 Without proper indexing:
+
 - Pagination becomes slow at scale (OFFSET problem)
 - Filtering creates full table scans
 - Sorting forces expensive in-memory sorts
@@ -5050,8 +5044,8 @@ Response:
 
 ```json
 {
-"id":123,
-"name":"Irfan"
+  "id": 123,
+  "name": "Irfan"
 }
 ```
 
@@ -5069,8 +5063,8 @@ New API:
 
 ```json
 {
-"id":123,
-"fullName":"Irfan Mohammad"
+  "id": 123,
+  "fullName": "Irfan Mohammad"
 }
 ```
 
@@ -5081,7 +5075,7 @@ Old app expects:
 
 ```json
 {
-"name":"..."
+  "name": "..."
 }
 ```
 
@@ -5089,7 +5083,7 @@ Now receives:
 
 ```json
 {
-"fullName":"..."
+  "fullName": "..."
 }
 ```
 
@@ -5107,15 +5101,14 @@ Old:
 
 ```json
 {
-"name":"Irfan"
+  "name": "Irfan"
 }
 ```
 
 New:
 
 ```json
-{
-}
+{}
 ```
 
 Breaking ❌
@@ -5125,7 +5118,7 @@ Old:
 
 ```json
 {
-"name":"Irfan"
+  "name": "Irfan"
 }
 ```
 
@@ -5133,7 +5126,7 @@ New:
 
 ```json
 {
-"fullName":"Irfan"
+  "fullName": "Irfan"
 }
 ```
 
@@ -5144,7 +5137,7 @@ Old:
 
 ```json
 {
-"age":25
+  "age": 25
 }
 ```
 
@@ -5152,7 +5145,7 @@ New:
 
 ```json
 {
-"age":"twenty five"
+  "age": "twenty five"
 }
 ```
 
@@ -5182,8 +5175,8 @@ Old:
 
 ```json
 {
-"id":123,
-"name":"Irfan"
+  "id": 123,
+  "name": "Irfan"
 }
 ```
 
@@ -5191,9 +5184,9 @@ New:
 
 ```json
 {
-"id":123,
-"name":"Irfan",
-"country":"India"
+  "id": 123,
+  "name": "Irfan",
+  "country": "India"
 }
 ```
 
@@ -5239,7 +5232,7 @@ Returns:
 
 ```json
 {
-"name":"Irfan"
+  "name": "Irfan"
 }
 ```
 
@@ -5253,7 +5246,7 @@ Returns:
 
 ```json
 {
-"fullName":"Irfan Mohammad"
+  "fullName": "Irfan Mohammad"
 }
 ```
 
@@ -5450,12 +5443,14 @@ Allow / Deny
 ```
 
 When Basic Auth is acceptable:
+
 - Internal tools behind VPN
 - Server-to-server communication with TLS
 - Quick prototyping
 - CLI tools calling private APIs
 
 Why Basic Auth is dangerous for production:
+
 - Credentials sent with **every** request
 - If intercepted (no TLS), password is exposed
 - No expiry — password works until changed
@@ -5490,7 +5485,7 @@ sequenceDiagram
     participant Browser
     participant Server
     participant SessionStore as Session Store (Redis/DB)
-    
+
     Browser->>Server: POST /login (username + password)
     Server->>SessionStore: Create session (sessionId → userId)
     Server-->>Browser: Set-Cookie: sessionId=abc123
@@ -5507,20 +5502,22 @@ Set-Cookie: sessionId=abc123; HttpOnly; Secure; SameSite=Strict
 
 Important cookie attributes:
 
-| Attribute | Purpose |
-|---|---|
-| `HttpOnly` | JavaScript cannot access — prevents XSS theft |
-| `Secure` | Only sent over HTTPS |
-| `SameSite=Strict` | Not sent on cross-site requests — prevents CSRF |
-| `Max-Age` / `Expires` | Session expiry |
-| `Path` / `Domain` | Scope of the cookie |
+| Attribute             | Purpose                                         |
+| --------------------- | ----------------------------------------------- |
+| `HttpOnly`            | JavaScript cannot access — prevents XSS theft   |
+| `Secure`              | Only sent over HTTPS                            |
+| `SameSite=Strict`     | Not sent on cross-site requests — prevents CSRF |
+| `Max-Age` / `Expires` | Session expiry                                  |
+| `Path` / `Domain`     | Scope of the cookie                             |
 
 Session Auth strengths:
+
 - Easy to implement in traditional web apps
 - Server can invalidate any session instantly (revocation)
 - Browser handles cookie automatically — no client-side token management
 
 Session Auth weaknesses:
+
 - Server must store session state (memory/Redis/DB)
 - Scaling requires shared session store or sticky sessions
 - Not ideal for mobile apps or third-party API consumers
@@ -5531,15 +5528,15 @@ Session Auth weaknesses:
 
 This is one of the most important design decisions.
 
-| Aspect | Session (Cookie) | Token (JWT) |
-|---|---|---|
-| State | Server stores session | Stateless — token contains claims |
-| Storage | Server-side (Redis/DB) | Client-side (localStorage/cookie) |
-| Scalability | Needs shared session store | Any server can verify |
-| Revocation | Easy — delete session | Hard — token valid until expiry |
-| Mobile apps | Awkward — cookies don't fit mobile | Natural — send token in header |
-| Cross-domain | Complex (CORS + cookies) | Simple — just a header |
-| Best for | Traditional web apps | APIs, mobile, microservices, SPAs |
+| Aspect       | Session (Cookie)                   | Token (JWT)                       |
+| ------------ | ---------------------------------- | --------------------------------- |
+| State        | Server stores session              | Stateless — token contains claims |
+| Storage      | Server-side (Redis/DB)             | Client-side (localStorage/cookie) |
+| Scalability  | Needs shared session store         | Any server can verify             |
+| Revocation   | Easy — delete session              | Hard — token valid until expiry   |
+| Mobile apps  | Awkward — cookies don't fit mobile | Natural — send token in header    |
+| Cross-domain | Complex (CORS + cookies)           | Simple — just a header            |
+| Best for     | Traditional web apps               | APIs, mobile, microservices, SPAs |
 
 Senior engineer rule:
 
@@ -6266,9 +6263,9 @@ Response:
 
 ```json
 {
-"id":123,
-"username":"irfan",
-"bio":"Software Engineer"
+  "id": 123,
+  "username": "irfan",
+  "bio": "Software Engineer"
 }
 ```
 
@@ -6439,15 +6436,15 @@ returns:
 
 ```json
 {
-"id":123,
-"name":"Irfan",
-"email":"abc@gmail.com",
-"phone":"123456",
-"address":"Hyderabad",
-"birthDate":"01-01-2000",
-"preferences":{},
-"settings":{},
-"socialLinks":[]
+  "id": 123,
+  "name": "Irfan",
+  "email": "abc@gmail.com",
+  "phone": "123456",
+  "address": "Hyderabad",
+  "birthDate": "01-01-2000",
+  "preferences": {},
+  "settings": {},
+  "socialLinks": []
 }
 ```
 
@@ -6585,9 +6582,9 @@ GraphQL:
 
 ```graphql
 query {
-user(id:123){
-name
-}
+  user(id: 123) {
+    name
+  }
 }
 ```
 
@@ -6597,14 +6594,14 @@ Need more?
 
 ```graphql
 query {
-user(id:123){
-name
-bio
-followers
-posts {
-title
-}
-}
+  user(id: 123) {
+    name
+    bio
+    followers
+    posts {
+      title
+    }
+  }
 }
 ```
 

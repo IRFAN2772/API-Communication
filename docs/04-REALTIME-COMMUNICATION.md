@@ -1159,24 +1159,24 @@ Mail truck picks up once.
 
 ### When batch processing is used
 
-| Use Case | Example |
-|---|---|
-| Data export | "Export all users as CSV" → async job returns file later |
-| ETL pipelines | Nightly: extract from DB → transform → load into data warehouse |
-| Bulk notifications | Send 10M marketing emails → batch, not one-by-one API calls |
-| Report generation | Daily sales report → scheduled batch job |
-| Reconciliation | Compare payment records across systems nightly |
-| Bulk import | Upload 100K products via CSV → process in batch |
+| Use Case           | Example                                                         |
+| ------------------ | --------------------------------------------------------------- |
+| Data export        | "Export all users as CSV" → async job returns file later        |
+| ETL pipelines      | Nightly: extract from DB → transform → load into data warehouse |
+| Bulk notifications | Send 10M marketing emails → batch, not one-by-one API calls     |
+| Report generation  | Daily sales report → scheduled batch job                        |
+| Reconciliation     | Compare payment records across systems nightly                  |
+| Bulk import        | Upload 100K products via CSV → process in batch                 |
 
 ### Batch vs real-time API patterns
 
-| Aspect | Real-time API | Batch Processing |
-|---|---|---|
-| Timing | Immediate | Scheduled or triggered |
-| Volume | One item per request | Thousands/millions per job |
-| Latency expectation | Milliseconds | Minutes to hours |
-| Error handling | Instant response | Retry failed items, report at end |
-| API pattern | `POST /orders` | `POST /exports` → `202 Accepted` → poll for result |
+| Aspect              | Real-time API        | Batch Processing                                   |
+| ------------------- | -------------------- | -------------------------------------------------- |
+| Timing              | Immediate            | Scheduled or triggered                             |
+| Volume              | One item per request | Thousands/millions per job                         |
+| Latency expectation | Milliseconds         | Minutes to hours                                   |
+| Error handling      | Instant response     | Retry failed items, report at end                  |
+| API pattern         | `POST /orders`       | `POST /exports` → `202 Accepted` → poll for result |
 
 ### Batch API design pattern
 

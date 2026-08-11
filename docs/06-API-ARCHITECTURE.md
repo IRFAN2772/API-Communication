@@ -6,14 +6,14 @@
 
 > **Quick Reference Card**
 >
-> | Concept         | Purpose                                    | Key Tools                              |
-> | --------------- | ------------------------------------------ | -------------------------------------- |
+> | Concept         | Purpose                                    | Key Tools                                  |
+> | --------------- | ------------------------------------------ | ------------------------------------------ |
 > | API Gateway     | Single entry point, cross-cutting concerns | NGINX, Kong, AWS API GW, Azure APIM, Envoy |
-> | BFF             | Frontend-specific backend layer            | Node.js, GraphQL, custom services      |
-> | Load Balancer   | Distribute traffic across servers          | AWS ALB/NLB, NGINX, HAProxy            |
-> | Service Mesh    | Service-to-service communication           | Istio, Envoy, Linkerd, Consul          |
-> | OpenAPI/Swagger | API contract & documentation               | Swagger UI, Codegen, Editor            |
-> | Backpressure    | Protect overloaded consumers               | Kafka lag, reactive streams, bulkheads |
+> | BFF             | Frontend-specific backend layer            | Node.js, GraphQL, custom services          |
+> | Load Balancer   | Distribute traffic across servers          | AWS ALB/NLB, NGINX, HAProxy                |
+> | Service Mesh    | Service-to-service communication           | Istio, Envoy, Linkerd, Consul              |
+> | OpenAPI/Swagger | API contract & documentation               | Swagger UI, Codegen, Editor                |
+> | Backpressure    | Protect overloaded consumers               | Kafka lag, reactive streams, bulkheads     |
 
 ---
 
