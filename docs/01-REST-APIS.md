@@ -4,6 +4,27 @@
 
 # Phase 1 — REST APIs: Zero to Hero
 
+<div class="rest-hero">
+<span class="rs-kicker">PHASE 01 / THE REST STUDIO</span>
+<p class="rest-hero-title">See the contract.<br>Break the connection.<br>Protect the state.</p>
+<p class="rest-hero-copy">One learning platform. Three experiments. Follow a resource through HTTP, lose a reply after a commit, and let two editors meet at a version boundary. Every step exposes what the client knows, what the API decides, and what storage actually contains.</p>
+<div class="rest-hero-system" aria-label="Client, API, and storage are separate boundaries">
+<span>CLIENT<br>knowledge</span><b aria-hidden="true">→</b><span>API<br>contract</span><b aria-hidden="true">→</b><span>STORAGE<br>effect</span>
+</div>
+<nav class="rest-route" aria-label="Phase 1 visual route">
+<a href="#/docs/01-REST-APIS?id=visual-example-http-resource-lab"><span>01 / METHOD + MESSAGE</span><strong>Open the resource lab</strong>Read, create, replace, patch, delete; then reject an invalid request.</a>
+<a href="#/docs/01-REST-APIS?id=visual-example-lost-response-and-retry"><span>02 / TIMEOUT + RETRY</span><strong>Lose the response</strong>Compare duplicate orders, persisted replay, and key conflicts.</a>
+<a href="#/docs/01-REST-APIS?id=visual-example-two-editors-and-etags"><span>03 / VERSION + CONFLICT</span><strong>Meet the second editor</strong>Prevent a lost update, fetch the new version, and review a merge.</a>
+</nav>
+<p class="rest-route-note"><strong>Visual route:</strong> jump to these three worked examples and their adjacent theory. <strong>Complete reading:</strong> use the Table of Contents below for the full original chapter, including design, caching, and production patterns. These routes complement each other; the long reference has not been replaced.</p>
+</div>
+
+**Before you begin:** Know client, server, request, response, URL, and JSON from Phase 0. You do **not** need HTTP/2 or HTTP/3 internals. The scenes use readable HTTP/1.1 transcripts to teach semantics shared across HTTP versions.
+
+**One course catalogue across the stages:** Our primary example is the fictional Course API at `learn.example`: `course-101` is **API Fundamentals** (initially 30 seats), an author can create `course-102` (**REST Studio**, 20 seats), and `learner-7` browses the catalogue. Later `/orders` examples model enrollment orders for this same course, not an unrelated shopping application or a real payment. Each visual experiment starts from its own stated snapshot; one experiment never saves changes into another. Company, product, and social-app examples are optional transfer scenarios for applying the same principles elsewhere.
+
+**Studio controls:** Nothing starts automatically. Choose an outcome, then use Previous / Next step / Play / Reset. Keyboard users can Tab to each control; Left/Right step, Home resets, and Escape pauses while controls are focused. Reduced-motion preference disables playback and animation, but manual steps remain. Depth view can be turned off. All examples run locally with fictional data: no server, account, real enrollment, or payment.
+
 Before we learn GraphQL, gRPC, API Gateways, Authentication, etc., we must master REST APIs because:
 
 ```
@@ -20,7 +41,7 @@ HTTP = Traffic Rules
 REST = Driving Style
 ```
 
-You already learned HTTP/1.1 → HTTP/2 → HTTP/3 previously, so now we'll build on top of that knowledge.
+We'll build on HTTP request/response fundamentals. HTTP/1.1, HTTP/2, and HTTP/3 differ in framing and transport; you can learn their internals separately without blocking this chapter.
 
 ---
 
@@ -42,16 +63,20 @@ You already learned HTTP/1.1 → HTTP/2 → HTTP/3 previously, so now we'll buil
 | ---- | -------------------- | --------------- |
 | 200  | Success              | ✅ Success      |
 | 201  | Created              | ✅ Success      |
-| 204  | Deleted Successfully | ✅ Success      |
-| 304  | Not Modified         | ↪ Redirect      |
+| 204  | Success, no content  | ✅ Success      |
+| 304  | Not Modified         | ↪ 3xx / cache validation |
 | 400  | Invalid Request      | ❌ Client Error |
-| 401  | Not Logged In        | ❌ Client Error |
+| 401  | Valid authentication required | ❌ Client Error |
 | 403  | No Permission        | ❌ Client Error |
 | 404  | Not Found            | ❌ Client Error |
 | 409  | Conflict             | ❌ Client Error |
+| 412  | Precondition Failed  | ❌ Client Error |
+| 428  | Precondition Required (API policy) | ❌ Client Error |
 | 429  | Rate Limited         | ❌ Client Error |
 | 500  | Internal Error       | 💥 Server Error |
 | 503  | Service Unavailable  | 💥 Server Error |
+
+**Semantics, not slogans:** POST asks the target resource to process the supplied representation; creation is one common use. PUT creates or replaces the target's state under its contract. PATCH's patch format must be defined by the API. GET, PUT, and DELETE are idempotent in their **intended effect**, not necessarily identical in their responses. POST is not idempotent by method semantics, though an API can add a documented replay contract. A 304 is in the 3xx class but does not tell the browser to navigate elsewhere.
 
 ---
 
@@ -168,7 +193,7 @@ Later lessons:
 ## Chapter 1: What Problem Was REST Trying to Solve?
 
 Let's go back to early internet.
-Imagine Amazon in the early days.
+As an **optional transfer scenario**, imagine Amazon in the early days.
 They have:
 
 ```
@@ -247,7 +272,9 @@ This was revolutionary.
 
 Most important word in REST.
 Let's understand deeply.
-Imagine Instagram.
+In our learning platform, **Users, Courses, Progress, and Certificates** are resources. The question "fetch API Fundamentals" points to a course, not a function named `getCourseDetails`.
+
+**Optional transfer scenario:** imagine Instagram.
 What exists inside Instagram?
 
 ```
@@ -297,10 +324,10 @@ NOT actions
 Bad Design:
 
 ```http
-/getUser
-/fetchUser
-/removeUser
-/updateUser
+/getCourse
+/fetchCourse
+/removeCourse
+/updateCourse
 ```
 
 Looks like function calls.
@@ -308,8 +335,8 @@ Looks like function calls.
 Better REST Design:
 
 ```http
-/users
-/users/123
+/courses
+/courses/course-101
 ```
 
 Resource-focused.
@@ -362,6 +389,7 @@ REST resource address:
 
 ```http
 /users
+/courses
 /orders
 /products
 ```
@@ -371,42 +399,43 @@ These addresses are URLs.
 Example
 
 ```http
-https://amazon.com/products
+https://learn.example/courses
 ```
 
 means:
 
 ```
-Product resource collection
+Course resource collection
 ```
 
-Specific product:
+Specific course:
 
 ```http
-https://amazon.com/products/123
+https://learn.example/courses/course-101
 ```
 
 means:
 
 ```
-Product whose id = 123
+Course whose id = course-101: API Fundamentals
 ```
 
 Think:
 
 ```
-/products
+/courses
 |
-+--- Product 1
-+--- Product 2
-+--- Product 3
++--- course-101: API Fundamentals (starting catalogue)
++--- course-102: REST Studio (after the create example)
 ```
 
 Specific item:
 
 ```http
-/products/3
+/courses/course-101
 ```
+
+**Optional product transfer:** `https://amazon.com/products` identifies a product collection; `/products/123` identifies product 123 and `/products/3` identifies product 3. The collection-versus-item distinction is the same.
 
 ### URI vs URL
 
@@ -433,7 +462,7 @@ URL ❌
 Example:
 
 ```
-https://api.amazon.com/users/123
+https://learn.example/courses/course-101
 ```
 
 Identifies resource.
@@ -453,19 +482,21 @@ Not every URI is URL.
 Bad:
 
 ```http
-/getUsers
-/createUser
-/deleteUser
+/getCourses
+/createCourse
+/deleteCourse
 ```
 
 Good:
 
 ```http
-/users
-/users/123
+/courses
+/courses/course-101
 ```
 
 Because actions come from HTTP methods.
+
+**Optional product naming transfer:**
 
 Bad:
 
@@ -509,7 +540,7 @@ HTTP Method tells us WHAT operation.
 Example:
 
 ```http
-/users
+/courses
 ```
 
 We now need operation.
@@ -525,41 +556,42 @@ Fetch data
 Example:
 
 ```http
-GET /users
+GET /courses
 ```
 
 Meaning:
 
 ```
-Give me all users.
+Give me the course collection.
 ```
 
 Example:
 
 ```http
-GET /users/123
+GET /courses/course-101
 ```
 
 Meaning:
 
 ```
-Give me user 123.
+Give me course-101: API Fundamentals.
 ```
 
 #### Real Example
 
-Instagram:
+Course API:
 
 ```http
-GET /posts/100
+GET /courses/course-101
 ```
 
 Server:
 
 ```json
 {
-  "id": 100,
-  "caption": "Hello World"
+  "id": "course-101",
+  "title": "API Fundamentals",
+  "seats": 30
 }
 ```
 
@@ -572,6 +604,8 @@ GET /createOrder
 
 Very wrong.
 
+More precisely: GET must not request a business-state change. Incidental logging or metrics can still happen; "safe" describes the requested semantics, not zero server-side activity.
+
 ### POST
 
 Means:
@@ -583,29 +617,31 @@ Create something.
 Example:
 
 ```http
-POST /users
+POST /courses
 ```
 
 Body:
 
 ```json
 {
-  "name": "Irfan"
+  "title": "REST Studio",
+  "seats": 20
 }
 ```
 
 Meaning:
 
 ```
-Create a new user.
+Create a new course.
 ```
 
 Server:
 
 ```json
 {
-  "id": 123,
-  "name": "Irfan"
+  "id": "course-102",
+  "title": "REST Studio",
+  "seats": 20
 }
 ```
 
@@ -619,36 +655,41 @@ Means:
 Replace an existing resource.
 ```
 
-Imagine user:
+Imagine the writable fields of API Fundamentals (the server-owned ID remains `course-101`):
 
 ```json
 {
-  "name": "Irfan",
-  "age": 25
+  "title": "API Fundamentals",
+  "seats": 30
 }
 ```
 
 PUT:
 
+```http
+PUT /courses/course-101
+```
+
 ```json
 {
-  "name": "Mohammad",
-  "age": 30
+  "title": "REST Studio",
+  "seats": 20
 }
 ```
 
-Old object completely replaced.
+Both writable fields are replaced; the server-owned ID is preserved. This replacement scenario renames course-101, rather than creating course-102.
 
 Result:
 
 ```json
 {
-  "name": "Mohammad",
-  "age": 30
+  "id": "course-101",
+  "title": "REST Studio",
+  "seats": 20
 }
 ```
 
-Entire resource updated.
+The complete writable representation is updated.
 
 ### PATCH
 
@@ -662,16 +703,21 @@ Current:
 
 ```json
 {
-  "name": "Irfan",
-  "age": 25
+  "id": "course-101",
+  "title": "API Fundamentals",
+  "seats": 30
 }
 ```
 
 PATCH:
 
+```http
+PATCH /courses/course-101
+```
+
 ```json
 {
-  "age": 26
+  "seats": 20
 }
 ```
 
@@ -679,14 +725,15 @@ Result:
 
 ```json
 {
-  "name": "Irfan",
-  "age": 26
+  "id": "course-101",
+  "title": "API Fundamentals",
+  "seats": 20
 }
 ```
 
 Only one field changed.
 
-Real world:
+**Optional transfer scenario:**
 Instagram update bio:
 
 ```http
@@ -704,13 +751,13 @@ Remove resource.
 Example:
 
 ```http
-DELETE /users/123
+DELETE /courses/course-101
 ```
 
 Meaning:
 
 ```
-Delete user 123.
+Remove course-101 from the catalogue.
 ```
 
 ### HTTP Method Cheat Sheet
@@ -729,127 +776,83 @@ Memorise this forever.
 
 ## First REST API Design
 
-Let's design:
+Let's design a learning platform, as in the original Skillsoft example, without needing an account, paid tool, or backend. Start with one connected story: **learner-7 wants to browse API Fundamentals**, and an author manages the same course catalogue.
 
-```
-Skillsoft Learning Platform
-```
-
-Resources:
-
-```
-Users
-Courses
-Progress
-Certificates
-```
-
-Read Courses
-
-```http
-GET /courses
-```
-
-Get specific course
-
-```http
-GET /courses/123
-```
-
-Create course
-
-```http
-POST /courses
-```
-
-Update course
-
-```http
-PATCH /courses/123
-```
-
-Delete course
-
-```http
-DELETE /courses/123
-```
-
-Simple.
-Predictable.
-Beautiful.
-That's REST philosophy.
+<rest-design class="rest-design">
+<header>
+<p class="rd-kicker">COURSE API / FROM INTENT TO VISIBLE STATE</p>
+<h3>One platform. Four resources. One contract to follow.</h3>
+<p>Choose the thing first, then describe the operation. Follow intent → resource → HTTP request → response → visible state. A catalogue read is not enrollment, progress, or a certificate.</p>
+</header>
+<div class="rd-map">
+<svg class="rd-tree" viewBox="0 0 280 250" role="img" aria-label="Resource tree: a learning platform has Users, Courses, Progress, and Certificates. Courses is the resource used in the HTTP walkthrough.">
+<path d="M42 42V218M42 80H90M42 126H90M42 172H90M42 218H90"></path>
+<rect x="12" y="10" width="250" height="34" rx="8"></rect>
+<text x="26" y="32">Learning platform</text>
+<rect x="90" y="62" width="172" height="34" rx="8"></rect>
+<text x="104" y="84">Users</text>
+<rect class="rd-tree-course" x="90" y="108" width="172" height="34" rx="8"></rect>
+<text x="104" y="130">Courses / our target</text>
+<rect x="90" y="154" width="172" height="34" rx="8"></rect>
+<text x="104" y="176">Progress</text>
+<rect x="90" y="200" width="172" height="34" rx="8"></rect>
+<text x="104" y="222">Certificates</text>
+</svg>
+<ul class="rd-resource-list" aria-label="Resource tree text alternative">
+<li><strong>Users</strong><span>Who learns? learner-7 is the learner, not the course being fetched.</span></li>
+<li><strong>Courses</strong><span>What can they learn? course-101 is API Fundamentals; creating REST Studio adds course-102.</span></li>
+<li><strong>Progress</strong><span>How far has a learner advanced in a course? A course GET does not update progress.</span></li>
+<li><strong>Certificates</strong><span>What completion evidence has a learner earned for a course? A course GET does not issue one.</span></li>
+</ul>
+</div>
+<div data-rd-enhancement></div>
+<details class="rd-reference" open>
+<summary>Static reference — all five course endpoint examples</summary>
+<p>Each row starts independently with course-101, API Fundamentals, 30 seats. These are the same five operations as the original design; course-101 replaces the illustrative item ID 123. The course-102 card exists only after the create example.</p>
+<div class="rd-table-wrap" tabindex="0" role="region" aria-label="Scrollable five-endpoint course contract">
+<table>
+<thead><tr><th scope="col">Intent → resource</th><th scope="col">HTTP request</th><th scope="col">Response → visible state</th></tr></thead>
+<tbody>
+<tr><td><strong>Read Courses</strong><br>Browse the collection.</td><td><code>GET /courses</code><br>No request body.</td><td><code>200 OK</code> + a JSON array containing API Fundamentals. Show the catalogue; no write or enrollment occurs.</td></tr>
+<tr><td><strong>Get specific course</strong><br>Open API Fundamentals.</td><td><code>GET /courses/course-101</code><br>No request body.</td><td><code>200 OK</code> + <code>{"id":"course-101","title":"API Fundamentals","seats":30}</code>. Show its details; storage is unchanged.</td></tr>
+<tr><td><strong>Create course</strong><br>Add REST Studio to the collection.</td><td><code>POST /courses</code><br>JSON body: <code>{"title":"REST Studio","seats":20}</code>.</td><td><code>201 Created</code> + the new course JSON and <code>Location: /courses/course-102</code>. Show both courses; the server allocates the new ID.</td></tr>
+<tr><td><strong>Update course</strong><br>Change only API Fundamentals' seats.</td><td><code>PATCH /courses/course-101</code><br>JSON body: <code>{"seats":20}</code>.</td><td><code>200 OK</code> + course-101 with 20 seats. Preserve the ID and title; update the visible seats after receiving the reply.</td></tr>
+<tr><td><strong>Delete course</strong><br>Remove API Fundamentals.</td><td><code>DELETE /courses/course-101</code><br>No request body.</td><td><code>204 No Content</code>, no response body. Remove the course card; no cascading progress or certificate behavior is modeled.</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Read the contract, not just the URL:</strong> the HTTP/1.1 teaching requests use <code>Host: learn.example</code> and <code>Accept: application/json</code>; JSON write bodies use <code>Content-Type: application/json</code>. Responses with JSON declare that media type; a 204 has no body. This PATCH uses the same small field-assignment contract as the resource lab, not a universal patch format.</p>
+<p><strong>Connected trace:</strong> “change only seats” → course-101 → PATCH with seats 20 → 200 with the updated representation → the existing API Fundamentals card shows 20 seats. The API can finish its write before the client receives the reply; sending a request alone is not proof that the visible state should change.</p>
+<p>Simple. Predictable. Beautiful. That is the REST philosophy: a stable resource address, an explicit operation, and a result the client can interpret.</p>
+</details>
+<details class="rd-reference">
+<summary>Self-check — which resource, request, and visible change?</summary>
+<p>For “change only API Fundamentals' seats to 20”: should you target Users or Courses? Should you POST a second course, or PATCH the existing one? Does a 204 contain an empty JSON object?</p>
+<p><strong>Answers:</strong> Courses, specifically <code>/courses/course-101</code>. PATCH with <code>{"seats":20}</code> preserves the ID and title under this API's contract. A 204 has no body at all. The catalogue read does not create an enrollment for learner-7.</p>
+</details>
+<p class="rd-limit"><strong>Without JavaScript:</strong> the resource tree, five endpoint examples, connected trace, and self-check above remain readable. With JavaScript, manual controls add request/response transcripts and before/after cards. All data is fictional and resets; nothing is sent or saved.</p>
+</rest-design>
 
 ### REST Mental Model
 
-Whenever you see a requirement,
-DO NOT think:
+Whenever you see a requirement, do not start by putting a **Function**, **Method**, or **Action** name into a URL. Think **Resource** first: “What thing are we working on?” Then choose the HTTP method for the intended action. HTTP methods still matter; the principle is to separate the address from the operation, not to pretend the operation does not exist.
 
-```
-Function
-Method
-Action
-```
-
-Think:
-
-```
-Resource
-```
-
-Example:
-Requirement:
-
-```
-Fetch course details
-```
-
-Junior:
-
-```http
-/getCourseDetails
-```
-
-Senior:
-
-```http
-GET /courses/123
-```
-
-Requirement:
-
-```
-Create user
-```
-
-Junior:
-
-```http
-/createUser
-```
-
-Senior:
-
-```http
-POST /users
-```
-
-Requirement:
-
-```
-Delete order
-```
-
-Junior:
-
-```http
-/deleteOrder
-```
-
-Senior:
-
-```http
-DELETE /orders/123
-```
+<div class="rest-design">
+<p class="rd-kicker">REQUIREMENT → RESOURCE → CONTRACT</p>
+<p><strong>Primary story:</strong> “fetch course details” means learner-7 wants a representation of API Fundamentals. Courses is the resource family; course-101 identifies the item; GET asks to read it. A successful 200 response lets the client render its details without changing enrollment or progress.</p>
+<div class="rd-table-wrap" tabindex="0" role="region" aria-label="Scrollable resource-oriented mental model examples">
+<table>
+<thead><tr><th scope="col">Requirement</th><th scope="col">Action-shaped URL</th><th scope="col">Resource + HTTP method</th></tr></thead>
+<tbody>
+<tr><td>Fetch course details</td><td><code>/getCourseDetails</code></td><td><code>GET /courses/course-101</code></td></tr>
+<tr><td>Create course — primary example</td><td><code>/createCourse</code></td><td><code>POST /courses</code></td></tr>
+<tr><td>Create user — optional transfer</td><td><code>/createUser</code></td><td><code>POST /users</code></td></tr>
+<tr><td>Delete order — optional transfer</td><td><code>/deleteOrder</code></td><td><code>DELETE /orders/123</code>, if that API permits deletion.</td></tr>
+</tbody>
+</table>
+</div>
+<p>The original user and order requirements remain useful transfer exercises; they do not change our primary Course API story. Later enrollment orders relate learner-7 to course-101. Compare the URL shapes by their semantics, not the designer's job title.</p>
+</div>
 
 ### Interview Golden Rule
 
@@ -870,6 +873,8 @@ This single sentence can carry you through most backend interviews.
 ### Homework Thought Exercise
 
 Try to design REST APIs for:
+
+**Optional transfer exercises:** the companies below provide alternative domains, not a replacement for our continuing course example.
 
 ```
 WhatsApp
@@ -963,17 +968,17 @@ Without this, later topics won't make sense.
 ## REST Request-Response Lifecycle
 
 Let's start with the complete picture.
-Imagine you open Instagram.
+Imagine learner-7 opens the learning platform.
 You click:
 
 ```
-View Post #100
+View API Fundamentals (course-101)
 ```
 
 Browser/App sends:
 
 ```http
-GET /posts/100
+GET /courses/course-101
 ```
 
 The journey looks like:
@@ -1008,7 +1013,7 @@ sequenceDiagram
     participant API as API Server
     participant DB as Database
 
-    C->>LB: HTTP Request (GET /posts/100)
+    C->>LB: HTTP Request (GET /courses/course-101)
     LB->>API: Forward Request
     API->>DB: Query Data
     DB-->>API: Return Data
@@ -1043,24 +1048,60 @@ HTTP request is similar.
 Structure:
 
 ```http
-GET /users/123 HTTP/1.1
-Host: api.company.com
+POST /courses HTTP/1.1
+Host: learn.example
 Authorization: Bearer xyz
 Content-Type: application/json
 
 {
-"some":"data"
+"title":"REST Studio",
+"seats":20
 }
 ```
 
 Let's understand every piece.
+
+### Visual example: HTTP resource lab
+
+**Theory first — separate the address from the operation.** `/courses/course-101` names one course; `/courses` names the collection. The method tells the API what you want to do to that target. `Accept` asks for a response representation; `Content-Type` describes a supplied body. Neither header validates a body or grants access on its own. The blank line marks the end of headers in these HTTP/1.1 transcripts.
+
+Our fictional course contract is deliberately small:
+
+| Method + target | Supplied body | Intended effect | Reply in this example |
+| --- | --- | --- | --- |
+| `GET /courses/course-101` | None | Read the course; do not enroll anyone | `200` + course JSON |
+| `POST /courses` | `{"title":"REST Studio","seats":20}` | Allocate a new course ID | `201` + JSON + `Location: /courses/course-102` |
+| `PUT /courses/course-101` | Both `title` and `seats` | Replace the writable representation, preserve server-owned ID | `200` + replacement |
+| `PATCH /courses/course-101` | `{"seats":20}` | Assign one field; retain the title | `200` + changed course |
+| `DELETE /courses/course-101` | None | Remove the course mapping | `204`, no body |
+| Invalid create | Empty title or seats outside 0–200 | Reject before a write | `400` + error JSON |
+| Read a missing ID | None | No matching resource to represent | `404` + error JSON |
+
+The model accepts titles of 1–80 characters with some non-whitespace text, and integer seats from 0–200. A complete PUT supplies both writable fields; this PATCH uses a declared JSON field-assignment contract, **not** JSON Patch or JSON Merge Patch. A real API also needs authentication, authorization, media-type checks, and a published schema. They are outside this scene, not magically provided by REST.
+
+<rest-visual lesson="anatomy">
+<p><strong>Static walkthrough — resource lab:</strong> Begin with course-101, title API Fundamentals, seats 30. GET returns 200 without changing it. POST creates course-102 and returns 201 with Location. PUT changes title and seats; PATCH changes only seats. DELETE removes course-101 and returns 204 with no body. An invalid POST returns 400 without a write; GET course-999 returns 404 without a write. With JavaScript available, choose each outcome and inspect the request, response, and before/after storage snapshots.</p>
+</rest-visual>
+
+**Worked trace:** choose **PATCH / change seats**. At step 1 the client has a draft body and storage still has 30 seats. At step 3 the API validates the assignment. At step 4 storage contains 20 seats and the original title, while the client still does not know the result. Only step 6 confirms receipt of the response. Contrast **400 / invalid body**: storage never changes. A request being sent is not evidence of a successful write.
+
+**Why status and effect are different:** DELETE can return `204` once and `404` later, while its intended effect remains "that resource mapping is absent." GET can return different JSON after another editor changes the course, while still being safe and idempotent. PUT at a missing target can create a resource if that API permits it; this bounded lab deliberately returns `404` instead. These choices are part of the API contract.
+
+**Self-check:** (1) Does changing `Accept` to JSON make invalid seats valid? (2) If you PATCH seats to 20 twice, do you end at 10? (3) Does a 204 have an empty JSON object as its body?
+
+<details>
+<summary>Answers — resource lab</summary>
+<p>(1) No. Representation negotiation and schema validation are separate. (2) No. This assignment ends at 20 both times; an increment/decrement operation would have different semantics. (3) No. A 204 response has no content; it is not an empty-object response and is not exclusive to DELETE.</p>
+</details>
+
+**Primary references:** [HTTP method semantics, RFC 9110 §9](https://www.rfc-editor.org/rfc/rfc9110.html#section-9), [201 Created, §15.3.2](https://www.rfc-editor.org/rfc/rfc9110.html#section-15.3.2), [204 No Content, §15.3.5](https://www.rfc-editor.org/rfc/rfc9110.html#section-15.3.5), and [PATCH, RFC 5789 §2](https://www.rfc-editor.org/rfc/rfc5789.html#section-2). These standards define HTTP semantics; the course schema and status policies above are original teaching choices.
 
 ### Part 1: Request Line
 
 Example:
 
 ```http
-GET /users/123 HTTP/1.1
+GET /courses/course-101 HTTP/1.1
 ```
 
 Contains:
@@ -1075,22 +1116,27 @@ Breakdown:
 
 ```
 GET → Operation
-/users/123 → Resource
+/courses/course-101 → Resource
 HTTP/1.1 → Protocol Version
 ```
 
 Example:
 
 ```http
-POST /orders HTTP/2
+:method: POST
+:scheme: https
+:authority: learn.example
+:path: /orders
 ```
 
 Means:
 
 ```
-Create order
+Create an enrollment order for learner-7 and course-101
 using HTTP/2
 ```
+
+That is an illustrative set of HTTP/2 pseudo-headers, not an HTTP/1.1 request line. HTTP/2 and HTTP/3 do not transmit a textual `POST /orders HTTP/2` start line.
 
 ### Part 2: Headers
 
@@ -1164,7 +1210,7 @@ Let's learn the important ones.
 Example:
 
 ```http
-Host: api.instagram.com
+Host: learn.example
 ```
 
 Tells server:
@@ -1301,7 +1347,7 @@ This is also how API versioning can work via headers:
 Accept: application/vnd.company.v2+json
 ```
 
-Senior engineers use content negotiation for backward-compatible format evolution without changing URLs.
+Content negotiation can support backward-compatible format evolution without changing URLs when the API defines that contract.
 
 We'll revisit later.
 
@@ -1337,8 +1383,8 @@ Access Tokens
 #### Example Request
 
 ```http
-GET /courses/123 HTTP/1.1
-Host: api.skillsoft.com
+GET /courses/course-101 HTTP/1.1
+Host: learn.example
 Authorization: Bearer xyz
 Accept: application/json
 ```
@@ -1346,9 +1392,9 @@ Accept: application/json
 Read it like English:
 
 ```
-Fetch course 123
-from skillsoft
-I am authorised
+Fetch course-101: API Fundamentals
+from the learning platform
+I am supplying credentials; the server must check them
 Return JSON
 ```
 
@@ -1369,18 +1415,18 @@ Request Body
 ```
 
 Example:
-Create user.
+Create a course.
 
 ```http
-POST /users
+POST /courses
 ```
 
 Body:
 
 ```json
 {
-  "name": "Irfan",
-  "email": "abc@gmail.com"
+  "title": "REST Studio",
+  "seats": 20
 }
 ```
 
@@ -1409,7 +1455,7 @@ Imagine sending data.
 Bad:
 
 ```
-name=irfan-age=25-country=india
+title=api-fundamentals-seats=30
 ```
 
 Hard to parse.
@@ -1418,8 +1464,8 @@ JSON:
 
 ```json
 {
-  "name": "Irfan",
-  "age": 25
+  "title": "API Fundamentals",
+  "seats": 30
 }
 ```
 
@@ -1435,7 +1481,7 @@ Object:
 
 ```json
 {
-  "name": "Irfan"
+  "title": "API Fundamentals"
 }
 ```
 
@@ -1443,36 +1489,39 @@ Multiple values:
 
 ```json
 {
-  "name": "Irfan",
-  "age": 25
+  "title": "API Fundamentals",
+  "seats": 30
 }
 ```
 
 Array:
 
 ```json
-["Java", "NodeJS", "React"]
+["API Fundamentals", "REST Studio"]
 ```
 
 Nested:
 
 ```json
 {
-  "name": "Irfan",
-  "skills": ["NodeJS", "React"]
+  "title": "API Fundamentals",
+  "topics": ["HTTP", "REST"]
 }
 ```
 
 Real API Response
 
+An illustrative learner representation can nest course data (these extra learner/topic fields are not part of the bounded studio schema):
+
 ```json
 {
-  "id": 123,
-  "name": "Irfan",
+  "id": "learner-7",
+  "name": "Example learner",
   "courses": [
     {
-      "id": 1,
-      "name": "System Design"
+      "id": "course-101",
+      "title": "API Fundamentals",
+      "seats": 30
     }
   ]
 }
@@ -1493,8 +1542,9 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-"id":123,
-"name":"Irfan"
+"id":"course-101",
+"title":"API Fundamentals",
+"seats":30
 }
 ```
 
@@ -1540,7 +1590,7 @@ Without reading body.
 
 2xx -> Success
 
-3xx -> Redirect
+3xx -> Redirection class (includes cache validation with 304)
 
 4xx -> Client Error
 
@@ -1561,7 +1611,7 @@ Everything worked.
 Example:
 
 ```http
-GET /users/123
+GET /courses/course-101
 ```
 
 Response:
@@ -1581,7 +1631,7 @@ New resource created.
 Example:
 
 ```http
-POST /users
+POST /courses
 ```
 
 Response:
@@ -1603,7 +1653,7 @@ Nothing to return
 Example:
 
 ```http
-DELETE /users/123
+DELETE /courses/course-101
 ```
 
 Response:
@@ -1614,9 +1664,7 @@ Response:
 
 ### Client Errors
 
-These are your fault.
-Server understood.
-You made mistake.
+The request cannot be fulfilled as submitted: for example, its credentials, syntax, target, or preconditions may be unsuitable. A 4xx is not a moral judgement or proof that the user made a mistake; stale versions and policy conflicts are normal application outcomes.
 
 #### 400 Bad Request
 
@@ -1624,7 +1672,8 @@ Example:
 
 ```json
 {
-  "email": "not-an-email"
+  "title": "",
+  "seats": -1
 }
 ```
 
@@ -1645,7 +1694,7 @@ Request invalid.
 Means:
 
 ```
-Authentication missing.
+Valid authentication credentials are missing or invalid.
 ```
 
 Example:
@@ -1658,7 +1707,10 @@ Server:
 
 ```http
 401 Unauthorized
+WWW-Authenticate: Bearer
 ```
+
+401 requires an authentication challenge appropriate to the scheme. A logged-in user can still receive 401 when credentials expire.
 
 #### 403 Forbidden
 
@@ -1672,10 +1724,10 @@ Who are you?
 403:
 
 ```
-I know who you are
-
-You don't have permission
+I refuse to fulfill this request
 ```
+
+Often this means an authenticated user lacks permission, but 403 does not itself prove the server knows the user's identity.
 
 Example:
 Employee trying to access:
@@ -1696,10 +1748,10 @@ Very common.
 Example:
 
 ```http
-GET /users/999999
+GET /courses/course-999
 ```
 
-User doesn't exist.
+This course doesn't exist.
 Response:
 
 ```http
@@ -1709,7 +1761,7 @@ Response:
 #### 409 Conflict
 
 Super important in real systems.
-Example:
+**Optional user-account transfer example** (the course schema above does not contain an email field):
 
 ```
 Email must be unique.
@@ -1802,15 +1854,19 @@ Deployment issue
 | ---- | -------------------- |
 | 200  | Success              |
 | 201  | Created              |
-| 204  | Deleted Successfully |
+| 204  | Success, no content  |
 | 400  | Invalid Request      |
-| 401  | Not Logged In        |
+| 401  | Valid authentication required |
 | 403  | No Permission        |
 | 404  | Not Found            |
 | 409  | Conflict             |
+| 412  | Precondition Failed  |
+| 428  | Precondition Required (API policy) |
 | 429  | Rate Limited         |
 | 500  | Internal Error       |
 | 503  | Service Unavailable  |
+
+204 means successful fulfillment with no content, not specifically deletion. 401 means valid authentication is required, not simply "not logged in." Use the more precise definitions above.
 
 Memorise.
 
@@ -1819,15 +1875,15 @@ Memorise.
 Request:
 
 ```http
-POST /users
+POST /courses
 ```
 
 Body:
 
 ```json
 {
-  "name": "Irfan",
-  "email": "irfan@gmail.com"
+  "title": "REST Studio",
+  "seats": 20
 }
 ```
 
@@ -1835,15 +1891,16 @@ Response:
 
 ```http
 201 Created
+Location: /courses/course-102
 ```
 
 Body:
 
 ```json
 {
-  "id": 123,
-  "name": "Irfan",
-  "email": "irfan@gmail.com"
+  "id": "course-102",
+  "title": "REST Studio",
+  "seats": 20
 }
 ```
 
@@ -1851,10 +1908,10 @@ Another example.
 Request:
 
 ```http
-GET /users/999
+GET /courses/course-999
 ```
 
-User missing.
+Course missing.
 Response:
 
 ```http
@@ -1865,7 +1922,7 @@ Body:
 
 ```json
 {
-  "error": "User not found"
+  "error": "Course not found"
 }
 ```
 
@@ -1908,11 +1965,15 @@ This entire flow happens in milliseconds.
 
 ### What Senior Engineers Think About
 
+These are **design questions beyond CRUD**, not claims about a job title.
+
 When they see:
 
 ```http
 POST /orders
 ```
+
+Here the order is an enrollment request for learner-7 and course-101, extending our course story.
 
 They immediately think:
 
@@ -1953,14 +2014,16 @@ Example:
 
 GET /courses?page=2&pageSize=20
 
-GET /products?category=laptop
+GET /courses?topic=rest
 
-GET /users?sort=name
+GET /courses?sort=title
 
-GET /courses?search=system+design
+GET /courses?search=API+Fundamentals
 ```
 
 This is where APIs start resembling real-world systems like Amazon, Instagram, Skillsoft, Netflix, and WhatsApp.
+
+**Optional transfer:** `GET /products?category=laptop` and `GET /users?sort=name` apply the same query-parameter idea to products and users.
 
 ---
 
@@ -3158,6 +3221,8 @@ Running it 100 times
 produces same final state.
 ```
 
+For HTTP, this means the **intended effect on the server** of multiple identical requests is the same as one. It does not promise identical response bytes or status codes, prevent incidental logs, or protect against another client's intervening update. Distinguish three questions: is a method safe, is its intended effect idempotent, and does this API have a replay/deduplication contract?
+
 ### Real-Life Example
 
 Imagine a room.
@@ -3269,7 +3334,7 @@ GET /users/123
 ```
 
 Read only.
-Always same.
+No requested business-state change. The returned data can change over time.
 ✅ Idempotent
 
 #### DELETE
@@ -3420,6 +3485,8 @@ Client now thinks:
 Payment failed
 ```
 
+That is a tempting but invalid conclusion: the only justified observation is **"no response received before my timeout; outcome unknown."**
+
 But actually:
 
 ```
@@ -3471,7 +3538,7 @@ You design around it.
 
 ## Chapter 4: Idempotency Keys
 
-Production solution.
+A production pattern, provided the API implements and documents its guarantees.
 
 Imagine Stripe.
 Client generates:
@@ -3515,8 +3582,7 @@ Server checks:
 Already processed.
 ```
 
-Returns old response.
-No duplicate charge.
+Returns the recorded response under the API's replay contract.
 
 Result:
 
@@ -3527,6 +3593,60 @@ not
 
 2 payments
 ```
+
+This desired result is not guaranteed by a header alone. The service must scope the key, bind it to the request, coordinate concurrent attempts, and durably couple the replay record to the business effect. An external processor also needs its own idempotency/reconciliation contract; a local database transaction cannot atomically commit a remote charge.
+
+### Visual example: Lost response and retry
+
+**Theory first — a timeout changes knowledge, not necessarily state.** The client sends a command, the API may commit it, and the return message may disappear. From the client's perspective, "server never received it" and "server committed it but the reply was lost" can look the same. Retrying a create command without a duplicate-effect contract can therefore create another resource.
+
+We use **fictional enrollment orders**, not payments:
+
+```http
+POST /orders HTTP/1.1
+Host: learn.example
+Content-Type: application/json
+Idempotency-Key: enroll-7
+
+{"courseId":"course-101","learnerId":"learner-7"}
+```
+
+The server-owned replay record in this model contains:
+
+```text
+Scope: authenticated learner-7 + POST /orders + enroll-7
+Fingerprint: canonical semantic pair [courseId, learnerId]
+Result: status 201 + Location /orders/order-1 + original response body
+
+Atomic modeled commit:
+  order-1 AND its key/fingerprint/result record
+  OR neither
+```
+
+The identity of the learner is assumed here; a real API derives it from verified credentials, never trusts a body field for authorization. Canonicalization is intentionally limited to these two known fields: JSON property order does not change the fingerprint. A production service must define canonicalization for its actual schema.
+
+<rest-visual lesson="retry">
+<p><strong>Static walkthrough — lost response:</strong> Without a key, attempt 1 creates order-1, its 201 response is lost, and retry creates order-2. With a scoped persisted key, order-1 and its replay record commit together; the same retry returns the original 201 and creates no second order. Reusing that key with course-202 returns this API's 409 conflict without a write. A crash before the atomic commit leaves neither record; the retry creates order-1. A timeout alone tells the client none of these outcomes.</p>
+</rest-visual>
+
+**Worked experiment:** run **No key / duplicate effect**, stopping at step 4. The client says UNKNOWN, but the storage snapshot already contains order-1. Continue to the retry: the graph's order count rises from 1 to 2. Reset and select **Persisted key / replay**: the same lost response occurs, yet the count stays at 1 after the retry. The exact recorded status, Location, and body return; replaying `201` does not mean a new order was created.
+
+**Now challenge the contract:**
+
+- **Same key / different payload:** change course-101 to course-202 while retaining enroll-7. The recorded fingerprint does not match. This API returns `409` rather than silently pretending the first order fulfilled a different command. The precise mismatch status is an API policy, not universal `Idempotency-Key` behavior.
+- **Crash before commit / retry:** both the order and replay record remain absent. The next attempt creates the first order. Compare this with the lost-reply case, where work already committed.
+- **Concurrent arrivals:** not actually executed in this serialized animation. The model assumes the database enforces one owner/commit for the scoped key. A naive "check absent, do work, insert key later" allows two requests to race or a crash to leave an effect without a record.
+- **A new key:** represents a new intent under this contract and can create another order. Keep one key across retries of the same intent; do not reuse it for unrelated work.
+- **Expiration or independent effects:** replay safety is limited by retention and scope. After expiry a request may be processed again. Emails, external fulfillment, and remote charges need additional coordination; this model has no such effects.
+
+**Self-check:** (1) Did the first request fail merely because its reply was lost? (2) Can the API replay course-101 as success for a retry requesting course-202? (3) Does a browser showing one order prove external payments happen exactly once?
+
+<details>
+<summary>Answers — retry lab</summary>
+<p>(1) No. In the lost-reply stories the first order committed; the learner's knowledge is uncertain. (2) Not under this contract. It must reject the changed intent and preserve the existing records. (3) No. This is a deterministic local model with an assumed atomic commit, no real persistence, no concurrent execution, and no payment provider. Real systems must handle retention, crash recovery, provider contracts, and reconciliation.</p>
+</details>
+
+**Primary references:** [HTTP idempotency and retry semantics, RFC 9110 §9.2.2](https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2) and [Stripe's documented idempotent-request contract](https://docs.stripe.com/api/idempotent_requests). The latter is an example of one provider's behavior, not a standard that all APIs inherit. Our fictional order protocol, atomic boundary, and `409` policy are simplified teaching choices.
 
 ### Real UPI Example
 
@@ -3601,28 +3721,28 @@ Body:
 ### Server Flow
 
 ```
-Receive Request
+Receive authenticated request
 |
-V
-Check Key
+Bind scoped key to semantic payload
 |
-Exists?
-/ \
-Yes No
-| |
-Return Process Payment
-Old Store Result
-Result Store Key
+Persisted result exists?
+|-- Different payload: reject under API policy
+|-- Same payload: replay recorded result
+|-- Absent: coordinate ownership, perform/recover work,
+            durably record result, then reply
 ```
 
 ```mermaid
 flowchart TD
-    A[Receive Request] --> B{Check Idempotency Key}
-    B -->|Key Exists| C[Return Old Result]
-    B -->|Key Not Found| D[Process Payment]
-    D --> E[Store Result + Key]
-    E --> F[Return Response]
+    A[Authenticate and scope key] --> B{Persisted key and payload}
+    B -->|Matching completed intent| C[Replay recorded response]
+    B -->|Different intent| X[Reject conflict]
+    B -->|Absent| D[Coordinate ownership and durable intent]
+    D --> E[Perform or recover provider operation]
+    E --> F[Durably record result then reply]
 ```
+
+**Do not implement the old check-then-charge shortcut.** Local order creation can couple the effect and key record in one database transaction, as the scene assumes. A remote payment is outside that transaction: it needs provider-side idempotency, recoverable intent/state, and reconciliation. In-flight duplicates, failures, and retention must have explicit policies. Renaming a URL to `/payments` alone does not make an API safe.
 
 ### Architecture
 
@@ -3705,7 +3825,7 @@ With idempotency:
 Return previous response.
 ```
 
-Perfect.
+Useful only within the documented key scope, retention, and durable-effect contract. Uncertain or in-flight operations may need recovery rather than immediate replay.
 
 ---
 
@@ -4502,7 +4622,7 @@ Fingerprint of data
 Example response:
 
 ```http
-ETag: abc123
+ETag: "abc123"
 ```
 
 Meaning:
@@ -4522,7 +4642,7 @@ ETag
 Next request:
 
 ```http
-If-None-Match: abc123
+If-None-Match: "abc123"
 ```
 
 Meaning:
@@ -4543,6 +4663,68 @@ If unchanged:
 No body returned.
 Tiny response.
 Super efficient.
+
+An ETag is an **opaque, quoted validator** for a selected representation. It need not be a hash. A strong tag such as `"abc123"` identifies a byte-equivalent representation; a weak tag such as `W/"abc123"` allows semantic equivalence. `If-None-Match` uses weak comparison and, on GET/HEAD, can lead to `304`. Conditional writes with `If-Match` require **strong comparison** and reject a non-matching precondition with `412`.
+
+### Visual example: Two editors and ETags
+
+**Theory first — repeated writes and stale writes are different problems.** Idempotency asks whether repeating *one command* duplicates its intended effect. Optimistic concurrency asks whether *someone else changed the representation* since you read it. A repeatable PUT can still overwrite another editor's work.
+
+Both editors begin with:
+
+```http
+HTTP/1.1 200 OK
+ETag: "course-101-v1"
+Content-Type: application/json
+
+{"id":"course-101","title":"API Fundamentals","seats":30}
+```
+
+A saves a new title using `If-Match: "course-101-v1"` and the server commits version 2. B's old copy still has the original title. B then sends a complete replacement:
+
+```http
+PUT /courses/course-101 HTTP/1.1
+Host: learn.example
+Content-Type: application/json
+If-Match: "course-101-v1"
+
+{"title":"API Fundamentals","seats":24}
+```
+
+If the server atomically compares that tag against current version 2 **before applying the write**, the precondition fails and storage remains unchanged:
+
+```http
+HTTP/1.1 412 Precondition Failed
+Content-Type: application/json
+
+{"error":"If-Match does not strongly match the current ETag"}
+```
+
+<rest-visual lesson="etag">
+<p><strong>Static walkthrough — two editors:</strong> A and B read version 1. A changes the title to REST Studio and commits version 2. With no guard, B's stale PUT changes seats to 24 but restores the old title: A's update is lost. With If-Match v1, B receives 412 without a write. B fetches v2, reviews a merge preserving A's title, and writes the merged representation with If-Match v2. Version 3 contains REST Studio and 24 seats. A weak tag cannot strongly match; a missing required guard receives this API's 428.</p>
+</rest-visual>
+
+**Worked experiment:** select **No guard / overwrite A** and advance to the storage write. The reply is `200`, the revision is 3, and A's title has disappeared. Now select **If-Match / prevent lost update**. At the rejection boundary, revision stays 2 and A's title survives. B performs a new GET, explicitly reviews a merge, and submits it with the newly received tag. The final revision 3 contains **REST Studio + 24 seats**.
+
+**The merge is a decision, not an automatic retry.** Replacing the stale header with a fresh tag while sending the same old body can still erase A's title. Preserve changes through a user-reviewed or domain-aware merge. If another writer commits before B's reviewed merge, B's new precondition must fail again. Compare and write must be atomic; a separate version check followed by an unguarded write reintroduces a race.
+
+| Mechanism | Question answered | Scene behavior |
+| --- | --- | --- |
+| Idempotency key | Is this a repeat of the same command? | Replay a stored result; reject a changed intent |
+| `If-Match` | Is the selected representation still the one I read? | Strong match permits the write; stale/weak tag gets `412` |
+| Required guard policy | Must this API receive a write precondition? | Missing `If-Match` gets `428` here |
+| `If-None-Match` on GET | Does my stored representation still match? | An unchanged representation can produce `304`, with no response content |
+
+`428` is an explicit policy choice, not the response every API gives for an absent header. The scene models one strong tag on one selected JSON representation, with synthetic monotonically increasing versions. It does not implement tag lists, wildcard preconditions, compression variants, or actual concurrent database transactions. Real ETags are opaque: clients store and resend them, not parse version numbers.
+
+**Self-check:** (1) Is PUT's idempotency enough to preserve A's edit? (2) Can `W/"course-101-v2"` satisfy `If-Match` for the current strong tag? (3) Should a rejected conditional PUT receive `304`? (4) Can an idempotency key replace a freshness check?
+
+<details>
+<summary>Answers — editor lab</summary>
+<p>(1) No. Identical command effects do not prevent stale replacements. (2) No. If-Match requires strong comparison; weak tags cannot satisfy it. (3) No. A failed write precondition normally produces 412. 304 applies to conditional GET/HEAD cache validation. (4) No. Replay identity and representation freshness are different contracts; an API may need both, with documented evaluation/replay rules.</p>
+</details>
+
+**Primary references:** [Entity tags, RFC 9110 §8.8.3](https://www.rfc-editor.org/rfc/rfc9110.html#section-8.8.3), [If-Match, §13.1.1](https://www.rfc-editor.org/rfc/rfc9110.html#section-13.1.1), [If-None-Match, §13.1.2](https://www.rfc-editor.org/rfc/rfc9110.html#section-13.1.2), [412, §15.5.13](https://www.rfc-editor.org/rfc/rfc9110.html#section-15.5.13), and [428, RFC 6585 §3](https://www.rfc-editor.org/rfc/rfc6585.html#section-3).
 
 ---
 

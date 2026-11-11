@@ -1,16 +1,40 @@
 - [🏠 Home](/)
 - **Foundation**
-  - [Phase 0 — Fundamentals](docs/00-FUNDAMENTALS.md)
-  - [Phase 1 — REST APIs](docs/01-REST-APIS.md)
+  - [Phase 0 — Fundamentals](/docs/00-GUIDED-FUNDAMENTALS.md)
+  - [Phase 1 — REST APIs](/docs/01-GUIDED-REST.md)
 - **Core Protocols**
-  - [Phase 2 — GraphQL](docs/02-GRAPHQL.md)
-  - [Phase 3 — RPC & gRPC](docs/03-RPC-AND-GRPC.md)
+  - [Phase 2 — GraphQL](/docs/02-GUIDED-GRAPHQL.md)
+  - [Phase 3 — RPC & gRPC](/docs/03-GUIDED-RPC-AND-GRPC.md)
 - **Communication Layer**
-  - [Phase 4 — Real-Time](docs/04-REALTIME-COMMUNICATION.md)
-  - [Phase 5 — Async APIs](docs/05-ASYNC-APIS.md)
+  - [Phase 4 — Real-Time](/docs/04-GUIDED-REALTIME.md)
+  - [Phase 5 — Async APIs](/docs/05-ASYNC-APIS.md)
 - **Platform Layer**
-  - [Phase 6 — API Architecture](docs/06-API-ARCHITECTURE.md)
+  - [Phase 6 — API Architecture](/docs/06-API-ARCHITECTURE.md)
 - **Mastery**
-  - [Senior Design Guide](docs/07-SENIOR-DESIGN-GUIDE.md)
-  - [Phase 7 — Expert Design](docs/08-EXPERT-API-DESIGN.md)
-  - [System Design Case Studies](docs/09-SYSTEM-DESIGN-CASE-STUDIES.md)
+  - [Senior Design Guide](/docs/07-SENIOR-DESIGN-GUIDE.md)
+  - [Phase 7 — Expert Design](/docs/08-EXPERT-API-DESIGN.md)
+  - [System Design Case Studies](/docs/09-SYSTEM-DESIGN-CASE-STUDIES.md)
+- **Complete reference**
+  - [All topics & reading destinations](/docs/COURSE-CONTENT-MAP.md)
+  - [Corrections & distinctions](/docs/CONTENT-CORRECTIONS.md)
+  - [Phase 0 — Original complete reference](/docs/00-FUNDAMENTALS.md)
+  - [Phase 1 — Original complete reference](/docs/01-REST-APIS.md?view=reference)
+  - [Phase 2 — Original complete reference](/docs/02-GRAPHQL.md)
+  - [Phase 3 — Original complete reference](/docs/03-RPC-AND-GRPC.md)
+  - [Phase 4 — Original complete reference](/docs/04-REALTIME-COMMUNICATION.md)
+- **REST related lessons**
+  - [HTTP contracts & representations](/docs/lessons/REST-HTTP-CONTRACTS.md)
+  - [Collections, caching & validators](/docs/lessons/REST-COLLECTIONS-AND-CACHING.md)
+  - [Access & contract evolution](/docs/lessons/REST-AUTH-AND-EVOLUTION.md)
+  - [Reliability & operations](/docs/lessons/REST-RELIABILITY-AND-OPERATIONS.md)
+- **GraphQL related lessons**
+  - [Execution, errors & batching](/docs/lessons/GRAPHQL-EXECUTION-AND-BATCHING.md)
+  - [Cost, caching & evolution](/docs/lessons/GRAPHQL-COST-CACHING-AND-EVOLUTION.md)
+- **gRPC related lessons**
+  - [Protobuf, wire format & evolution](/docs/lessons/GRPC-PROTOBUF-AND-EVOLUTION.md)
+  - [Lifecycle, streaming & operations](/docs/lessons/GRPC-LIFECYCLE-AND-OPERATIONS.md)
+- **Real-time related lessons**
+  - [Recovery & flow control](/docs/lessons/REALTIME-RECOVERY-AND-FLOW.md)
+  - [Webhooks & background jobs](/docs/lessons/WEBHOOKS-AND-BACKGROUND-JOBS.md)
+  - [Push notification delivery](/docs/lessons/PUSH-NOTIFICATION-DELIVERY.md)
+  - [WebRTC media & connectivity](/docs/lessons/WEBRTC-MEDIA-AND-CONNECTIVITY.md)

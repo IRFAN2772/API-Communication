@@ -6,6 +6,21 @@
 
 > **What you'll learn:** What is an API, what is a client, what is a server, what is a request, what is a response, what is a protocol, what is HTTP, and why APIs exist in system design.
 
+<div class="phase-zero-hero">
+<span class="phase-zero-kicker">PHASE 00 / THE FOUNDATIONS</span>
+<p class="phase-zero-title">Don't just read the request.<br>Follow it.</p>
+<p>Start with the theory. Trace one real example. Change a condition and see why the outcome changes. These browser-only visual models need no installation, account, or paid tools.</p>
+<div class="phase-zero-links">
+<a href="#/docs/00-FUNDAMENTALS?id=visual-example-follow-a-course-request">01 / Follow a request</a>
+<a href="#/docs/00-FUNDAMENTALS?id=visual-example-choose-a-conversation">02 / Explore the decision tree</a>
+<a href="#/docs/00-FUNDAMENTALS?id=visual-example-when-a-queue-fills">03 / Watch a queue</a>
+</div>
+</div>
+
+**Your path through this phase:** Sections 1–6 explain the vocabulary. Sections 7–13 apply it to design choices. Sections 14–20 explore failures and the bigger picture; revisit those after the basics if needed. The original diagrams and examples remain alongside the interactive explanations.
+
+**By the end, try to explain:** What does each participant know? What does a timeout actually mean? Which requirement justifies a communication method? Why can a queue still overflow?
+
 ---
 
 ## Quick Reference Card
@@ -56,8 +71,9 @@ graph LR
 
 ## Introduction
 
-Absolutely, Irfan — we'll treat API communication methods as a full system design topic, not just "REST vs GraphQL vs RPC". Since you're learning this for the first time, I'll make it zero-to-hero, slowly structured, with simple words first and expert trade-offs later.
-I also checked your enterprise/internal learning context and found relevant material: Designing Data-Intensive Applications discusses why RPC should not pretend a network call is the same as a local function call, why REST is popular for public APIs, and why RPC frameworks like gRPC are commonly used for internal service-to-service communication. I also found internal API learning resources in Percipio Skill Benchmarks, including API development fundamentals, REST/SOAP APIs, API management, error handling, OpenAPI, and Postman-related API testing. There is also an internal Services with GraphQL page that lists several services using GraphQL endpoints, which means this topic is directly relevant to real backend/platform work, not only interviews. [Designing...plications | PDF] [Percipio S...Benchmarks | PDF] [Services w...th GraphQL | Confluence (skillsoftdev)]
+We will treat API communication as part of system design, not just "REST vs GraphQL vs RPC." Start with simple words, then connect each mechanism to a concrete learning-platform example and its trade-offs.
+
+A remote call is not a local function call: the network can delay, disconnect, or lose a response independently of the server's work. That difference motivates many later topics. Use the [MDN HTTP overview](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) for the request/response foundation and [gRPC core concepts](https://grpc.io/docs/what-is-grpc/core-concepts/) for remote service calls. Public references are collected at the end of this phase so the explanations can be checked without access to private learning systems.
 
 ---
 
@@ -98,25 +114,7 @@ You will learn:
 - Rate limiting
 - REST trade-offs
 
-**Phase 2 — RPC and gRPC**
-
-You will learn:
-
-- What is RPC?
-- Why RPC feels like calling a function
-- Why remote calls are dangerous
-- gRPC
-- Protocol Buffers
-- HTTP/2
-- Unary calls
-- Server streaming
-- Client streaming
-- Bidirectional streaming
-- RPC vs REST
-
-The official gRPC documentation describes gRPC as a model where a client can directly call a method on a server application on another machine as if it were a local object, while defining services and methods with parameters and return types. Protocol Buffers are described as language-neutral, platform-neutral, extensible mechanisms for serialising structured data, similar to JSON but smaller and faster, with generated language bindings. [grpc.io] [protobuf.dev]
-
-**Phase 3 — GraphQL**
+**Phase 2 — GraphQL**
 
 You will learn:
 
@@ -132,7 +130,25 @@ You will learn:
 - GraphQL caching challenges
 - GraphQL vs REST
 
-The official GraphQL site describes GraphQL as an open-source query language for APIs and a server-side runtime, using a strongly typed schema to define relationships between data and allowing APIs to evolve over time. The GraphQL specification defines the language, type system, introspection, validation, execution, and response format. [graphql.org] [github.com]
+The official [GraphQL introduction](https://graphql.org/learn/) describes a query language for APIs and a server-side runtime with a typed schema. Its specification defines validation, execution, and the response format.
+
+**Phase 3 — RPC and gRPC**
+
+You will learn:
+
+- What is RPC?
+- Why RPC feels like calling a function
+- Why remote calls are dangerous
+- gRPC
+- Protocol Buffers
+- HTTP/2
+- Unary calls
+- Server streaming
+- Client streaming
+- Bidirectional streaming
+- RPC vs REST
+
+The official [gRPC documentation](https://grpc.io/docs/what-is-grpc/core-concepts/) explains service methods and typed request/response messages. [Protocol Buffers](https://protobuf.dev/overview/) provide schema-based serialization and generated language bindings. Size and speed advantages depend on the payload, implementation, and workload; measure rather than assuming a universal improvement over JSON.
 
 **Phase 4 — Real-time communication**
 
@@ -300,7 +316,7 @@ Web App       →  API Layer  →  Backend Services  →  Database
 Admin App
 ```
 
-The API layer protects the backend.
+The API layer is a place to enforce access rules, validation, and limits. It does not protect the backend merely by existing; those controls must be implemented. Here, "client" means an untrusted browser or mobile app, not a trusted backend making an authorized database connection.
 
 ---
 
@@ -375,6 +391,25 @@ Examples:
 - MQTT
 
 If API is the "conversation", protocol is the "language grammar".
+
+These names describe different layers, not interchangeable competitors: HTTP defines application messages, TCP is a transport, HTTPS secures HTTP using TLS, and gRPC defines remote service calls using HTTP/2. A client and a server are roles in one interaction; the same backend can be a server to a browser and a client to another service.
+
+### Visual example: follow a course request
+
+**Situation:** A learner opens course 123. The browser requests `GET /courses/123`. The API checks the request, reads storage, and returns a status plus a JSON representation.
+
+Before pressing **Next step**, predict which component knows the course exists. Then compare **Course does not exist** with **Response is lost**. A known `404` and an unknown outcome after a timeout are different problems.
+
+<api-visual lesson="request">
+<p><strong>Text walkthrough:</strong> Browser requests course 123 → API checks access and queries storage → storage returns the course → API sends 200 with course data → browser renders it. If the course is absent, the API returns 404. If the response is lost, the browser may time out even though the server finished successfully. Open the documentation site with JavaScript enabled for step controls; this explanation remains the text alternative.</p>
+</api-visual>
+
+**Check your understanding:** If the browser times out, does that prove the course API did not run?
+
+<details>
+<summary>Reveal the reasoning</summary>
+<p>No. The request might not have arrived, processing might still be running, or the response might have been lost. The browser cannot distinguish these from a timeout alone. This GET example has no write side effect; a retried payment needs a separate duplicate-effect policy. The API is a boundary/contract implemented by the server, not necessarily another independently deployed machine.</p>
+</details>
 
 ---
 
@@ -538,6 +573,8 @@ Queue    → Background analytics/progress events
 ```
 
 > **Key Insight:** Real systems do not use only one communication method.
+
+This is a menu of possible choices, not a requirement to adopt all of them. A small learning platform can start with one REST API and one database. Add another method only when a concrete requirement justifies its cost.
 
 ---
 
@@ -1277,6 +1314,23 @@ Order Service → OrderCreated event → Email Service
 
 Use this decision guide.
 
+### Visual example: choose a conversation
+
+**Situation:** The learning platform needs a course page, a live classroom, progress updates, and completion emails. These features do not all need the same interaction shape.
+
+Select a feature below. Follow the highlighted branch, read the suggested starting point, then inspect the alternative and the responsibilities it introduces. The tree narrows the discussion; it does not decide the entire architecture.
+
+<api-visual lesson="decision">
+<p><strong>Text decision tree:</strong> Need an immediate resource read? Start with REST; consider GraphQL for justified flexible data selection or gRPC for controlled typed service calls. Need live server-to-client updates? Compare SSE with polling. Need frequent two-way messages? Consider WebSocket. Can work finish later? Consider a durable job queue with visible completion and failure states.</p>
+</api-visual>
+
+**Check your understanding:** Would a report that changes once every minute automatically need WebSocket?
+
+<details>
+<summary>Reveal the reasoning</summary>
+<p>No. Polling may meet its freshness target with less operational complexity. SSE is another option when the server should push progress. WebSocket becomes attractive when frequent two-way interaction justifies a persistent bidirectional channel. Compare acceptable delay, traffic, reconnection behavior, and client support.</p>
+</details>
+
 ### Choose REST when
 
 - API is public
@@ -1421,6 +1475,8 @@ Idempotency-Key: abc-123
 
 Server says: If I already processed abc-123, return same result. Do not repeat side effect.
 
+This is the intended contract, not a complete implementation. The server needs durable, atomic handling of concurrent requests, a key scoped to the caller/operation, and a policy for reusing a key with different input. An external charge can succeed before the local result is stored, so recovery may require the payment provider's idempotency support and reconciliation. An in-memory "check, charge, save" sequence does not close those failure windows.
+
 ### 14.2 Retry storm
 
 **Problem:**
@@ -1440,6 +1496,23 @@ System collapses.
 - Circuit breaker
 - Retry budget
 - Timeouts
+
+### Visual example: when a queue fills
+
+**Situation:** Completing courses generates email jobs. Suppose two workers each finish two jobs per second. Four arriving jobs per second fit the steady-state capacity; ten do not.
+
+Try **Balanced traffic**, advance a few seconds, then switch to **Traffic spike**. The backlog is preserved when you switch. Watch the waiting count and rejected count—not just the moving graph. Finally choose **Recovery capacity** to see why draining a backlog needs spare processing capacity.
+
+<api-visual lesson="queue">
+<p><strong>Text model:</strong> Two workers × two jobs/second = four jobs/second capacity. Ten arrivals/second add six more jobs/second than can be processed. A finite queue eventually fills; new jobs must be rejected or handled by another explicit overload policy. Four workers process up to eight jobs/second, so with four arrivals/second, existing backlog can shrink by up to four jobs/second.</p>
+</api-visual>
+
+**Check your understanding:** After a spike, will returning to four arrivals per second drain the backlog if capacity is also four per second?
+
+<details>
+<summary>Reveal the reasoning</summary>
+<p>No. Matching incoming work only keeps up; it provides no spare capacity to clear the existing backlog. Increase sustainable processing capacity, reduce arrivals, or apply a deliberate degradation policy. Retrying rejected jobs immediately can worsen overload. Real capacity varies with job cost and failures; the visualization uses fixed rates to isolate the principle.</p>
+</details>
 
 ### 14.3 Partial failure
 
@@ -1975,6 +2048,17 @@ The next lesson should cover:
 13. Production-grade REST API architecture
 
 **Continue to:** [Phase 1 — REST APIs →](01-REST-APIS.md)
+
+## Sources for the visual examples
+
+- [MDN: Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview) — client/server messages and intermediaries.
+- [RFC 9110: HTTP semantics](https://www.rfc-editor.org/rfc/rfc9110.html) — GET, response status, and idempotent-method semantics.
+- [MDN: Server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) — the server-to-client event stream.
+- [gRPC core concepts](https://grpc.io/docs/what-is-grpc/core-concepts/) — calls, streaming, deadlines, and lifecycle.
+- [AWS: Timeouts, retries, and backoff with jitter](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/) — partial failure and retry amplification.
+- [Google SRE: Handling overload](https://sre.google/sre-book/handling-overload/) — capacity, admission, and degraded behavior.
+
+The interactive examples are original, simplified teaching models. They make no network calls, send no learner data, and are not benchmarks or production implementations. Their exact state is described in text; animations are optional.
 
 ---
 

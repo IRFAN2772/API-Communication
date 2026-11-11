@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package learning.v1;
+
+service CourseService {
+  rpc GetCourse(GetCourseRequest) returns (Course);
+  rpc Enroll(EnrollRequest) returns (EnrollReply);
+}
+
+service ProgressService {
+  rpc WatchProgress(GetCourseRequest) returns (stream ProgressUpdate);
+  rpc RecordProgress(stream ProgressUpdate) returns (ProgressSummary);
+  rpc Discuss(stream ClassroomMessage) returns (stream ClassroomMessage);
+}
+
+message GetCourseRequest {
+  string course_id = 1;
+}
+
+message Course {
+  string id = 1;
+  string title = 2;
+  int32 seats = 3;
+  optional string description = 4;
+}
+
+message EnrollRequest {
+  string course_id = 1;
+  string idempotency_key = 2;
+}
+
+message Enrollment {
+  string id = 1;
+  string course_id = 2;
+  string learner_id = 3;
+}
+
+message EnrollReply {
+  Enrollment enrollment = 1;
+  Course course = 2;
+}
+
+message ProgressUpdate {
+  string course_id = 1;
+  int32 percent_complete = 2;
+  string event_id = 3;
+}
+
+message ProgressSummary {
+  int32 accepted_count = 1;
+  int32 last_percent = 2;
+}
+
+message ClassroomMessage {
+  string course_id = 1;
+  string message_id = 2;
+  string text = 3;
+}
