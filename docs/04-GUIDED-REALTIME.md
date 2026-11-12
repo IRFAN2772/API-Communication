@@ -398,7 +398,8 @@ Each branch has delivery failures, privacy and resource constraints of its
 own. A webhook is not a browser stream; a queue is not automatically an
 ordered replay log for every consumer; a push notification is not proof the
 learner saw anything; WebRTC can use a relay rather than direct peer-to-peer.
-The [original async API chapter](05-ASYNC-APIS.md) is the next comparison.
+The [guided async API journey](05-GUIDED-ASYNC.md) is the next comparison.
+The [original async API chapter](05-ASYNC-APIS.md) remains available in full.
 
 **Transfer.** A small library tracks book availability. If librarians accept
 a daily refresh, a page-load GET or slow polling is a good starting point.

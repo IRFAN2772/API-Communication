@@ -10,7 +10,7 @@ Start with one learner opening **API Fundamentals**. Follow the request, see wha
 
 We keep the learning-platform story across the journey: courses, learners, enrollment, progress, and completion. A new technique earns its place by meeting a requirement; it is not automatically an upgrade. Other domains and specialist concepts remain available through linked lessons and the complete reference.
 
-The evolution-based reading path now covers **Phases 0–4: fundamentals, REST, GraphQL, RPC/gRPC, and real-time communication**. All eight existing phases and both companion guides remain intact. Later phases will be reshaped one at a time, not presented as already rewritten.
+The evolution-based reading path now covers **all numbered Phases 0–7: fundamentals, REST, GraphQL, RPC/gRPC, real-time communication, asynchronous APIs, architecture, and expert design**, plus both guided companions. All ten original chapters remain intact alongside the guided material; reading availability is not certification of mastery.
 
 **[Continue with the REST journey](docs/01-GUIDED-REST.md)** · **[Read corrections and distinctions](docs/CONTENT-CORRECTIONS.md)**
 
@@ -21,6 +21,16 @@ REST's related lessons provide detailed explanations of [HTTP contracts](docs/le
 **[Follow the same platform through a typed remote call](docs/03-GUIDED-RPC-AND-GRPC.md)**, with complete related lessons on [protobuf and evolution](docs/lessons/GRPC-PROTOBUF-AND-EVOLUTION.md) and [lifecycle, streaming, and operations](docs/lessons/GRPC-LIFECYCLE-AND-OPERATIONS.md). REST remains valid internally; gRPC does not justify splitting a working application into services.
 
 **[Change the freshness requirement before changing the transport](docs/04-GUIDED-REALTIME.md)**. Related lessons explain [recovery and flow](docs/lessons/REALTIME-RECOVERY-AND-FLOW.md), [webhooks and background work](docs/lessons/WEBHOOKS-AND-BACKGROUND-JOBS.md), [push delivery](docs/lessons/PUSH-NOTIFICATION-DELIVERY.md), and [WebRTC media](docs/lessons/WEBRTC-MEDIA-AND-CONNECTIVITY.md). The site does not run those APIs, request camera access, or require paid services to study them.
+
+**[Follow one completion beyond the request](docs/05-GUIDED-ASYNC.md)**. The related lessons cover [broker delivery and recovery](docs/lessons/BROKERS-DELIVERY-AND-RECOVERY.md), [outbox/inbox and workflows](docs/lessons/OUTBOX-INBOX-AND-WORKFLOWS.md), and [event models and projections](docs/lessons/EVENT-MODELS-AND-PROJECTIONS.md). A queue, retained stream, saga, or event store earns its place through a requirement—not a technology upgrade ladder.
+
+**[Grow the architecture only when its problem grows](docs/06-GUIDED-ARCHITECTURE.md)**. Compare the one-backend baseline with [gateways, BFFs and load balancing](docs/lessons/GATEWAYS-BFFS-AND-LOAD-BALANCING.md), [service mesh and trust](docs/lessons/SERVICE-MESH-AND-TRUST.md), [contracts and lifecycle](docs/lessons/API-CONTRACTS-AND-LIFECYCLE.md), and [backpressure and capacity](docs/lessons/BACKPRESSURE-AND-CAPACITY.md). The complete [OpenAPI contract](docs/contracts/course_api.openapi.json) describes seven fictional catalogue/enrollment operations; no proxy, cluster or live API is required to study them.
+
+**[Design for change and failure without a technology checklist](docs/07-GUIDED-EXPERT-DESIGN.md)**. Six full branches explain [contract evolution and consumers](docs/lessons/CONTRACT-EVOLUTION-AND-CONSUMERS.md), [regions and consistency](docs/lessons/REGIONS-AND-CONSISTENCY.md), [transaction recovery](docs/lessons/DISTRIBUTED-TRANSACTIONS-AND-RECOVERY.md), [consensus and coordination](docs/lessons/CONSENSUS-AND-COORDINATION.md), [reliability and incidents](docs/lessons/RELIABILITY-OBSERVABILITY-AND-INCIDENTS.md), and [tenancy, usage and governance](docs/lessons/TENANCY-USAGE-AND-GOVERNANCE.md). Commercial examples are separate fictional transfer products, not charges for this course. Studying consensus or multi-region design does not require adopting either.
+
+**[Work and defend one senior design](docs/GUIDED-SENIOR-DESIGN.md)**, with full related lessons on [requirements and estimation](docs/lessons/REQUIREMENTS-AND-ESTIMATION.md), [SOAP and XML contracts](docs/lessons/SOAP-XML-AND-ENTERPRISE-CONTRACTS.md), and [sharding, caching and infrastructure](docs/lessons/SHARDING-CACHING-AND-INFRASTRUCTURE.md). The [original senior reference](docs/07-SENIOR-DESIGN-GUIDE.md) remains complete. SOAP's local WSDL/XSD describe one fictional read, not a new backend or a requirement to replace REST.
+
+**[Transfer the method through complete case studies](docs/GUIDED-CASE-STUDIES.md)**: [messaging](docs/lessons/CASE-WHATSAPP-MESSAGING.md), [photo feeds](docs/lessons/CASE-INSTAGRAM-FEEDS-AND-MEDIA.md), [playback](docs/lessons/CASE-NETFLIX-PLAYBACK.md), [dispatch/payment](docs/lessons/CASE-UBER-DISPATCH-AND-PAYMENTS.md), [timelines](docs/lessons/CASE-TWITTER-TIMELINES.md), and [video uploads](docs/lessons/CASE-YOUTUBE-UPLOADS-AND-DELIVERY.md). [Other-system transfers](docs/lessons/CASE-STUDY-TRANSFERS.md) cover commerce, professional networks, expiry and live sports. These are hypothetical designs, not verified current company architectures or traffic reports. The [original cases](docs/09-SYSTEM-DESIGN-CASE-STUDIES.md) remain complete.
 
 The reading path is text-first. Diagrams explain specific exchanges or changes in state; animations and the visual course map are optional. No account, paid tools, or hosted API service is needed.
 
@@ -41,11 +51,11 @@ The reading path is text-first. Diagrams explain specific exchanges or changes i
 <li><a href="docs/02-GUIDED-GRAPHQL.md">Phase 2 — GraphQL</a>: compare data shapes, execute typed selections, and account for their cost.</li>
 <li><a href="docs/03-GUIDED-RPC-AND-GRPC.md">Phase 3 — RPC &amp; gRPC</a>: typed contracts, message bytes, remote failure, and streaming choices.</li>
 <li><a href="docs/04-GUIDED-REALTIME.md">Phase 4 — Real-Time</a>: freshness, direction, recovery, delivery boundaries, and media choices.</li>
-<li><a href="docs/05-ASYNC-APIS.md">Phase 5 — Async APIs</a>: queues, event streams, and delivery guarantees.</li>
-<li><a href="docs/06-API-ARCHITECTURE.md">Phase 6 — API Architecture</a>: gateways, BFFs, meshes, and backpressure.</li>
-<li><a href="docs/08-EXPERT-API-DESIGN.md">Phase 7 — Expert Design</a>: evolution, consistency, and multi-region systems.</li>
+<li><a href="docs/05-GUIDED-ASYNC.md">Phase 5 — Async APIs</a>: durable intent, broker boundaries, duplicates, independent consumers, and replay choices.</li>
+<li><a href="docs/06-GUIDED-ARCHITECTURE.md">Phase 6 — API Architecture</a>: justified boundaries, explicit contracts, overload, and optional mesh choices.</li>
+<li><a href="docs/07-GUIDED-EXPERT-DESIGN.md">Phase 7 — Expert Design</a>: compatible change, measured reliability, transaction recovery, and justified coordination.</li>
 </ol>
-<p><strong>Companion guides, not extra numbered phases:</strong> <a href="docs/07-SENIOR-DESIGN-GUIDE.md">Senior Design Guide</a> · <a href="docs/09-SYSTEM-DESIGN-CASE-STUDIES.md">System Design Case Studies</a>.</p>
+<p><strong>Companion guides, not extra numbered phases:</strong> <a href="docs/GUIDED-SENIOR-DESIGN.md">Senior Design Guide</a> · <a href="docs/GUIDED-CASE-STUDIES.md">System Design Case Studies</a>.</p>
 <p>The site enhances this overview with an interactive route map and an illustrative request trace. If JavaScript is unavailable, the links above and all reference material below remain usable. Nothing is tracked or saved.</p>
 </div>
 </course-map>
@@ -400,6 +410,131 @@ input, replay/reset and snapshot cases, WebSocket handshake/masking, and the
 published raw-body HMAC example. It does not run a browser, push provider,
 webhook receiver or WebRTC engine. Learning and hosting the static course remain
 free; operating real notification, TURN or media infrastructure may have costs.
+
+### Optional maintainer validation for async transaction examples
+
+`assets/async-lesson-fixtures.mjs` keeps the existing completion fact separate
+from commands and an explicitly alternative event-store envelope.
+`assets/async-reading-map.mjs` retains every original async heading's source
+and recommended destination.
+
+With Node.js 22.13 or newer and its built-in SQLite support:
+
+```sh
+node scripts/validate-async-lessons.mjs
+```
+
+This uses two in-memory databases to test actual local transaction rollback,
+completion/outbox coupling, inbox/local-certificate deduplication, and simulated
+publication/ack windows. It also checks pure projection replay, gaps and queue
+growth/drain examples. It does not run Kafka, RabbitMQ, SQS, an email provider,
+a payment service, a process-crash test or a disk-durability experiment.
+The normal lesson tests remain dependency-free; the website does not use SQLite.
+
+### Optional maintainer validation for architecture contracts
+
+The [complete OpenAPI 3.1 definition](docs/contracts/course_api.openapi.json)
+shares data with `assets/architecture-lesson-fixtures.mjs`.
+`assets/architecture-reading-map.mjs` records the exact source and recommended
+destination for all 157 original architecture headings.
+The normal Node tests and the static website need none of these packages.
+For a separate document and JSON Schema check:
+
+```sh
+npm install --prefix "$TMPDIR/api-course-openapi-check" --ignore-scripts --no-audit --no-fund --package-lock=false @apidevtools/swagger-parser@12 ajv@8 ajv-formats@3
+node scripts/validate-openapi-lessons.mjs "$TMPDIR/api-course-openapi-check"
+```
+
+This validates the actual seven-operation file with external reference resolution
+disabled, compiles its JSON Schemas, checks canonical lesson response bodies,
+rejects invalid input/output shapes, and verifies the stated capacity arithmetic.
+Schema validity is not implemented authorization, atomic writes, idempotency,
+live gateway/mesh behavior, or measured server throughput.
+The specification covers catalogue and enrollment, not every platform endpoint.
+The website and these optional free development tools do not require a paid service.
+
+### Optional maintainer validation for expert examples
+
+`assets/expert-reading-map.mjs` retains all 258 original expert headings.
+`assets/expert-lesson-fixtures.mjs` separates current enrollment state from
+the independent last-seat partition and commercial-transfer examples.
+With modern Node.js and its built-in SQLite support, the normal course tests
+need no third-party packages. The real local transaction probe can also run
+separately:
+
+```sh
+node scripts/validate-expert-transactions.mjs
+```
+
+It checks actual in-memory reservation/outbox and receipt/effect rollback,
+matching replay, conflicting payloads, explicit unknown state and one-time
+seat release. Its 2PC decision exercise is an abstract model, not a distributed
+commit implementation or disk-crash durability test.
+
+For additional checks with the free JSON Schema engine:
+
+```sh
+npm install --prefix "$TMPDIR/api-course-expert-check" --ignore-scripts --no-audit --no-fund --package-lock=false ajv@8
+node scripts/validate-expert-lessons.mjs "$TMPDIR/api-course-expert-check"
+```
+
+This validates published old/proposed response bodies against actual schemas,
+runs a short-lived local HTTP provider/consumer fixture, checks exact latency
+ranks and budget arithmetic, and uses SQLite for tenant-scoped lookups and
+usage rollback/deduplication. The helper server closes before the command exits.
+This is not Pact framework verification, deployed authorization, a consensus
+proof, a live provider, or measured production performance. Missing dependencies
+fail explicitly; the static website does not import these tools or run an API.
+
+### Optional maintainer validation for senior design
+
+`assets/senior-reading-map.mjs` maps all 158 original senior headings.
+The new branches reuse existing complete protocol lessons rather than replace
+them with abbreviated summaries. With modern Node.js and built-in SQLite:
+
+```sh
+node scripts/validate-senior-models.mjs
+```
+
+This checks actual published planning inputs, decimal byte/bit conversions,
+57-byte Course JSON and 105-byte completion JSON, plus in-memory backfill,
+expected-version, old-owner fencing and promotion guards. The multi-database
+sequence is a finite recovery model, not a live or atomically distributed migration.
+
+The SOAP [WSDL](docs/contracts/course_api.wsdl) includes its local
+[XSD](docs/contracts/course_api.xsd). For a separate actual XML Schema check,
+use Python 3, Node.js and a temporary free `lxml` installation:
+
+```sh
+python3 -m pip install --target "$TMPDIR/api-course-soap-check" --cache-dir "$TMPDIR/api-course-soap-cache" "lxml>=5,<7"
+python3 scripts/validate-soap-lessons.py "$TMPDIR/api-course-soap-check"
+```
+
+The validator compiles the local schema, checks WSDL QName references and
+the published request/response/fault payloads, and rejects invalid fields,
+namespaces and DTDs without network/entity resolution. It is not a SOAP stack,
+generated-proxy test or WS-Security verification. The website requires none
+of these engines, services or packages; UI review remains manual.
+
+### Maintainer checks for case-study models
+
+`assets/case-study-reading-map.mjs` preserves all 90 original case headings
+and their full destinations. The six case lessons and four other-system
+transfer sections publish their synthetic inputs from
+`assets/case-study-fixtures.mjs`.
+With modern Node.js and built-in SQLite, no external package is needed:
+
+```sh
+node scripts/validate-case-study-models.mjs
+```
+
+This checks actual local SQL rollback, deduplicated device inboxes/receipts,
+required artifact records, timeline privacy predicates, exclusive ride/offer
+guards, separately recorded trip/payment facts, six-byte upload SHA-256,
+fixed bitrate budgets and expiry/window boundaries.
+Synthetic artifacts and reported receipts are not real media validation or
+human attention. No encryption protocol, codec, payment provider, broker,
+CDN, physical trip, production concurrency or measured SLO is tested.
 
 ### Course link resolution
 

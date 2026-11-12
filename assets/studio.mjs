@@ -4,11 +4,11 @@ const chapters = [
   { path: "/docs/02-GUIDED-GRAPHQL", title: "GraphQL", group: "Core protocols", deck: "Compare REST alternatives, select a shape, and account for the work behind it." },
   { path: "/docs/03-GUIDED-RPC-AND-GRPC", title: "RPC & gRPC", group: "Core protocols", deck: "Compare typed contracts, then follow remote failure, streams, and their operational costs." },
   { path: "/docs/04-GUIDED-REALTIME", title: "Real-time communication", group: "Communication layer", deck: "Compare freshness, direction, recovery and delivery rather than choosing a permanent connection by default." },
-  { path: "/docs/05-ASYNC-APIS", title: "Async APIs & events", group: "Communication layer", deck: "Decouple work without losing sight of delivery, ordering, and failure." },
-  { path: "/docs/06-API-ARCHITECTURE", title: "API architecture", group: "Platform layer", deck: "Connect gateways, services, and infrastructure into a resilient platform." },
-  { path: "/docs/07-SENIOR-DESIGN-GUIDE", title: "Senior design guide", group: "Mastery", deck: "Turn requirements into decisions. Explain the trade-offs behind your design." },
-  { path: "/docs/08-EXPERT-API-DESIGN", title: "Expert API design", group: "Mastery", deck: "Design for evolution, global scale, consistency, and the realities of production." },
-  { path: "/docs/09-SYSTEM-DESIGN-CASE-STUDIES", title: "System design case studies", group: "Mastery", deck: "Bring the pieces together through the systems people use every day." },
+  { path: "/docs/05-GUIDED-ASYNC", title: "Async APIs & events", group: "Communication layer", deck: "Follow one completion through durable intent, delivery, replay and bounded recovery." },
+  { path: "/docs/06-GUIDED-ARCHITECTURE", title: "API architecture", group: "Platform layer", deck: "Evolve a small backend through justified boundaries, explicit contracts and bounded capacity." },
+  { path: "/docs/07-GUIDED-EXPERT-DESIGN", title: "Expert API design", group: "Mastery", deck: "Follow compatible change, measured reliability and justified coordination without a mandatory technology stack." },
+  { path: "/docs/GUIDED-SENIOR-DESIGN", title: "Senior design guide", group: "Companion guide", deck: "Build and review one requirements-driven design, with explicit estimates, ownership and recovery." },
+  { path: "/docs/GUIDED-CASE-STUDIES", title: "System design case studies", group: "Companion guide", deck: "Work complete transfer cases with explicit assumptions, authority, ambiguous failures and trade-offs." },
 ];
 
 const referencePages = [
@@ -17,6 +17,11 @@ const referencePages = [
   { path: "/docs/02-GRAPHQL", title: "GraphQL — complete reference", group: "Complete reference" },
   { path: "/docs/03-RPC-AND-GRPC", title: "RPC & gRPC — complete reference", group: "Complete reference" },
   { path: "/docs/04-REALTIME-COMMUNICATION", title: "Real-time — complete reference", group: "Complete reference" },
+  { path: "/docs/05-ASYNC-APIS", title: "Async APIs — complete reference", group: "Complete reference" },
+  { path: "/docs/06-API-ARCHITECTURE", title: "API architecture — complete reference", group: "Complete reference" },
+  { path: "/docs/08-EXPERT-API-DESIGN", title: "Expert API design — complete reference", group: "Complete reference" },
+  { path: "/docs/07-SENIOR-DESIGN-GUIDE", title: "Senior design — complete reference", group: "Complete reference" },
+  { path: "/docs/09-SYSTEM-DESIGN-CASE-STUDIES", title: "Case studies — complete reference", group: "Complete reference" },
   { path: "/docs/COURSE-CONTENT-MAP", title: "All topics & reading destinations", group: "Complete reference" },
   { path: "/docs/CONTENT-CORRECTIONS", title: "Corrections & distinctions", group: "Complete reference" },
   { path: "/docs/lessons/REST-HTTP-CONTRACTS", title: "HTTP contracts & representations", group: "REST related lessons" },
@@ -31,6 +36,29 @@ const referencePages = [
   { path: "/docs/lessons/WEBHOOKS-AND-BACKGROUND-JOBS", title: "Webhooks & background jobs", group: "Real-time related lessons" },
   { path: "/docs/lessons/PUSH-NOTIFICATION-DELIVERY", title: "Push notification delivery", group: "Real-time related lessons" },
   { path: "/docs/lessons/WEBRTC-MEDIA-AND-CONNECTIVITY", title: "WebRTC media & connectivity", group: "Real-time related lessons" },
+  { path: "/docs/lessons/BROKERS-DELIVERY-AND-RECOVERY", title: "Brokers, delivery & recovery", group: "Async related lessons" },
+  { path: "/docs/lessons/OUTBOX-INBOX-AND-WORKFLOWS", title: "Outbox, inbox & workflows", group: "Async related lessons" },
+  { path: "/docs/lessons/EVENT-MODELS-AND-PROJECTIONS", title: "Event models & projections", group: "Async related lessons" },
+  { path: "/docs/lessons/GATEWAYS-BFFS-AND-LOAD-BALANCING", title: "Gateways, BFFs & load balancing", group: "Architecture related lessons" },
+  { path: "/docs/lessons/SERVICE-MESH-AND-TRUST", title: "Service mesh & trust", group: "Architecture related lessons" },
+  { path: "/docs/lessons/API-CONTRACTS-AND-LIFECYCLE", title: "API contracts & lifecycle", group: "Architecture related lessons" },
+  { path: "/docs/lessons/BACKPRESSURE-AND-CAPACITY", title: "Backpressure & capacity", group: "Architecture related lessons" },
+  { path: "/docs/lessons/CONTRACT-EVOLUTION-AND-CONSUMERS", title: "Contract evolution & consumers", group: "Expert related lessons" },
+  { path: "/docs/lessons/REGIONS-AND-CONSISTENCY", title: "Regions & consistency", group: "Expert related lessons" },
+  { path: "/docs/lessons/DISTRIBUTED-TRANSACTIONS-AND-RECOVERY", title: "Distributed transactions & recovery", group: "Expert related lessons" },
+  { path: "/docs/lessons/CONSENSUS-AND-COORDINATION", title: "Consensus & coordination", group: "Expert related lessons" },
+  { path: "/docs/lessons/RELIABILITY-OBSERVABILITY-AND-INCIDENTS", title: "Reliability, observability & incidents", group: "Expert related lessons" },
+  { path: "/docs/lessons/TENANCY-USAGE-AND-GOVERNANCE", title: "Tenancy, usage & governance", group: "Expert related lessons" },
+  { path: "/docs/lessons/REQUIREMENTS-AND-ESTIMATION", title: "Requirements & estimation", group: "Senior related lessons" },
+  { path: "/docs/lessons/SOAP-XML-AND-ENTERPRISE-CONTRACTS", title: "SOAP, XML & enterprise contracts", group: "Senior related lessons" },
+  { path: "/docs/lessons/SHARDING-CACHING-AND-INFRASTRUCTURE", title: "Sharding, caching & infrastructure", group: "Senior related lessons" },
+  { path: "/docs/lessons/CASE-WHATSAPP-MESSAGING", title: "WhatsApp-style messaging", group: "Case study lessons" },
+  { path: "/docs/lessons/CASE-INSTAGRAM-FEEDS-AND-MEDIA", title: "Instagram-style feeds & media", group: "Case study lessons" },
+  { path: "/docs/lessons/CASE-NETFLIX-PLAYBACK", title: "Netflix-style playback", group: "Case study lessons" },
+  { path: "/docs/lessons/CASE-UBER-DISPATCH-AND-PAYMENTS", title: "Uber-style dispatch & payments", group: "Case study lessons" },
+  { path: "/docs/lessons/CASE-TWITTER-TIMELINES", title: "Twitter-style timelines", group: "Case study lessons" },
+  { path: "/docs/lessons/CASE-YOUTUBE-UPLOADS-AND-DELIVERY", title: "YouTube-style uploads & delivery", group: "Case study lessons" },
+  { path: "/docs/lessons/CASE-STUDY-TRANSFERS", title: "Other-system transfer exercises", group: "Case study lessons" },
 ];
 
 function routePath(hash) {
@@ -176,7 +204,7 @@ function makeLessonHeader(main) {
   trail.append(homeItem, groupItem, currentItem);
   breadcrumb.append(trail);
   header.append(breadcrumb);
-  if (["/docs/00-FUNDAMENTALS", "/docs/01-REST-APIS", "/docs/02-GRAPHQL", "/docs/03-RPC-AND-GRPC", "/docs/04-REALTIME-COMMUNICATION"].includes(activePath)) {
+  if (["/docs/00-FUNDAMENTALS", "/docs/01-REST-APIS", "/docs/02-GRAPHQL", "/docs/03-RPC-AND-GRPC", "/docs/04-REALTIME-COMMUNICATION", "/docs/05-ASYNC-APIS", "/docs/06-API-ARCHITECTURE", "/docs/07-SENIOR-DESIGN-GUIDE", "/docs/08-EXPERT-API-DESIGN", "/docs/09-SYSTEM-DESIGN-CASE-STUDIES"].includes(activePath)) {
     const notice = element("p", "studio-reference-note", "This original reference is preserved unchanged. Read the corrected explanations and distinctions alongside it: ");
     const link = element("a", "", "Corrections & distinctions");
     link.href = "#/docs/CONTENT-CORRECTIONS";
@@ -194,7 +222,7 @@ function makeLessonHeader(main) {
   }
   const banner = element("div", "studio-lesson-banner");
   const copy = element("div", "studio-lesson-copy");
-  const eyebrow = element("p", "studio-eyebrow", home ? "A STUDIO FOR SYSTEMS THINKING" : chapter ? `${group} / Chapter ${String(chapterIndex + 1).padStart(2, "0")}` : "THE COURSE LIBRARY");
+  const eyebrow = element("p", "studio-eyebrow", home ? "A STUDIO FOR SYSTEMS THINKING" : chapterIndex >= 0 ? `${group} / Chapter ${String(chapterIndex + 1).padStart(2, "0")}` : chapter ? group : "THE COURSE LIBRARY");
   const heading = element("p", "studio-lesson-title", title);
   const deck = element("p", "studio-lesson-deck", chapter?.deck || (home
     ? "Learn how modern systems talk. Explore the concepts, follow the messages, then design with intention."
@@ -235,7 +263,7 @@ function refreshLesson() {
   pendingNavigation = undefined;
   activePath = routePath(location.hash);
   document.body.classList.toggle("course-reading",
-    ["/", "/docs/00-GUIDED-FUNDAMENTALS", "/docs/01-GUIDED-REST", "/docs/02-GUIDED-GRAPHQL", "/docs/03-GUIDED-RPC-AND-GRPC", "/docs/04-GUIDED-REALTIME", "/docs/COURSE-CONTENT-MAP", "/docs/CONTENT-CORRECTIONS"].includes(activePath) ||
+    ["/", "/docs/00-GUIDED-FUNDAMENTALS", "/docs/01-GUIDED-REST", "/docs/02-GUIDED-GRAPHQL", "/docs/03-GUIDED-RPC-AND-GRPC", "/docs/04-GUIDED-REALTIME", "/docs/05-GUIDED-ASYNC", "/docs/06-GUIDED-ARCHITECTURE", "/docs/07-GUIDED-EXPERT-DESIGN", "/docs/GUIDED-SENIOR-DESIGN", "/docs/GUIDED-CASE-STUDIES", "/docs/COURSE-CONTENT-MAP", "/docs/CONTENT-CORRECTIONS"].includes(activePath) ||
     activePath.startsWith("/docs/lessons/"));
   const renderedPath = activePath;
   const resetScroll = previousPath !== renderedPath && navigation?.path === renderedPath &&

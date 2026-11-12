@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { coursePhases } from "../assets/course-map.mjs";
+import { coursePhases, companionGuides } from "../assets/course-map.mjs";
 
 const read = path => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
@@ -17,6 +17,11 @@ test("the reading journey is primary without replacing the original Phase Zero r
   assert.equal(coursePhases[2].path, "docs/02-GUIDED-GRAPHQL.md");
   assert.equal(coursePhases[3].path, "docs/03-GUIDED-RPC-AND-GRPC.md");
   assert.equal(coursePhases[4].path, "docs/04-GUIDED-REALTIME.md");
+  assert.equal(coursePhases[5].path, "docs/05-GUIDED-ASYNC.md");
+  assert.equal(coursePhases[6].path, "docs/06-GUIDED-ARCHITECTURE.md");
+  assert.equal(coursePhases[7].path, "docs/07-GUIDED-EXPERT-DESIGN.md");
+  assert.equal(companionGuides[0].path, "docs/GUIDED-SENIOR-DESIGN.md");
+  assert.equal(companionGuides[1].path, "docs/GUIDED-CASE-STUDIES.md");
   assert.match(sidebar, /Phase 1 — REST APIs\]\(\/docs\/01-GUIDED-REST\.md\)/);
   assert.match(sidebar, /Phase 1 — Original complete reference\]\(\/docs\/01-REST-APIS\.md\?view=reference\)/);
   assert.match(sidebar, /Phase 2 — GraphQL\]\(\/docs\/02-GUIDED-GRAPHQL\.md\)/);
@@ -25,6 +30,16 @@ test("the reading journey is primary without replacing the original Phase Zero r
   assert.match(sidebar, /Phase 3 — Original complete reference\]\(\/docs\/03-RPC-AND-GRPC\.md\)/);
   assert.match(sidebar, /Phase 4 — Real-Time\]\(\/docs\/04-GUIDED-REALTIME\.md\)/);
   assert.match(sidebar, /Phase 4 — Original complete reference\]\(\/docs\/04-REALTIME-COMMUNICATION\.md\)/);
+  assert.match(sidebar, /Phase 5 — Async APIs\]\(\/docs\/05-GUIDED-ASYNC\.md\)/);
+  assert.match(sidebar, /Phase 5 — Original complete reference\]\(\/docs\/05-ASYNC-APIS\.md\)/);
+  assert.match(sidebar, /Phase 6 — API Architecture\]\(\/docs\/06-GUIDED-ARCHITECTURE\.md\)/);
+  assert.match(sidebar, /Phase 6 — Original complete reference\]\(\/docs\/06-API-ARCHITECTURE\.md\)/);
+  assert.match(sidebar, /Phase 7 — Expert Design\]\(\/docs\/07-GUIDED-EXPERT-DESIGN\.md\)/);
+  assert.match(sidebar, /Phase 7 — Original complete reference\]\(\/docs\/08-EXPERT-API-DESIGN\.md\)/);
+  assert.match(sidebar, /Senior Design Guide\]\(\/docs\/GUIDED-SENIOR-DESIGN\.md\)/);
+  assert.match(sidebar, /Senior design — Original complete reference\]\(\/docs\/07-SENIOR-DESIGN-GUIDE\.md\)/);
+  assert.match(sidebar, /System Design Case Studies\]\(\/docs\/GUIDED-CASE-STUDIES\.md\)/);
+  assert.match(sidebar, /Case studies — Original complete reference\]\(\/docs\/09-SYSTEM-DESIGN-CASE-STUDIES\.md\)/);
   assert.ok(read("assets/studio.mjs").includes('link.href = "#/docs/CONTENT-CORRECTIONS"'));
 });
 

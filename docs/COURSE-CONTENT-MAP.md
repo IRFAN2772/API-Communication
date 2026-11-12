@@ -6,9 +6,12 @@ constraints, and prerequisites below to choose what to read next. The
 numbered phases organize material; they are not a claim that one protocol
 replaces or upgrades another. An application can use several at once.
 
-**Status:** Phases 0–4 now have evolution-based guided entries. Phases 1
-and 4 each have four detailed related lessons; Phases 2 and 3 each have two. The ten original full chapters and
-references remain intact; the remaining phases are not yet rewritten.
+**Status:** All numbered Phases 0–7 now have evolution-based guided entries. Phases 1,
+4 and 6 each have four detailed related lessons; Phases 2 and 3 each have two,
+and Phase 5 has three; Phase 7 has six. The ten original full chapters and
+references remain intact. The senior-design companion now has a guided
+entry and three related lessons. The case-study companion now has six complete
+case lessons and a linked four-system transfer lesson.
 A link here is a route to existing material, not
 a claim of complete treatment or mastery. Related branches are not disposable
 extras: learn the branch when its problem or constraints apply.
@@ -231,6 +234,26 @@ assuming every consumer is immediately available?
 
 **Read:** [Original full asynchronous chapter](05-ASYNC-APIS.md).
 
+**Main journey:** [Follow completion, publication and consumer outcomes](05-GUIDED-ASYNC.md).
+Start with the smallest workable completion/email contract, then change
+requirements before introducing deferred work, independent consumers or replay.
+
+**Related lessons with their own explanations:**
+
+- [Brokers, delivery and recovery](lessons/BROKERS-DELIVERY-AND-RECOVERY.md):
+  RabbitMQ, Kafka and SQS choices; confirmations, leases, offsets, ordering,
+  retention, retries and controlled dead-letter recovery.
+- [Outbox, inbox and workflows](lessons/OUTBOX-INBOX-AND-WORKFLOWS.md):
+  local atomicity, publication/ack crash windows, external effects,
+  orchestration/choreography and saga compensation limits.
+- [Event models and projections](lessons/EVENT-MODELS-AND-PROJECTIONS.md):
+  facts versus commands, event notification versus event sourcing, versioned
+  history, snapshots, pure replay and CQRS consistency choices.
+
+The [async reading map](../assets/async-reading-map.mjs) records the unchanged
+source and recommended destination for every original heading. See the
+[correction record](CONTENT-CORRECTIONS.md) for qualified guarantees.
+
 - [queues and brokers](05-ASYNC-APIS.md#why-message-queues-exist), producers,
   consumers, acknowledgements, ordering and durability.
 - Kafka, RabbitMQ and SQS; partitions and offsets, consumer groups,
@@ -254,14 +277,45 @@ multiple clients and services communicate reliably?
 
 **Read:** [Original full architecture chapter](06-API-ARCHITECTURE.md).
 
+**Main journey:** [Grow an API architecture only when its problem grows](06-GUIDED-ARCHITECTURE.md).
+Start with one working backend and a database; change client needs, reliability,
+shared policy and capacity one at a time. A BFF, gateway, replica fleet or mesh
+is not required simply because it appears in the reference.
+
+**Related lessons with complete explanations:**
+
+- [Gateways, BFFs and load balancing](lessons/GATEWAYS-BFFS-AND-LOAD-BALANCING.md):
+  routing, trusted identity, optional aggregation, L4/L7 selection, multiplexing,
+  readiness, draining, affinity and consistent-hashing limits.
+- [Service mesh and trust](lessons/SERVICE-MESH-AND-TRUST.md):
+  data/control planes, sidecar and other modes, workload versus learner authority,
+  retry multiplication, deadlines, canaries, credentials and rollback limits.
+- [API contracts and lifecycle](lessons/API-CONTRACTS-AND-LIFECYCLE.md):
+  inspect the complete [OpenAPI 3.1 definition](contracts/course_api.openapi.json),
+  schemas, security declarations, conditional writes, compatibility,
+  implementation tests, ownership and retirement.
+- [Backpressure and capacity](lessons/BACKPRESSURE-AND-CAPACITY.md):
+  matching means in Little's Law, bounded jobs/bytes, independent fluid
+  queue calculations, flow control, rejection, retry budgets and fairness.
+
+The [architecture reading map](../assets/architecture-reading-map.mjs) preserves
+every original heading's exact source and recommended destination.
+See the [correction record](CONTENT-CORRECTIONS.md) for explicit qualifications.
+The JSON contract describes seven catalogue/enrollment operations; a valid file
+does not prove runtime authorization or implement the rest of the platform.
+No live proxy, cluster or API is required to read these lessons.
+
 - API gateways: routing, authentication, limits and failure considerations.
 - backend for frontend and client-specific aggregation.
 - load balancing and service mesh.
 - OpenAPI and Swagger for describing interfaces.
 - backpressure and flow control when demand exceeds capacity.
 
-**Practice:** Trace a request through a gateway and load balancer to a service.
-Identify which boundary enforces a policy and where overload is controlled.
+**Practice:** Trace a request first through the small baseline, then through
+justified optional boundaries. Distinguish service identity from learner
+permission; predict a lost-response retry, unhealthy pool, or full waiting queue.
+If an ordinary endpoint already meets the requirement, explain why keeping it
+can be better than introducing a BFF or mesh.
 
 **Related / prerequisites:** REST and basic distributed systems provide
 context; RPC and async experience make the service-level trade-offs concrete.
@@ -273,6 +327,32 @@ The senior guide connects these tools to a requirements-driven design.
 for an explicitly constrained system?
 
 **Read:** [Original full senior design guide](07-SENIOR-DESIGN-GUIDE.md).
+
+**Guided companion:** [Work one requirements-driven design](GUIDED-SENIOR-DESIGN.md).
+This is not another numbered phase or a mandatory combined stack.
+The current completed learner and 29 available seats remain unchanged;
+large-platform estimates and the tenant metadata migration are separate
+explicitly hypothetical models.
+
+**Complete related lessons:**
+
+- [Requirements and estimation](lessons/REQUIREMENTS-AND-ESTIMATION.md):
+  callers, invariants and measurement; exact request/bandwidth/connection/
+  retention units, burst bounds, uncertainty and representative capacity evidence.
+- [SOAP, XML and enterprise contracts](lessons/SOAP-XML-AND-ENTERPRISE-CONTRACTS.md):
+  one complete SOAP 1.2 read with [WSDL](contracts/course_api.wsdl) and
+  [XSD](contracts/course_api.xsd), namespaces, structured faults, security
+  profile limits and compatibility. The legacy LMS is the caller.
+- [Sharding, caching and infrastructure](lessons/SHARDING-CACHING-AND-INFRASTRUCTURE.md):
+  replicas versus data ownership, expected versions and fencing, migration
+  recovery, scoped caches, connection registries and Redis/Kafka/RabbitMQ/
+  Cassandra roles and failure boundaries.
+
+The [senior reading map](../assets/senior-reading-map.mjs) preserves every
+original heading and routes other protocol topics to their existing complete
+guided lessons. The [correction ledger](CONTENT-CORRECTIONS.md) distinguishes
+qualifications from the preserved source. Private internal references in the
+old text are not publicly verified evidence for this rewrite.
 
 - requirements and estimation, decision matrix and method comparisons.
 - [SOAP and XML](07-SENIOR-DESIGN-GUIDE.md#12-soap-and-xml-apis): enterprise
@@ -287,8 +367,10 @@ a queue rather than selecting components by popularity.
 
 **Related / prerequisites:** Use after the fundamentals and at least one
 protocol branch, or consult a specific section when a design demands it.
-**Depth needed:** SOAP is a short orientation here, not a full implementation
-lesson; WSDL, WS-* security and interoperability need further study.
+**Depth boundary:** SOAP now has a complete selected read contract and
+substantial explanation, not just the original orientation. Actual schema/
+message checks are not deployed interoperability, WS-Security verification
+or production competence; those require the real stack and agreed policy.
 
 ## Phase 7 — Expert API design
 
@@ -296,6 +378,41 @@ lesson; WSDL, WS-* security and interoperability need further study.
 dependable across teams, regions and changing business constraints?
 
 **Read:** [Original full expert design chapter](08-EXPERT-API-DESIGN.md).
+
+**Main journey:** [Grow expert design from a working API](07-GUIDED-EXPERT-DESIGN.md).
+Keep the same current course and confirmed enrollment; independent mobile
+versions, a measured SLO, a regional failure or an external workflow motivate
+the next decision. The last-seat partition is an explicitly independent
+hypothetical snapshot, not a silent reset of the current 29-seat record.
+
+**Complete related lessons:**
+
+- [Contract evolution and consumers](lessons/CONTRACT-EVOLUTION-AND-CONSUMERS.md):
+  directional compatibility, defaults/enums/cursors, strict versus tolerant
+  consumers, CDC/Pact concepts, mixed deployments and retirement.
+- [Regions and consistency](lessons/REGIONS-AND-CONSISTENCY.md):
+  routing versus data ownership, active/passive and active/active, RTO/RPO,
+  CAP, session reads and quorum-overlap limits.
+- [Distributed transactions and recovery](lessons/DISTRIBUTED-TRANSACTIONS-AND-RECOVERY.md):
+  local atomicity, prepared 2PC participants, saga uncertainty, outbox/inbox,
+  terminal receipts and fallible compensation.
+- [Consensus and coordination](lessons/CONSENSUS-AND-COORDINATION.md):
+  Raft elections/commit rules, Paxos/Zab roles, majority assumptions,
+  replay, leases, protected-resource fencing and external-effect limits.
+- [Reliability, observability and incidents](lessons/RELIABILITY-OBSERVABILITY-AND-INCIDENTS.md):
+  eligible requests, SLI/SLO/SLA, period and burn budgets, exact sample
+  quantiles, deadlines, traces, cache/overload controls and safe chaos planning.
+- [Tenancy, usage and governance](lessons/TENANCY-USAGE-AND-GOVERNANCE.md):
+  verified membership and object authorization, storage/cache boundaries,
+  logical usage, reconciliation, ownership, standards and staff design review.
+
+The [expert reading map](../assets/expert-reading-map.mjs) records every
+original heading's exact source and recommended destination.
+The original quick reference's later module names differ from the body:
+the new route uses actual CAP, consensus, tenancy and staff-design modules,
+while retaining tracing, chaos and governance as substantial related sections.
+See the [correction ledger](CONTENT-CORRECTIONS.md).
+Commercial API examples are fictional transfer products; this course remains free.
 
 - compatibility and evolution, consumer-driven contracts and Pact.
 - multi-region design, latency and reliability budgets: SLI, SLO, SLA and
@@ -313,8 +430,10 @@ mechanism coordinates and what it does not guarantee about the entire system.
 **Related / prerequisites:** Start with contracts, failures, queues and API
 architecture. Consensus is a separate coordination problem; monetisation is
 a product and isolation problem. Neither is an upgrade to a protocol.
-**Depth needed:** The original is explanatory, not proof of production
-competence in consensus, formal correctness, billing or tenant isolation.
+**Depth boundary:** The full reference and new lessons explain decisions
+and behaviors. Finite models, actual schema checks and local SQLite/HTTP
+probes are not proof of production consensus, deployed authorization,
+Pact provider verification or measured learner competence.
 
 ## System design case studies — applied reference
 
@@ -322,6 +441,44 @@ competence in consensus, formal correctness, billing or tenant isolation.
 handling affect communication choices in complete designs?
 
 **Read:** [Original full case-study chapter](09-SYSTEM-DESIGN-CASE-STUDIES.md).
+
+**Guided companion:** [Transfer the reasoning, not the boxes](GUIDED-CASE-STUDIES.md).
+State an invariant and a small baseline, work through one exchange and
+changed condition, then compare costs and predict the failure.
+No branded diagram is treated as verified current company infrastructure.
+
+**Complete case lessons:**
+
+- [WhatsApp-style messaging](lessons/CASE-WHATSAPP-MESSAGING.md):
+  message/outbox commit, independent devices, acceptance versus receipts,
+  retention, group fanout, encryption prerequisites and calls.
+- [Instagram-style feeds and media](lessons/CASE-INSTAGRAM-FEEDS-AND-MEDIA.md):
+  private upload/processing/publication, immutable generations, all required
+  variants, serving-time audience checks and repeatable likes.
+- [Netflix-style playback](lessons/CASE-NETFLIX-PLAYBACK.md):
+  control versus media delivery, immutable manifests, scoped rights,
+  fixed ABR arithmetic, no-fit outcomes, telemetry and regional recovery.
+- [Uber-style dispatch and payments](lessons/CASE-UBER-DISPATCH-AND-PAYMENTS.md):
+  stale candidates, exclusive offers, physical trip facts, unknown charges,
+  separate payout/refund obligations and bounded consent.
+- [Twitter-style timelines](lessons/CASE-TWITTER-TIMELINES.md):
+  pull/push/hybrid fanout, duplicate tasks, stable merge/cursor policy,
+  current privacy, trends and workload amplification.
+- [YouTube-style uploads and delivery](lessons/CASE-YOUTUBE-UPLOADS-AND-DELIVERY.md):
+  resumable numbered parts, actual synthetic-byte checksums, generation-scoped
+  outputs, readiness versus publication and dimensionally correct estimates.
+
+**Other systems retain substantial transfer sections:**
+
+- [Amazon/Prime-style commerce and media](lessons/CASE-STUDY-TRANSFERS.md#transfer-amazon).
+- [LinkedIn-style professional networks](lessons/CASE-STUDY-TRANSFERS.md#transfer-linkedin).
+- [Snapchat-style expiry and privacy](lessons/CASE-STUDY-TRANSFERS.md#transfer-snapchat).
+- [Live-sports streaming, languages and ads](lessons/CASE-STUDY-TRANSFERS.md#transfer-live-sports).
+
+The [case reading map](../assets/case-study-reading-map.mjs) retains every
+original heading's exact source and destination. See the
+[corrections](CONTENT-CORRECTIONS.md) for qualified guarantees, numeric
+dimensions and the limits of the original universal-stack diagram.
 
 - WhatsApp: chat, real-time connections and asynchronous delivery.
 - Instagram: feed and media flows; Netflix: streaming and distribution.
@@ -337,6 +494,8 @@ instead of treating the diagram as the only valid architecture.
 protocol branches; return to estimates, architecture, reliability and
 consistency as each case requires. These are illustrative designs, not
 verified descriptions of the named companies' current internal systems.
+The local models use real SQL/checksums for finite examples, not live
+encryption, media processing, payments, distributed proofs or learner mastery.
 
 ## Source boundary and coverage
 

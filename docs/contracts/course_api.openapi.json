@@ -1,0 +1,177 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Course API teaching contract",
+    "version": "1.0.0",
+    "description": "A fictional catalogue and enrollment interface. This file describes a contract; the documentation website does not implement its endpoints."
+  },
+  "servers": [{ "url": "https://learn.example" }],
+  "paths": {
+    "/courses": {
+      "get": {
+        "operationId": "listCourses",
+        "parameters": [
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "minimum": 1, "maximum": 20, "default": 20 } },
+          { "name": "cursor", "in": "query", "schema": { "type": "string", "minLength": 1 } },
+          { "name": "sort", "in": "query", "schema": { "type": "string", "enum": ["title", "-title"], "default": "title" } }
+        ],
+        "responses": {
+          "200": { "description": "A bounded course page", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CoursePage" } } } },
+          "400": { "$ref": "#/components/responses/InvalidInput" },
+          "429": { "$ref": "#/components/responses/RateLimited" },
+          "503": { "$ref": "#/components/responses/Unavailable" }
+        }
+      },
+      "post": {
+        "operationId": "createCourse",
+        "security": [{ "sessionCookie": [] }],
+        "description": "The server additionally requires an administrator grant. A cookie alone does not authorize course creation.",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CourseWrite" } } } },
+        "responses": {
+          "201": {
+            "description": "Course created",
+            "headers": { "Location": { "schema": { "type": "string", "format": "uri-reference" } } },
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Course" } } }
+          },
+          "400": { "$ref": "#/components/responses/InvalidInput" },
+          "401": { "$ref": "#/components/responses/Unauthenticated" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "415": { "$ref": "#/components/responses/UnsupportedMedia" }
+        }
+      }
+    },
+    "/courses/{courseId}": {
+      "parameters": [{ "$ref": "#/components/parameters/CourseId" }],
+      "get": {
+        "operationId": "getCourse",
+        "parameters": [{ "name": "If-None-Match", "in": "header", "schema": { "type": "string" } }],
+        "responses": {
+          "200": {
+            "description": "Course representation",
+            "headers": { "ETag": { "schema": { "type": "string" } } },
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Course" } } }
+          },
+          "304": { "description": "Stored representation remains valid; no response body", "headers": { "ETag": { "schema": { "type": "string" } } } },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "503": { "$ref": "#/components/responses/Unavailable" }
+        }
+      },
+      "put": {
+        "operationId": "replaceCourse",
+        "security": [{ "sessionCookie": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IfMatch" }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/CourseWrite" } } } },
+        "responses": {
+          "200": { "description": "Updated course", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Course" } } } },
+          "400": { "$ref": "#/components/responses/InvalidInput" },
+          "401": { "$ref": "#/components/responses/Unauthenticated" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "412": { "$ref": "#/components/responses/StaleWrite" }
+        }
+      },
+      "patch": {
+        "operationId": "patchCourse",
+        "security": [{ "sessionCookie": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/IfMatch" }],
+        "description": "JSON Merge Patch under the minimal writable schema. Required fields cannot be removed with null; an empty patch is a no-op. Administrator authorization is enforced separately.",
+        "requestBody": { "required": true, "content": { "application/merge-patch+json": { "schema": { "$ref": "#/components/schemas/CoursePatch" } } } },
+        "responses": {
+          "200": { "description": "Updated course", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Course" } } } },
+          "400": { "$ref": "#/components/responses/InvalidInput" },
+          "401": { "$ref": "#/components/responses/Unauthenticated" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "412": { "$ref": "#/components/responses/StaleWrite" },
+          "415": { "$ref": "#/components/responses/UnsupportedMedia" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteCourse",
+        "security": [{ "sessionCookie": [] }],
+        "responses": {
+          "204": { "description": "Course removed; no response body" },
+          "401": { "$ref": "#/components/responses/Unauthenticated" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "$ref": "#/components/responses/Conflict" }
+        }
+      }
+    },
+    "/courses/{courseId}/enrollments": {
+      "parameters": [{ "$ref": "#/components/parameters/CourseId" }],
+      "post": {
+        "operationId": "enrollCurrentLearner",
+        "security": [{ "sessionCookie": [] }],
+        "description": "Body-free enrollment for the verified caller. A completed retry with the same scoped key replays its recorded outcome; conflicting intent returns 409. Storage atomicity, concurrency and key retention are implementation obligations.",
+        "parameters": [{ "name": "Idempotency-Key", "in": "header", "required": true, "schema": { "type": "string", "minLength": 1, "maxLength": 128 } }],
+        "responses": {
+          "201": {
+            "description": "Enrollment created or matching completed outcome replayed",
+            "headers": { "Location": { "schema": { "type": "string", "format": "uri-reference" } } },
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Enrollment" } } }
+          },
+          "400": { "$ref": "#/components/responses/InvalidInput" },
+          "401": { "$ref": "#/components/responses/Unauthenticated" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "409": { "$ref": "#/components/responses/Conflict" },
+          "429": { "$ref": "#/components/responses/RateLimited" },
+          "503": { "$ref": "#/components/responses/Unavailable" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": { "sessionCookie": { "type": "apiKey", "in": "cookie", "name": "session" } },
+    "parameters": {
+      "CourseId": { "name": "courseId", "in": "path", "required": true, "schema": { "type": "string", "minLength": 1, "maxLength": 128 } },
+      "IfMatch": { "name": "If-Match", "in": "header", "required": true, "schema": { "type": "string", "minLength": 1 }, "description": "Strong validator required by this editing contract; a stale value causes 412 without a write." }
+    },
+    "schemas": {
+      "Course": {
+        "type": "object", "required": ["id", "title", "seats"], "additionalProperties": false,
+        "properties": { "id": { "type": "string", "minLength": 1 }, "title": { "type": "string", "minLength": 1 }, "seats": { "type": "integer", "minimum": 0, "maximum": 2147483647 } }
+      },
+      "CourseWrite": {
+        "type": "object", "required": ["title", "seats"], "additionalProperties": false,
+        "properties": { "title": { "type": "string", "minLength": 1 }, "seats": { "type": "integer", "minimum": 0, "maximum": 2147483647 } }
+      },
+      "CoursePatch": {
+        "type": "object", "additionalProperties": false,
+        "properties": { "title": { "type": "string", "minLength": 1 }, "seats": { "type": "integer", "minimum": 0, "maximum": 2147483647 } }
+      },
+      "CoursePage": {
+        "type": "object", "required": ["courses", "nextCursor"], "additionalProperties": false,
+        "properties": {
+          "courses": { "type": "array", "maxItems": 20, "items": { "$ref": "#/components/schemas/Course" } },
+          "nextCursor": { "type": ["string", "null"] }
+        }
+      },
+      "Enrollment": {
+        "type": "object", "required": ["id", "courseId", "learnerId"], "additionalProperties": false,
+        "properties": { "id": { "type": "string", "minLength": 1 }, "courseId": { "type": "string", "minLength": 1 }, "learnerId": { "type": "string", "minLength": 1 } }
+      },
+      "Problem": {
+        "type": "object", "required": ["type", "title", "status"],
+        "properties": {
+          "type": { "type": "string", "format": "uri-reference" },
+          "title": { "type": "string" },
+          "status": { "type": "integer", "minimum": 100, "maximum": 599 },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "responses": {
+      "InvalidInput": { "description": "Invalid request", "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },
+      "Unauthenticated": { "description": "Authentication required", "headers": { "WWW-Authenticate": { "schema": { "type": "string" } } }, "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },
+      "Forbidden": { "description": "Operation not permitted", "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },
+      "NotFound": { "description": "Resource absent or concealed", "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },
+      "Conflict": { "description": "Business state or replay-key conflict", "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },
+      "StaleWrite": { "description": "Write precondition failed", "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },
+      "UnsupportedMedia": { "description": "Unsupported request media type", "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },
+      "RateLimited": { "description": "Caller limit reached", "headers": { "Retry-After": { "schema": { "type": "string" } } }, "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } },
+      "Unavailable": { "description": "Service temporarily unavailable", "content": { "application/problem+json": { "schema": { "$ref": "#/components/schemas/Problem" } } } }
+    }
+  }
+}

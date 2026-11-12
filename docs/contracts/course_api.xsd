@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:c="urn:learning-course:v1"
+           targetNamespace="urn:learning-course:v1"
+           elementFormDefault="qualified">
+  <xs:simpleType name="NonEmptyString">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CourseId">
+    <xs:restriction base="c:NonEmptyString">
+      <xs:maxLength value="128"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Seats">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:maxInclusive value="2147483647"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Course">
+    <xs:sequence>
+      <xs:element name="id" type="c:NonEmptyString"/>
+      <xs:element name="title" type="c:NonEmptyString"/>
+      <xs:element name="seats" type="c:Seats"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetCourse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="courseId" type="c:CourseId"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCourseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="course" type="c:Course"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CourseFault">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="code">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="INVALID_REQUEST"/>
+              <xs:enumeration value="NOT_FOUND"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="message" type="c:NonEmptyString"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

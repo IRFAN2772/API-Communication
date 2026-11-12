@@ -26,9 +26,9 @@
     <link rel="stylesheet" href="assets/rest-studio.css?v=2" />
     <link rel="stylesheet" href="assets/rest-path.css?v=1" />
     <link rel="stylesheet" href="assets/rest-design.css?v=1" />
-    <script type="module" src="assets/studio.mjs?v=11"></script>
+    <script type="module" src="assets/studio.mjs?v=16"></script>
     <script type="module" src="assets/visual-lessons.mjs?v=1"></script>
-    <script type="module" src="assets/course-map.mjs?v=6"></script>
+    <script type="module" src="assets/course-map.mjs?v=11"></script>
     <script type="module" src="assets/rest-studio.mjs?v=1"></script>
     <script type="module" src="assets/rest-design.mjs?v=1"></script>
     <script type="module" src="assets/rest-path.mjs?v=2"></script>
@@ -103,9 +103,9 @@
           "00-FUNDAMENTALS", "00-GUIDED-FUNDAMENTALS",
           "01-GUIDED-REST", "01-REST-APIS",
           "02-GRAPHQL", "02-GUIDED-GRAPHQL", "03-RPC-AND-GRPC", "03-GUIDED-RPC-AND-GRPC",
-          "04-REALTIME-COMMUNICATION", "04-GUIDED-REALTIME", "05-ASYNC-APIS", "06-API-ARCHITECTURE",
-          "07-SENIOR-DESIGN-GUIDE", "08-EXPERT-API-DESIGN",
-          "09-SYSTEM-DESIGN-CASE-STUDIES", "CONTENT-CORRECTIONS", "COURSE-CONTENT-MAP",
+          "04-REALTIME-COMMUNICATION", "04-GUIDED-REALTIME", "05-ASYNC-APIS", "05-GUIDED-ASYNC", "06-API-ARCHITECTURE", "06-GUIDED-ARCHITECTURE",
+          "07-GUIDED-EXPERT-DESIGN", "GUIDED-SENIOR-DESIGN", "07-SENIOR-DESIGN-GUIDE", "08-EXPERT-API-DESIGN",
+          "GUIDED-CASE-STUDIES", "09-SYSTEM-DESIGN-CASE-STUDIES", "CONTENT-CORRECTIONS", "COURSE-CONTENT-MAP",
         ];
         const lessons = [
           "GRAPHQL-COST-CACHING-AND-EVOLUTION", "GRAPHQL-EXECUTION-AND-BATCHING",
@@ -114,6 +114,18 @@
           "GRPC-PROTOBUF-AND-EVOLUTION", "GRPC-LIFECYCLE-AND-OPERATIONS",
           "REALTIME-RECOVERY-AND-FLOW", "WEBHOOKS-AND-BACKGROUND-JOBS",
           "PUSH-NOTIFICATION-DELIVERY", "WEBRTC-MEDIA-AND-CONNECTIVITY",
+          "BROKERS-DELIVERY-AND-RECOVERY", "OUTBOX-INBOX-AND-WORKFLOWS", "EVENT-MODELS-AND-PROJECTIONS",
+          "GATEWAYS-BFFS-AND-LOAD-BALANCING", "SERVICE-MESH-AND-TRUST",
+          "API-CONTRACTS-AND-LIFECYCLE", "BACKPRESSURE-AND-CAPACITY",
+          "CONTRACT-EVOLUTION-AND-CONSUMERS", "REGIONS-AND-CONSISTENCY",
+          "DISTRIBUTED-TRANSACTIONS-AND-RECOVERY", "CONSENSUS-AND-COORDINATION",
+          "RELIABILITY-OBSERVABILITY-AND-INCIDENTS", "TENANCY-USAGE-AND-GOVERNANCE",
+          "REQUIREMENTS-AND-ESTIMATION", "SOAP-XML-AND-ENTERPRISE-CONTRACTS",
+          "SHARDING-CACHING-AND-INFRASTRUCTURE",
+          "CASE-WHATSAPP-MESSAGING", "CASE-INSTAGRAM-FEEDS-AND-MEDIA",
+          "CASE-NETFLIX-PLAYBACK", "CASE-UBER-DISPATCH-AND-PAYMENTS",
+          "CASE-TWITTER-TIMELINES", "CASE-YOUTUBE-UPLOADS-AND-DELIVERY",
+          "CASE-STUDY-TRANSFERS",
         ];
         function canonicalizeLegacyRoute() {
           const href = window.location.href;

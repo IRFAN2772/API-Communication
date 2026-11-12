@@ -7,13 +7,14 @@
   - [Phase 3 — RPC & gRPC](/docs/03-GUIDED-RPC-AND-GRPC.md)
 - **Communication Layer**
   - [Phase 4 — Real-Time](/docs/04-GUIDED-REALTIME.md)
-  - [Phase 5 — Async APIs](/docs/05-ASYNC-APIS.md)
+  - [Phase 5 — Async APIs](/docs/05-GUIDED-ASYNC.md)
 - **Platform Layer**
-  - [Phase 6 — API Architecture](/docs/06-API-ARCHITECTURE.md)
+  - [Phase 6 — API Architecture](/docs/06-GUIDED-ARCHITECTURE.md)
 - **Mastery**
-  - [Senior Design Guide](/docs/07-SENIOR-DESIGN-GUIDE.md)
-  - [Phase 7 — Expert Design](/docs/08-EXPERT-API-DESIGN.md)
-  - [System Design Case Studies](/docs/09-SYSTEM-DESIGN-CASE-STUDIES.md)
+  - [Phase 7 — Expert Design](/docs/07-GUIDED-EXPERT-DESIGN.md)
+- **Companion guides**
+  - [Senior Design Guide](/docs/GUIDED-SENIOR-DESIGN.md)
+  - [System Design Case Studies](/docs/GUIDED-CASE-STUDIES.md)
 - **Complete reference**
   - [All topics & reading destinations](/docs/COURSE-CONTENT-MAP.md)
   - [Corrections & distinctions](/docs/CONTENT-CORRECTIONS.md)
@@ -22,6 +23,11 @@
   - [Phase 2 — Original complete reference](/docs/02-GRAPHQL.md)
   - [Phase 3 — Original complete reference](/docs/03-RPC-AND-GRPC.md)
   - [Phase 4 — Original complete reference](/docs/04-REALTIME-COMMUNICATION.md)
+  - [Phase 5 — Original complete reference](/docs/05-ASYNC-APIS.md)
+  - [Phase 6 — Original complete reference](/docs/06-API-ARCHITECTURE.md)
+  - [Phase 7 — Original complete reference](/docs/08-EXPERT-API-DESIGN.md)
+  - [Senior design — Original complete reference](/docs/07-SENIOR-DESIGN-GUIDE.md)
+  - [Case studies — Original complete reference](/docs/09-SYSTEM-DESIGN-CASE-STUDIES.md)
 - **REST related lessons**
   - [HTTP contracts & representations](/docs/lessons/REST-HTTP-CONTRACTS.md)
   - [Collections, caching & validators](/docs/lessons/REST-COLLECTIONS-AND-CACHING.md)
@@ -38,3 +44,31 @@
   - [Webhooks & background jobs](/docs/lessons/WEBHOOKS-AND-BACKGROUND-JOBS.md)
   - [Push notification delivery](/docs/lessons/PUSH-NOTIFICATION-DELIVERY.md)
   - [WebRTC media & connectivity](/docs/lessons/WEBRTC-MEDIA-AND-CONNECTIVITY.md)
+- **Async related lessons**
+  - [Brokers, delivery & recovery](/docs/lessons/BROKERS-DELIVERY-AND-RECOVERY.md)
+  - [Outbox, inbox & workflows](/docs/lessons/OUTBOX-INBOX-AND-WORKFLOWS.md)
+  - [Event models & projections](/docs/lessons/EVENT-MODELS-AND-PROJECTIONS.md)
+- **Architecture related lessons**
+  - [Gateways, BFFs & load balancing](/docs/lessons/GATEWAYS-BFFS-AND-LOAD-BALANCING.md)
+  - [Service mesh & trust](/docs/lessons/SERVICE-MESH-AND-TRUST.md)
+  - [API contracts & lifecycle](/docs/lessons/API-CONTRACTS-AND-LIFECYCLE.md)
+  - [Backpressure & capacity](/docs/lessons/BACKPRESSURE-AND-CAPACITY.md)
+- **Expert design related lessons**
+  - [Contract evolution & consumers](/docs/lessons/CONTRACT-EVOLUTION-AND-CONSUMERS.md)
+  - [Regions & consistency](/docs/lessons/REGIONS-AND-CONSISTENCY.md)
+  - [Distributed transactions & recovery](/docs/lessons/DISTRIBUTED-TRANSACTIONS-AND-RECOVERY.md)
+  - [Consensus & coordination](/docs/lessons/CONSENSUS-AND-COORDINATION.md)
+  - [Reliability, observability & incidents](/docs/lessons/RELIABILITY-OBSERVABILITY-AND-INCIDENTS.md)
+  - [Tenancy, usage & governance](/docs/lessons/TENANCY-USAGE-AND-GOVERNANCE.md)
+- **Senior design related lessons**
+  - [Requirements & estimation](/docs/lessons/REQUIREMENTS-AND-ESTIMATION.md)
+  - [SOAP, XML & enterprise contracts](/docs/lessons/SOAP-XML-AND-ENTERPRISE-CONTRACTS.md)
+  - [Sharding, caching & infrastructure](/docs/lessons/SHARDING-CACHING-AND-INFRASTRUCTURE.md)
+- **Case study lessons**
+  - [WhatsApp-style messaging](/docs/lessons/CASE-WHATSAPP-MESSAGING.md)
+  - [Instagram-style feeds & media](/docs/lessons/CASE-INSTAGRAM-FEEDS-AND-MEDIA.md)
+  - [Netflix-style playback](/docs/lessons/CASE-NETFLIX-PLAYBACK.md)
+  - [Uber-style dispatch & payments](/docs/lessons/CASE-UBER-DISPATCH-AND-PAYMENTS.md)
+  - [Twitter-style timelines](/docs/lessons/CASE-TWITTER-TIMELINES.md)
+  - [YouTube-style uploads & delivery](/docs/lessons/CASE-YOUTUBE-UPLOADS-AND-DELIVERY.md)
+  - [Other-system transfer exercises](/docs/lessons/CASE-STUDY-TRANSFERS.md)

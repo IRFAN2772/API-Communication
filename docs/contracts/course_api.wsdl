@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  xmlns:tns="urn:learning-course:v1"
+                  xmlns:c="urn:learning-course:v1"
+                  targetNamespace="urn:learning-course:v1"
+                  name="CourseService">
+  <wsdl:types>
+    <xs:schema targetNamespace="urn:learning-course:v1">
+      <xs:include schemaLocation="course_api.xsd"/>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="GetCourseRequest">
+    <wsdl:part name="parameters" element="c:GetCourse"/>
+  </wsdl:message>
+  <wsdl:message name="GetCourseResponse">
+    <wsdl:part name="parameters" element="c:GetCourseResponse"/>
+  </wsdl:message>
+  <wsdl:message name="CourseFaultMessage">
+    <wsdl:part name="detail" element="c:CourseFault"/>
+  </wsdl:message>
+  <wsdl:portType name="CoursePortType">
+    <wsdl:operation name="GetCourse">
+      <wsdl:input message="tns:GetCourseRequest"/>
+      <wsdl:output message="tns:GetCourseResponse"/>
+      <wsdl:fault name="CourseFault" message="tns:CourseFaultMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CourseSoap12Binding" type="tns:CoursePortType">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetCourse">
+      <soap12:operation soapAction="urn:learning-course:v1:GetCourse"/>
+      <wsdl:input><soap12:body use="literal"/></wsdl:input>
+      <wsdl:output><soap12:body use="literal"/></wsdl:output>
+      <wsdl:fault name="CourseFault"><soap12:fault name="CourseFault" use="literal"/></wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CourseService">
+    <wsdl:port name="CourseSoap12Port" binding="tns:CourseSoap12Binding">
+      <soap12:address location="https://learn.example/soap/course"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
