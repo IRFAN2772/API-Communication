@@ -4,6 +4,8 @@ Start with one learner opening **API Fundamentals**. Follow the request, see wha
 
 **[Start the Phase 0 journey](docs/00-GUIDED-FUNDAMENTALS.md)** · **[Find every existing topic](docs/COURSE-CONTENT-MAP.md)** · **[Open the complete original Phase 0 reference](docs/00-FUNDAMENTALS.md)**
 
+[Run the project locally](#run-the-project-locally)
+
 ## How this course teaches
 
 **Problem → simplest workable approach → detailed example → changed condition → limitation → alternatives and costs → prediction check.**
@@ -323,6 +325,31 @@ This documentation draws from and references:
 2. **Jump to specific topics** using the navigation tables above
 3. **Use the Senior Design Guide** as your reference during system design interviews
 4. **Each document is self-contained** — you can read any single doc without the others
+
+### Run the project locally
+
+You need a browser, Python 3, and an internet connection: the site loads Docsify, Mermaid, and other assets from CDNs. No npm install, build step, or backend is needed to preview the course.
+
+1. Open a terminal in the project folder containing `index.html`. In VS Code, open the project folder and select **Terminal → New Terminal**. If you have not downloaded the repository yet:
+
+   ```sh
+   git clone https://github.com/IRFAN2772/API-Communication.git
+   cd API-Communication
+   ```
+
+2. Start the local server from that folder:
+
+   ```sh
+   python3 -m http.server 8000 --bind 127.0.0.1
+   ```
+
+   On Windows, use `py -3 -m http.server 8000 --bind 127.0.0.1` instead if `python3` is unavailable.
+
+3. Keep the terminal running and open [http://127.0.0.1:8000/#/](http://127.0.0.1:8000/#/) in your browser. To go straight to the guided first lesson, open [Phase 0](http://127.0.0.1:8000/#/docs/00-GUIDED-FUNDAMENTALS).
+
+Use the server rather than opening `index.html` directly: the site needs HTTP to load its Markdown and JavaScript modules. Refresh the browser after editing files. To stop the server, press **Ctrl+C** in its terminal.
+
+If port 8000 is already in use, replace `8000` in the command and browser address with another port, such as `8001`. The preview uses the files and Git branch currently checked out locally; those may differ from the live GitHub Pages site.
 
 ### Maintaining the visual lessons
 
